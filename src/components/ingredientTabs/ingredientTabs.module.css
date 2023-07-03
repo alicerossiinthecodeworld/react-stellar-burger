@@ -1,0 +1,5 @@
+.ingredient__tabs{
+  display: grid;
+  padding-left: 70px;
+  grid-template-columns: 200px 200px 200px;
+}
