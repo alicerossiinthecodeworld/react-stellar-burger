@@ -1,22 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burgerConstructor.module.css';
 import { data } from '../../utils/data';
 
 function BurgerConstructor() {
+  const bun = data.find((item) => item.type === 'bun');
+  const ingredients = data.filter((item) => item.type !== 'bun');
+
   return (
     <div className={constructorStyles.burgerConstructor}>
-      {data.map((item) => (
+      <div className={constructorStyles.topBun}>
         <ConstructorElement
-          key={item._id}
-          text={item.name}
-          price={item.price}
-          thumbnail={item.image_large}
-          type={item.type === 'bun' ? 'top' : undefined}
-          isLocked={item.type === 'bun'}
+          text={`${bun.name} (верх)`}
+          price={bun.price}
+          thumbnail={bun.image_large}
+          type="top"
+          isLocked
         />
+      </div>
+      {ingredients.map((item, index) => (
+        <div key={item._id} className={constructorStyles.ingredientWrapper}>
+          <DragIcon type="primary"/>
+          <ConstructorElement
+            text={item.name}
+            price={item.price}
+            thumbnail={item.image_large}
+            type={item.type === 'bun' ? 'top' : undefined}
+            isLocked={item.type === 'bun'}
+          />
+        </div>
       ))}
+      <div className={constructorStyles.bottomBun}>
+        <ConstructorElement
+          text={`${bun.name} (низ)`}
+          price={bun.price}
+          thumbnail={bun.image_large}
+          type="bottom"
+          isLocked
+        />
+      </div>
     </div>
   );
 }
