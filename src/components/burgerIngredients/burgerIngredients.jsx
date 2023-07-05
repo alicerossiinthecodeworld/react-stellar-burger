@@ -1,9 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredientTabs/ingredientTabs';
 import ingredientsStyles from './burgerIngredients.module.css';
 import IngredientBoxItem from '../ingredientBoxItem/ingredientBoxItem';
+import { data } from '../../utils/data';
 
 function BurgerIngredients() {
+  // Filter the ingredients by category
+  const bunIngredients = data.filter((item) => item.type === 'bun');
+  const sauceIngredients = data.filter((item) => item.type === 'sauce');
+  const mainIngredients = data.filter((item) => item.type === 'main');
+
   return (
     <div>
       <h1 className={ingredientsStyles.ingredient__header}>Соберите бургер</h1>
@@ -12,99 +19,70 @@ function BurgerIngredients() {
         <div className={ingredientsStyles.ingredient__box}>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Булки</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />
+            {bunIngredients.map((ingredient) => (
+              <IngredientBoxItem
+                key={ingredient.id}
+                imageSrc={ingredient.image}
+                alt={ingredient.name}
+                price={ingredient.price}
+                name={ingredient.name}
+                count={ingredient.count}
+              />
+            ))}
           </div>
         </div>
         <div className={ingredientsStyles.ingredient__box}>
-          <h2 className={ingredientsStyles.ingredient__boxHeader}>Cоусы</h2>
+          <h2 className={ingredientsStyles.ingredient__boxHeader}>Соусы</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />         <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />        </div>
+            {sauceIngredients.map((ingredient) => (
+              <IngredientBoxItem
+                key={ingredient.id}
+                imageSrc={ingredient.image}
+                alt={ingredient.name}
+                price={ingredient.price}
+                name={ingredient.name}
+                count={ingredient.count}
+              />
+            ))}
+          </div>
         </div>
         <div className={ingredientsStyles.ingredient__box}>
-          <h2 className={ingredientsStyles.ingredient__boxHeader}>Начинки</h2>
+          <h2 className={ingredientsStyles.ingredient__boxHeader}>Начинка</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />         <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />     <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />
-            <IngredientBoxItem
-              imageSrc="https://avatars.dzeninfra.ru/get-zen_doc/1056701/pub_5e19e3e332335400af534450_5e20650c3d5f6900b0ad4329/scale_1200"
-              alt="Изображение ингредиента"
-              price="9.99"
-              name="Название ингредиента"
-              count={233}
-            />        </div>
-        </div></div>
+            {mainIngredients.map((ingredient) => (
+              <IngredientBoxItem
+                key={ingredient.id}
+                imageSrc={ingredient.image}
+                alt={ingredient.name}
+                price={ingredient.price}
+                name={ingredient.name}
+                count={ingredient.count}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      proteins: PropTypes.number.isRequired,
+      fat: PropTypes.number.isRequired,
+      carbohydrates: PropTypes.number.isRequired,
+      calories: PropTypes.number.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      image_mobile: PropTypes.string.isRequired,
+      image_large: PropTypes.string.isRequired,
+      __v: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 export default BurgerIngredients;
