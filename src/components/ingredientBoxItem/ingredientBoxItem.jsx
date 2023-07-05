@@ -15,5 +15,4 @@ function IngredientBoxItem(props) {
   );
 }
 
-
 export default IngredientBoxItem;
