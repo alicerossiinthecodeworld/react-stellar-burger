@@ -1,30 +1,21 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
+import { anchorSauce,anchorFillings, anchorBuns} from "./constants.js";
 
-function Navigation({ handleTabClick }) {
-  const boxRef = useRef(null);
 
-  const scrollToCategory = (category) => {
-    handleTabClick(category);
-
-    if (boxRef.current) {
-      boxRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <div>
-      <button onClick={() => scrollToCategory('buns')}>Булки</button>
-      <button onClick={() => scrollToCategory('sauces')}>Соусы</button>
-      <button onClick={() => scrollToCategory('fillings')}>Начинки</button>
-      <div ref={boxRef}>
-      </div>
-    </div>
-  );
+function scrollToAnchor(anchors) {
+  anchors.forEach(function (anchor) {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const sectionID = anchor.getAttribute('href');
+      document.querySelector(sectionID).scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  });
 }
 
-Navigation.propTypes = {
-  handleTabClick: PropTypes.func.isRequired,
-};
-
-export default Navigation;
+export function scrollToAnchors() {
+  scrollToAnchor(anchorSauce);
+  scrollToAnchor(anchorFillings)
+  scrollToAnchor(anchorBuns)
+}

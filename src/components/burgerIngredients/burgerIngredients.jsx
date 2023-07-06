@@ -18,7 +18,7 @@ function BurgerIngredients() {
       <h1 className={ingredientsStyles.ingredient__header}>Соберите бургер</h1>
       <IngredientTabs />
       <div className={ingredientsStyles.ingredient__boxWrapper}>
-        <div className={ingredientsStyles.ingredient__box}>
+        <div className={ingredientsStyles.ingredient__box} id='buns'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Булки</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
             {bunIngredients.map((ingredient) => (
@@ -33,7 +33,7 @@ function BurgerIngredients() {
             ))}
           </div>
         </div>
-        <div className={ingredientsStyles.ingredient__box}>
+        <div className={ingredientsStyles.ingredient__box} id='sauces'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Соусы</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
             {sauceIngredients.map((ingredient) => (
@@ -48,7 +48,7 @@ function BurgerIngredients() {
             ))}
           </div>
         </div>
-        <div className={ingredientsStyles.ingredient__box}>
+        <div className={ingredientsStyles.ingredient__box} id='fillings'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Начинка</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
             {mainIngredients.map((ingredient) => (

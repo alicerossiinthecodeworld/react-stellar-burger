@@ -3,3 +3,7 @@
   padding-left: 70px;
   grid-template-columns: 200px 200px 200px;
 }
+
+.ingredient__tab{
+  text-decoration: none;
+}

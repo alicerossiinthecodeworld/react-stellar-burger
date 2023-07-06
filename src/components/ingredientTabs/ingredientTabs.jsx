@@ -11,15 +11,21 @@ function IngredientTabs() {
 
   return (
     <div className={tabsStyles.ingredient__tabs}>
-      <Tab value="buns" active={current === 'buns'} onClick={handleTabClick}>
-        Булки
-      </Tab>
-      <Tab value="sauces" active={current === 'sauces'} onClick={handleTabClick}>
-        Cоусы
-      </Tab>
-      <Tab value="fillings" active={current === 'fillings'} onClick={handleTabClick}>
-        Начинки
-      </Tab>
+      <a href="#buns" className={tabsStyles.ingredient__tab} id='bunsAnc'>
+        <Tab value="buns" active={current === 'buns'} onClick={handleTabClick}>
+          Булки
+        </Tab>
+      </a>
+      <a href="#sauces" className={tabsStyles.ingredient__tab} id='sauceAnc'>
+        <Tab value="sauces" active={current === 'sauces'} onClick={handleTabClick}>
+          Соусы
+        </Tab>
+      </a>
+      <a href="#fillings" className={tabsStyles.ingredient__tab} id='fillingsAnc'>
+        <Tab value="fillings" active={current === 'fillings'} onClick={handleTabClick}>
+          Начинки
+        </Tab>
+      </a>
     </div>
   );
 }
