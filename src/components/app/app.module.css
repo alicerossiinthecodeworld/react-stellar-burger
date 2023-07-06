@@ -5,3 +5,9 @@
   background-color: #131316;
   color: #f2f2f3;
 }
+
+.burgerZone{
+  display: flex;
+  flex-direction: row;
+  column-gap: 130px;
+}

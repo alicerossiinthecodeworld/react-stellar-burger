@@ -1,0 +1,37 @@
+.ingredient__boxItem{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 208px;
+  width: 272px;
+}
+
+.ingredient__image{
+  Width: 240px;
+  Height: 120px;
+  padding: 0;
+}
+
+.ingredient__name{
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 0;
+  text-align: center;
+}
+
+.ingredient__price{
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  padding: 5px 25px 0px 0px;
+  margin: 0 auto;
+}
+
+.ingredient__counter{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
