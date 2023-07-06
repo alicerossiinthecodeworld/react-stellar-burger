@@ -1,3 +1,33 @@
-.burgerConstructor{
+.burgerConstructor {
   padding-top: 140px;
+}
+
+.ingredientsWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ingredientsWrapper::-webkit-scrollbar-track {
+  background-color: #2F2F37;
+  margin-bottom: 52px;
+}
+
+.ingredientsWrapper::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
+.ingredientsWrapper {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto;
+}
+
+.scrollableContent {
+  padding: 0; /* Add some padding to separate the ingredients from the buns */
+}
+
+.topBun{
+  padding-bottom: 20px;
+}
+
+.bottomBun{
+  padding-top: 20px;
 }
