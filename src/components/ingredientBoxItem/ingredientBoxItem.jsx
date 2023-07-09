@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-import boxStyles from './ingredientBoxItem.module.css'
+import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import boxStyles from './ingredientBoxItem.module.css';
 import { ingredientPropType } from '../../utils/prop-types';
-
 
 function IngredientBoxItem(props) {
   const { imageSrc, alt, price, name, count } = props;
@@ -19,7 +18,10 @@ function IngredientBoxItem(props) {
 }
 
 IngredientBoxItem.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
+  imageSrc: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired
 };
 
 export default IngredientBoxItem;

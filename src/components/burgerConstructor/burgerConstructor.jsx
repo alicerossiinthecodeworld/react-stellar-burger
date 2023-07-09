@@ -1,13 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burgerConstructor.module.css';
-import { data } from '../../utils/data';
-import { ingredientPropType} from '../../utils/prop-types';
+import { ingredientPropType } from '../../utils/prop-types';
 
-function BurgerConstructor() {
-  const bun = data.find((item) => item.type === 'bun');
-  const ingredients = data.filter((item) => item.type !== 'bun');
+function BurgerConstructor({ ingredients, isLoading, hasError }) {
+  if (isLoading) {
+    return <div>Loading ingredients...</div>;
+  }
+  if (hasError) {
+    console.log("Error occurred while fetching ingredients");
+  }
+
+
+  if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
+    return <div>No ingredients available.</div>;
+  }
+
+  const bun = ingredients.data.find((item) => item.type === 'bun');
+  const filling = ingredients.data.filter((item) => item.type !== 'bun');
+  const calculateTotalPrice = () => {
+    const total = filling.reduce((acc, ingredient) => acc + ingredient.price, 0);
+    return total + bun.price;
+  };
+
 
   return (
     <div className={constructorStyles.burgerConstructor}>
@@ -22,7 +38,7 @@ function BurgerConstructor() {
       </div>
       <div className={constructorStyles.ingredientsWrapper}>
         <div className={constructorStyles.scrollableContent}>
-          {ingredients.map((item, index) => (
+          {filling.map((item, index) => (
             <div key={item._id} className={constructorStyles.ingredientWrapper}>
               <DragIcon type="primary" />
               <ConstructorElement
@@ -45,12 +61,20 @@ function BurgerConstructor() {
           isLocked
         />
       </div>
+      <div className = {constructorStyles.order}>
+        <div className={constructorStyles.orderPrice}>{calculateTotalPrice()}<CurrencyIcon className={constructorStyles.orderIcon}/></div>
+        <Button htmlType="button" type="primary" size="large">
+          Оформить заказ
+        </Button>
+      </div>
     </div>
   );
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
+  BurgerConstructor: PropTypes.arrayOf(ingredientPropType),
+  isLoading: PropTypes.bool,
+  hasError: PropTypes.bool,
 };
 
 
