@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredientTabs/ingredientTabs';
 import ingredientsStyles from './burgerIngredients.module.css';
 import IngredientBoxItem from '../ingredientBoxItem/ingredientBoxItem';
 import { ingredientPropType } from '../../utils/prop-types';
+import ModalOverlay from '../modalOverlay/modalOverlay';
+import IngredientDetails from '../ingredientDetails/ingredientDetails';
 
 function BurgerIngredients({ ingredients, isLoading, hasError }) {
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = (ingredient) => {
+    setSelectedIngredient(ingredient);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   if (isLoading) {
     return <div>Loading ingredients...</div>;
   }
+
   if (hasError) {
-    console.log ("Error occurred while fetching ingredients");
+    console.log("Error occurred while fetching ingredients");
   }
 
   if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
@@ -39,6 +54,7 @@ function BurgerIngredients({ ingredients, isLoading, hasError }) {
                 price={ingredient.price}
                 name={ingredient.name}
                 count={ingredient.count}
+                onClick={() => handleOpenModal(ingredient)}
               />
             ))}
           </div>
@@ -54,6 +70,7 @@ function BurgerIngredients({ ingredients, isLoading, hasError }) {
                 price={ingredient.price}
                 name={ingredient.name}
                 count={ingredient.count}
+                onClick={() => handleOpenModal(ingredient)}
               />
             ))}
           </div>
@@ -69,17 +86,26 @@ function BurgerIngredients({ ingredients, isLoading, hasError }) {
                 price={ingredient.price}
                 name={ingredient.name}
                 count={ingredient.count}
+                onClick={() => handleOpenModal(ingredient)}
               />
             ))}
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <ModalOverlay onClose={handleCloseModal}>
+          <IngredientDetails ingredient={selectedIngredient} onClose={handleCloseModal} />
+        </ModalOverlay>
+      )}
     </div>
   );
 }
 
 BurgerIngredients.propTypes = {
-  BurgerIngredients: PropTypes.arrayOf(ingredientPropType),
+  ingredients: PropTypes.shape({
+    data: PropTypes.arrayOf(ingredientPropType),
+  }),
   isLoading: PropTypes.bool,
   hasError: PropTypes.bool,
 };

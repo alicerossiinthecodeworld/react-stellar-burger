@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon, CurrencyIcon, Button, Modal } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burgerConstructor.module.css';
 import { ingredientPropType } from '../../utils/prop-types';
+import OrderDetails from '../orderDetails/orderDetails';
+import ModalOverlay from '../modalOverlay/modalOverlay';
 
 function BurgerConstructor({ ingredients, isLoading, hasError }) {
+  const [showModal, setShowModal] = useState(false);
+
   if (isLoading) {
     return <div>Loading ingredients...</div>;
   }
   if (hasError) {
     console.log("Error occurred while fetching ingredients");
   }
-
 
   if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
     return <div>No ingredients available.</div>;
@@ -24,6 +27,13 @@ function BurgerConstructor({ ingredients, isLoading, hasError }) {
     return total + bun.price;
   };
 
+  const handleOrderClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className={constructorStyles.burgerConstructor}>
@@ -61,21 +71,30 @@ function BurgerConstructor({ ingredients, isLoading, hasError }) {
           isLocked
         />
       </div>
-      <div className = {constructorStyles.order}>
-        <div className={constructorStyles.orderPrice}>{calculateTotalPrice()}<CurrencyIcon className={constructorStyles.orderIcon}/></div>
-        <Button htmlType="button" type="primary" size="large">
+      <div className={constructorStyles.order}>
+        <div className={constructorStyles.orderPrice}>
+          {calculateTotalPrice()}
+          <CurrencyIcon className={constructorStyles.orderIcon} />
+        </div>
+        <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>
           Оформить заказ
         </Button>
       </div>
+
+      {showModal && (
+        <ModalOverlay onClose={handleCloseModal}>
+          <OrderDetails orderNumber="123456" onClose={handleCloseModal} />
+        </ModalOverlay>
+      )}
     </div>
   );
 }
 
 BurgerConstructor.propTypes = {
-  BurgerConstructor: PropTypes.arrayOf(ingredientPropType),
+  BurgerIngredients: PropTypes.shape({
+   data: PropTypes.arrayOf(ingredientPropType)}),
   isLoading: PropTypes.bool,
   hasError: PropTypes.bool,
 };
-
 
 export default BurgerConstructor;

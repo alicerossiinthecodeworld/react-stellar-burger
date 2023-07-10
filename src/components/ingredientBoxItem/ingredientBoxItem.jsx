@@ -8,7 +8,7 @@ function IngredientBoxItem(props) {
   const { imageSrc, alt, price, name, count } = props;
 
   return (
-    <div className={boxStyles.ingredient__boxItem}>
+    <div className={boxStyles.ingredient__boxItem} onClick={props.onClick}>
       <img src={imageSrc} alt={alt} className={boxStyles.ingredient__image} />
       <p className={boxStyles.ingredient__price}>{price} <CurrencyIcon type="primary" /></p>
       <h3 className={boxStyles.ingredient__name}>{name}</h3>
