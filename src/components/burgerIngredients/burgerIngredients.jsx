@@ -10,7 +10,6 @@ import IngredientDetails from '../ingredientDetails/ingredientDetails';
 function BurgerIngredients({ ingredients, isLoading, hasError }) {
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleOpenModal = (ingredient) => {
     setSelectedIngredient(ingredient);
     setIsModalOpen(true);
@@ -101,11 +100,14 @@ function BurgerIngredients({ ingredients, isLoading, hasError }) {
     </div>
   );
 }
+ 
+
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.shape({
-    data: PropTypes.arrayOf(ingredientPropType),
-  }),
+  ingredients: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
   isLoading: PropTypes.bool,
   hasError: PropTypes.bool,
 };

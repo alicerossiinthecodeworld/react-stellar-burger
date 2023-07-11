@@ -91,8 +91,10 @@ function BurgerConstructor({ ingredients, isLoading, hasError }) {
 }
 
 BurgerConstructor.propTypes = {
-  BurgerIngredients: PropTypes.shape({
-   data: PropTypes.arrayOf(ingredientPropType)}),
+  ingredients: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
   isLoading: PropTypes.bool,
   hasError: PropTypes.bool,
 };
