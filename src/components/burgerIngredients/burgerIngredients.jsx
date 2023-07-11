@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredientTabs/ingredientTabs';
 import ingredientsStyles from './burgerIngredients.module.css';
 import IngredientBoxItem from '../ingredientBoxItem/ingredientBoxItem';
-import { ingredientPropType } from '../../utils/prop-types';
-import ModalOverlay from '../modalOverlay/modalOverlay';
+import Modal from '../modal/modal';
 import IngredientDetails from '../ingredientDetails/ingredientDetails';
 
 function BurgerIngredients({ ingredients, isLoading, hasError }) {
@@ -93,9 +92,9 @@ function BurgerIngredients({ ingredients, isLoading, hasError }) {
       </div>
 
       {isModalOpen && (
-        <ModalOverlay onClose={handleCloseModal}>
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <IngredientDetails ingredient={selectedIngredient} onClose={handleCloseModal} />
-        </ModalOverlay>
+        </Modal>
       )}
     </div>
   );
