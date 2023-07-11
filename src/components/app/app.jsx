@@ -4,11 +4,8 @@ import AppHeader from '../appHeader/appHeader';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
 import withIngredientsFetch from '../hocs/with-ingredients-fetch';
-import { scrollToAnchors } from '../../utils/navigation';
 
 function App({ ingredients, isLoading, hasError }) {
-  scrollToAnchors();
-
   return (
     <div>
       <AppHeader />
