@@ -1,0 +1,55 @@
+.orderWindow {
+  color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.orderId {
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 120px;
+  line-height: 144px;
+  text-align: center;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.orderHeader {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  padding: 0;
+  margin: 20px auto;
+}
+
+.orderIcon {
+  width: 120px;
+  height: 120px;
+  background-color: darkblue;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.orderText {
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.orderClose {
+  top: 0px;
+  right: 0px;
+  position: absolute;
+}

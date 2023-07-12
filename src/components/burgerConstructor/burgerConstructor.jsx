@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burgerConstructor.module.css';
-import { data } from '../../utils/data';
+import OrderDetails from '../orderDetails/orderDetails';
+import Modal from '../modal/modal';
 
-function BurgerConstructor() {
-  const bun = data.find((item) => item.type === 'bun');
-  const ingredients = data.filter((item) => item.type !== 'bun');
+function BurgerConstructor({ ingredients, isLoading, hasError }) {
+  const [showModal, setShowModal] = useState(false);
+
+
+  if (isLoading) {
+    return <div>Loading ingredients...</div>;
+  }
+  if (hasError) {
+    console.log("Error occurred while fetching ingredients");
+  }
+
+  if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
+    return <div>No ingredients available.</div>;
+  }
+
+  const bun = ingredients.data.find((item) => item.type === 'bun');
+  const filling = ingredients.data.filter((item) => item.type !== 'bun');
+  const calculateTotalPrice = () => {
+    const total = filling.reduce((acc, ingredient) => acc + ingredient.price, 0);
+    return total + bun.price;
+  };
+
+  const handleOrderClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className={constructorStyles.burgerConstructor}>
@@ -19,18 +46,22 @@ function BurgerConstructor() {
           isLocked
         />
       </div>
-      {ingredients.map((item, index) => (
-        <div key={item._id} className={constructorStyles.ingredientWrapper}>
-          <DragIcon type="primary"/>
-          <ConstructorElement
-            text={item.name}
-            price={item.price}
-            thumbnail={item.image_large}
-            type={item.type === 'bun' ? 'top' : undefined}
-            isLocked={item.type === 'bun'}
-          />
+      <div className={constructorStyles.ingredientsWrapper}>
+        <div className={constructorStyles.scrollableContent}>
+          {filling.map((item, index) => (
+            <div key={item._id} className={constructorStyles.ingredientWrapper}>
+              <DragIcon type="primary" />
+              <ConstructorElement
+                text={item.name}
+                price={item.price}
+                thumbnail={item.image_large}
+                type={item.type === 'bun' ? 'top' : undefined}
+                isLocked={item.type === 'bun'}
+              />
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
       <div className={constructorStyles.bottomBun}>
         <ConstructorElement
           text={`${bun.name} (низ)`}
@@ -40,27 +71,32 @@ function BurgerConstructor() {
           isLocked
         />
       </div>
+      <div className={constructorStyles.order}>
+        <div className={constructorStyles.orderPrice}>
+          {calculateTotalPrice()}
+          <CurrencyIcon className={constructorStyles.orderIcon} />
+        </div>
+        <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>
+          Оформить заказ
+        </Button>
+      </div>
+
+      {showModal && (
+        <Modal isOpen={showModal} onClose={handleCloseModal}>
+          <OrderDetails orderNumber="123456" onClose={handleCloseModal} />
+        </Modal>
+      )}
     </div>
   );
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      carbohydrates: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  ingredients: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,   
+  ]).isRequired,
+  isLoading: PropTypes.bool,
+  hasError: PropTypes.bool,
 };
 
 export default BurgerConstructor;

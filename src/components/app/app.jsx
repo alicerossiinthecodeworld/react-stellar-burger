@@ -1,20 +1,26 @@
-import styles from "./app.module.css";
-import { data } from "../../utils/data";
-import AppHeader from "../appHeader/appHeader";
-import BurgerIngredients from "../burgerIngredients/burgerIngredients";
-import BurgerConstructor from "../burgerConstructor/burgerConstructor";
+import React from 'react';
+import styles from './app.module.css';
+import AppHeader from '../appHeader/appHeader';
+import BurgerIngredients from '../burgerIngredients/burgerIngredients';
+import BurgerConstructor from '../burgerConstructor/burgerConstructor';
+import withIngredientsFetch from '../hocs/with-ingredients-fetch';
 
-
-function App() {
+function App({ ingredients, isLoading, hasError }) {
   return (
     <div>
       <AppHeader />
       <div className={styles.burgerZone}>
-        <BurgerIngredients />
-        <BurgerConstructor />
+        {isLoading && 'Загрузка...'}
+        {hasError && 'Произошла ошибка'}
+        {!isLoading && !hasError && (
+          <>
+            <BurgerIngredients ingredients={ingredients} />
+            <BurgerConstructor ingredients={ingredients} />
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-export default App;
+export default withIngredientsFetch(App);

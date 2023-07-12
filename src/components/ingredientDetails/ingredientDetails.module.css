@@ -1,0 +1,55 @@
+.ingredientWindow {
+  color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingredientHeader{
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: start;
+  margin: 0;
+}
+
+.ingredientPic{
+  width: 520px;
+  height: 240px;
+  margin: 0 auto;
+}
+
+.ingredientTitle{
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.ingredientText{
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 120px;
+}
+
+.ingredientData{
+  color:darkgray;
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
+  column-gap: 5px;
+
+}
+
+.ingredientClose {
+  top: 0px;
+  right: 10px;
+  position: absolute;
+}
