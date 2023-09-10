@@ -105,10 +105,6 @@ function BurgerIngredients() {
 
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]).isRequired,
   isLoading: PropTypes.bool,
   hasError: PropTypes.bool,
 };
