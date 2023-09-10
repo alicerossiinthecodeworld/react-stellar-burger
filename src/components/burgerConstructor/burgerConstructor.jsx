@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burgerConstructor.module.css';
 import OrderDetails from '../orderDetails/orderDetails';
 import Modal from '../modal/modal';
+import { BurgerContext } from '../../services/BurgerContext';
 
-function BurgerConstructor({ ingredients, isLoading, hasError }) {
+function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
-
+  const { ingredients, isLoading, hasError} = useContext(BurgerContext);
 
   if (isLoading) {
     return <div>Loading ingredients...</div>;
@@ -91,10 +92,6 @@ function BurgerConstructor({ ingredients, isLoading, hasError }) {
 }
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,   
-  ]).isRequired,
   isLoading: PropTypes.bool,
   hasError: PropTypes.bool,
 };
