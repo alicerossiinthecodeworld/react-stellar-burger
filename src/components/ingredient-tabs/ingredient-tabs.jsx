@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import tabsStyles from './ingredientTabs.module.css';
+import tabsStyles from './ingredient-tabs.module.css';
 
 function IngredientTabs() {
   const [current, setCurrent] = useState('buns');

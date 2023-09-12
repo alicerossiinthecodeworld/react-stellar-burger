@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ingredientStyles from './ingredientDetails.module.css';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
 const IngredientDetails = ({ ingredient, onClose }) => {
   return (
     <div className={ingredientStyles.ingredientWindow}>

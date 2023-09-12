@@ -1,39 +1,38 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import constructorStyles from './burgerConstructor.module.css';
-import OrderDetails from '../orderDetails/orderDetails';
+import constructorStyles from './burger-constructor.module.css';
+import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { BurgerContext } from '../../services/BurgerContext';
-import { useBurgerConstructorReducer } from '../../services/reducers/burgerConstructorReducers';
-import { CALCULATE_TOTAL_COST } from '../../services/actions/burgerConstructorActions';
+import { BurgerContext, request } from '../../services/burger-context';
+import { useBurgerConstructorReducer } from '../../services/reducers/burger-constructor-reducers';
+import { CALCULATE_TOTAL_COST } from '../../services/actions/burger-constructor-actions';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
   const [orderNumber, setOrderNumber] = useState(null); 
-  const { ingredients, isLoading, hasError } = useContext(BurgerContext);
+  const { ingredients, isLoading} = useContext(BurgerContext);
   
   const [state, dispatch] = useBurgerConstructorReducer();
 
   useEffect(() => {
-    if (!isLoading && !hasError && ingredients?.data && Array.isArray(ingredients.data)) {
+    if (!isLoading && ingredients?.data && Array.isArray(ingredients.data)) {
       dispatch({ type: CALCULATE_TOTAL_COST, ingredients: ingredients.data });
     }
-  }, [ingredients, isLoading, hasError]);
+  }, [ingredients, isLoading, dispatch]);
 
   const bun = ingredients?.data?.find((item) => item.type === 'bun');
   const filling = ingredients?.data?.filter((item) => item.type !== 'bun');
 
   const handleOrderClick = () => {
     const ingredientIds = ingredients?.data?.map((item) => item._id);
-    fetch('https://norma.nomoreparties.space/api/orders', {
+    request("/orders", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ ingredients: ingredientIds }),
     })
-      .then((response) => response.json())
       .then((data) => {
         if (data.success && data.order?.number) {
           setOrderNumber(data.order.number);
@@ -53,10 +52,6 @@ function BurgerConstructor() {
 
   if (isLoading) {
     return <div>Loading ingredients...</div>;
-  }
-
-  if (hasError) {
-    return <div>Error occurred while fetching ingredients</div>;
   }
 
   if (!ingredients?.data || ingredients.data.length === 0) {
@@ -121,7 +116,6 @@ function BurgerConstructor() {
 
 BurgerConstructor.propTypes = {
   isLoading: PropTypes.bool,
-  hasError: PropTypes.bool,
 };
 
 export default BurgerConstructor;

@@ -1,10 +1,10 @@
 import React from 'react';
-import orderStyles from './orderDetails.module.css'
+import orderStyles from './order-details.module.css'
 import PropTypes from 'prop-types';
 
-import { CheckMarkIcon, CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
-const OrderDetails = ({ orderNumber, onClose }) => {
+const OrderDetails = ({ orderNumber}) => {
   return (
     <div className={orderStyles.orderWindow}>
       <p className={orderStyles.orderId}>{orderNumber}</p>

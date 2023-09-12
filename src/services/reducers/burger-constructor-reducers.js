@@ -1,4 +1,4 @@
-import { CALCULATE_TOTAL_COST } from '../actions/burgerConstructorActions';
+import { CALCULATE_TOTAL_COST } from '../actions/burger-constructor-actions';
 
 import { useReducer } from 'react';
 

@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
+import{ useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import IngredientTabs from '../ingredientTabs/ingredientTabs';
-import ingredientsStyles from './burgerIngredients.module.css';
+import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
+import ingredientsStyles from './burger-ingredients.module.css';
 import IngredientBoxItem from '../ingredientBoxItem/ingredientBoxItem';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredientDetails/ingredientDetails';
-import { BurgerContext } from '../../services/BurgerContext';
+import { BurgerContext } from '../../services/burger-context';
 
 function BurgerIngredients() {
-  const { ingredients, isLoading, hasError, fetchIngredients } = useContext(BurgerContext);
+  const { ingredients, isLoading, hasError} = useContext(BurgerContext);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = (ingredient) => {
