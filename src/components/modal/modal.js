@@ -1,6 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../modalOverlay/modalOverlay';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import modalstyles from './modal.module.css';
 
 const Modal = ({ isOpen, onClose, children }) => {
   const handleOverlayClick = useCallback(() => {
@@ -31,9 +33,12 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return ReactDOM.createPortal(
     <div className="modal" onClick={handleOverlayClick}>
-      <ModalOverlay>{children}</ModalOverlay>
+      <ModalOverlay>{children}
+      <div className={modalstyles.close}>
+        <CloseIcon onClick={onClose} />
+      </div></ModalOverlay>
     </div>,
-    document.getElementById('root')
+    document.getElementById('modals')
   );
 };
 

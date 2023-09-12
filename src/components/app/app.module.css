@@ -6,6 +6,11 @@
   max-width: 1440px;
   background-color: #131316;
   color: #f2f2f3;
+  margin: 0 auto;
+}
+
+.page {
+  margin: 0 auto;
 }
 
 .burgerZone{
@@ -13,4 +18,6 @@
   display: flex;
   flex-direction: row;
   column-gap: 130px;
+  justify-content: center;
 }
+

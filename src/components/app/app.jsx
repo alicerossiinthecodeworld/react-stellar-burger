@@ -7,14 +7,14 @@ import { BurgerContextProvider } from '../../services/BurgerContext';
 
 function App() {
   return (
-    <div>
+    <div className={styles.page}>
       <AppHeader />
-      <div className={styles.burgerZone}>
+      <main className={styles.burgerZone}>
         <BurgerContextProvider>
           <BurgerIngredients />
           <BurgerConstructor />
         </BurgerContextProvider>
-      </div>
+      </main>
     </div>
   );
 }

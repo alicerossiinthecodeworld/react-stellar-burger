@@ -76,10 +76,11 @@ function BurgerConstructor() {
       </div>
       <div className={constructorStyles.ingredientsWrapper}>
         <div className={constructorStyles.scrollableContent}>
-          {filling.map((item, index) => (
+          {filling.map((item) => (
             <div key={item._id} className={constructorStyles.ingredientWrapper}>
               <DragIcon type="primary" />
               <ConstructorElement
+                className = {constructorStyles.item}
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image_large}

@@ -1,5 +1,7 @@
 .burgerConstructor {
   padding-top: 140px;
+  margin-bottom: 30px;
+  margin-right: 20px;
 }
 .order{
   display: flex;
@@ -57,4 +59,9 @@
 
 .bottomBun{
   padding-top: 20px;
+}
+
+.ingredientWrapper{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

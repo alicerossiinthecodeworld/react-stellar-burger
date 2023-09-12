@@ -15,9 +15,6 @@ const IngredientDetails = ({ ingredient, onClose }) => {
         <p className={ingredientStyles.ingredientText}>&nbsp;&nbsp;Жиры, г: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ingredient.fat}</p>
         <p className={ingredientStyles.ingredientText}>Углеводы, г: &nbsp;&nbsp; {ingredient.carbohydrates}</p>
       </div>
-      <div className={ingredientStyles.ingredientClose}>
-        <CloseIcon onClick={onClose} />
-      </div>
     </div>
   );
 };

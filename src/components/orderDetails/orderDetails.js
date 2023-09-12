@@ -14,9 +14,6 @@ const OrderDetails = ({ orderNumber, onClose }) => {
       </div>
       <p className={orderStyles.orderText}>Ваш заказ начали готовить</p>
       <p className={orderStyles.orderText}>Дождитесь готовности на орбитальной станции</p>
-      <div className={orderStyles.orderClose}>
-        <CloseIcon onClick={onClose} />
-      </div>
     </div>
   );
 };
