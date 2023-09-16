@@ -10,3 +10,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.modalWindow{
+  background-color: white;
+  position: relative;
+}

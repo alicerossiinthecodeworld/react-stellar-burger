@@ -9,6 +9,7 @@
   background-color: #2f2f37;
   width: 100%;
 }
+
 .headerItem{
   display: flex;
   flex-direction: row;

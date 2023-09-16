@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: black;
 }
 
 .ingredientHeader{
@@ -45,11 +46,4 @@
   display: grid;
   grid-template-columns: repeat(4, 120px);
   column-gap: 5px;
-
-}
-
-.ingredientClose {
-  top: 0px;
-  right: 10px;
-  position: absolute;
 }
