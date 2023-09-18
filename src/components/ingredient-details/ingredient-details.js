@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ingredientStyles from './ingredientDetails.module.css';
+import ingredientStyles from './ingredient-details.module.css';
 const IngredientDetails = ({ ingredient, onClose }) => {
   return (
     <div className={ingredientStyles.ingredientWindow}>

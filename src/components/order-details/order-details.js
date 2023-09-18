@@ -1,4 +1,3 @@
-import React from 'react';
 import orderStyles from './order-details.module.css'
 import PropTypes from 'prop-types';
 
@@ -19,7 +18,7 @@ const OrderDetails = ({ orderNumber}) => {
 };
 
 OrderDetails.propTypes = {
-  orderNumber: PropTypes.string.isRequired,
+  orderNumber: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

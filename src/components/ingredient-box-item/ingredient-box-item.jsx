@@ -1,8 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import boxStyles from './ingredientBoxItem.module.css';
-import { ingredientPropType } from '../../utils/prop-types';
+import boxStyles from './ingredient-box-item.module.css';
 
 function IngredientBoxItem(props) {
   const { imageSrc, alt, price, name, count } = props;

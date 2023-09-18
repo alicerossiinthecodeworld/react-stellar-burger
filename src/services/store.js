@@ -1,6 +1,14 @@
-import { createStore } from 'redux';
-import { burgerReducer } from './reducers/burgerConstructorReducer'; // Импортируйте ваш редюсер
+import { configureStore } from '@reduxjs/toolkit';
+import burgerConstructorReducer from './burger-constructor-reducer';
+import ingredientsReducer from './ingredient-slice';
 
-const store = createStore(burgerReducer);
+const rootReducer = {
+  ingredients: ingredientsReducer,
+  burgerConstructor: burgerConstructorReducer,
+};
+
+const store = configureStore({
+  reducer: rootReducer,
+});
 
 export default store;

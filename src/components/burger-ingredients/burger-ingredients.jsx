@@ -1,14 +1,15 @@
-import{ useState, useContext } from 'react';
+import{ useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 import ingredientsStyles from './burger-ingredients.module.css';
-import IngredientBoxItem from '../ingredientBoxItem/ingredientBoxItem';
+import IngredientBoxItem from '../ingredient-box-item/ingredient-box-item';
 import Modal from '../modal/modal';
-import IngredientDetails from '../ingredientDetails/ingredientDetails';
-import { BurgerContext } from '../../services/burger-context';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 function BurgerIngredients() {
-  const { ingredients, isLoading, hasError} = useContext(BurgerContext);
+  const ingredients = useSelector((state) => state.ingredients.data);
+  const isLoading = useSelector((state) => state.ingredients.loading);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = (ingredient) => {
@@ -22,10 +23,6 @@ function BurgerIngredients() {
 
   if (isLoading) {
     return <div>Loading ingredients...</div>;
-  }
-
-  if (hasError) {
-    console.log("Error occurred while fetching ingredients");
   }
 
   if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
@@ -106,7 +103,6 @@ function BurgerIngredients() {
 
 BurgerIngredients.propTypes = {
   isLoading: PropTypes.bool,
-  hasError: PropTypes.bool,
 };
 
 export default BurgerIngredients;
