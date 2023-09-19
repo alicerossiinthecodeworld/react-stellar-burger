@@ -1,11 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import ingredientStyles from './ingredient-details.module.css';
 import { useSelector} from 'react-redux';
 
 const IngredientDetails = () => {
   const currentIngredient = useSelector(state => state.ingredientDetails.currentIngredient);
-  console.log(currentIngredient)
   return (
     <div className={ingredientStyles.ingredientWindow}>
       <h2 className={ingredientStyles.ingredientHeader}>Детали ингредиента</h2>

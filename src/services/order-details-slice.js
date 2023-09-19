@@ -1,11 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { number } from 'prop-types';
+import { createSlice } from '@reduxjs/toolkit'
 import { request } from '../utils/api-config';
 
 const orderSlice = createSlice({
   name: 'order',
   initialState: {
-    order: [number],
+    order: [],
     loading: false,
     error: null,
   },

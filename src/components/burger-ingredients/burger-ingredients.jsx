@@ -53,6 +53,7 @@ function BurgerIngredients() {
                 price={ingredient.price}
                 name={ingredient.name}
                 count={ingredient.count}
+                ingredient = {ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -69,6 +70,7 @@ function BurgerIngredients() {
                 price={ingredient.price}
                 name={ingredient.name}
                 count={ingredient.count}
+                ingredient = {ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -85,6 +87,7 @@ function BurgerIngredients() {
                 price={ingredient.price}
                 name={ingredient.name}
                 count={ingredient.count}
+                ingredient = {ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
