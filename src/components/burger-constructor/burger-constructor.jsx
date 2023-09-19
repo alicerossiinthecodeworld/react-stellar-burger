@@ -1,29 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { calculateTotalCost, removeIngredient, addIngredient } from '../../services/burger-constructor-reducer';
+import { calculateTotalCost, removeIngredient, addIngredient } from '../../services/burger-constructor-slice';
 import { fetchIngredients } from '../../services/ingredient-slice';
+import { createOrder, clearOrder } from '../../services/order-details-slice';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { request } from '../../utils/api-config';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
-  const [orderNumber, setOrderNumber] = useState(null);
   const dispatch = useDispatch(); 
   const ingredients = useSelector((state) => state.ingredients.data);
   const isLoading = useSelector((state) => state.ingredients.loading);
   const totalCost = useSelector((state) => state.burgerConstructor.totalCost);
+  const selectedIngredients = useSelector((state) => state.burgerConstructor.selectedIngredients);
+  const orderNumber = useSelector((state) => state.orderDetails.order.number)
+
 
   useEffect(() => {
     dispatch(fetchIngredients())
-    console.log(ingredients)
-    if (ingredients.data !== undefined) {
-      ingredients.data.forEach((ingredient) => {
-        dispatch(addIngredient(ingredient));
-      });
-    }
   }, []);
 
   useEffect(() => {
@@ -34,47 +30,30 @@ function BurgerConstructor() {
     }
   }, [ingredients]);
 
+  useEffect(() => {
+    dispatch(calculateTotalCost(selectedIngredients));
+  }, [selectedIngredients]);
 
-  const selectedIngredients = useSelector((state) => state.burgerConstructor.selectedIngredients);
   const bun = ingredients?.data?.find((item) => item.type === 'bun');
   const filling = ingredients?.data?.filter((item) => item.type !== 'bun');
-
   const selectedFilling = filling?.filter((item) => {
     return selectedIngredients.some((selectedItem) => selectedItem._id === item._id);
   });
 
   const handleOrderClick = () => {
-    const ingredientIds = ingredients?.data?.map((item) => item._id);
-    request("/orders", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ingredients: ingredientIds }),
-    })
-      .then((data) => {
-        if (data.success && data.order?.number) {
-          setOrderNumber(data.order.number);
-          setShowModal(true);
-        } else {
-          console.error('Failed to create order:', data);
-        }
-      })
-      .catch((error) => {
-        console.error('Error creating order:', error);
-      });
+    const ingredientIds = selectedIngredients?.map((item) => item._id);
+    dispatch(createOrder(ingredientIds))
+    setShowModal(true)
   };
 
   const handleCloseModal = () => {
+    dispatch(clearOrder)
     setShowModal(false);
   };
 
   const handleRemoveIngredient = (ingredientId) => {
-    console.log('Before Removal - selectedIngredients:', selectedIngredients);
     dispatch(removeIngredient({ _id: ingredientId }));
-    console.log('After Removal - selectedIngredients:', selectedIngredients);
     dispatch(calculateTotalCost(selectedIngredients));
-    console.log('Total Cost:', totalCost);
   };
 
   if (isLoading) {
@@ -133,7 +112,7 @@ function BurgerConstructor() {
         </Button>
       </div>
 
-      {showModal && (
+      {showModal &&(
         <Modal isOpen={showModal} onClose={handleCloseModal}>
           <OrderDetails orderNumber={orderNumber} onClose={handleCloseModal} />
         </Modal>

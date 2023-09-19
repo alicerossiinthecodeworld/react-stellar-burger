@@ -1,23 +1,25 @@
 import{ useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 import ingredientsStyles from './burger-ingredients.module.css';
 import IngredientBoxItem from '../ingredient-box-item/ingredient-box-item';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { setCurrentIngredient, clearCurrentIngredient } from '../../services/ingredient-details-slice';
 
 function BurgerIngredients() {
+  const dispatch = useDispatch(); // Инициализируем useDispatch
   const ingredients = useSelector((state) => state.ingredients.data);
   const isLoading = useSelector((state) => state.ingredients.loading);
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = (ingredient) => {
-    setSelectedIngredient(ingredient);
+    dispatch(setCurrentIngredient(ingredient));
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
+    dispatch(clearCurrentIngredient)
     setIsModalOpen(false);
   };
 
@@ -92,7 +94,7 @@ function BurgerIngredients() {
 
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <IngredientDetails ingredient={selectedIngredient} onClose={handleCloseModal} />
+          <IngredientDetails onClose={handleCloseModal} />
         </Modal>
       )}
     </div>

@@ -18,7 +18,6 @@ const OrderDetails = ({ orderNumber}) => {
 };
 
 OrderDetails.propTypes = {
-  orderNumber: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
