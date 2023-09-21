@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  selectedIngredients: [], // Массив для хранения выбранных ингредиентов в порядке добавления
+  selectedIngredients: [], 
   totalCost: 0,
 };
 
@@ -10,24 +10,33 @@ const burgerConstructorSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: (state, action) => {
-      // Добавление ингредиента в конец массива
-      state.selectedIngredients.push(action.payload);
+      const existingIngredient = state.selectedIngredients.find(
+        (ingredient) => ingredient._id === action.payload._id
+      );
+      if (existingIngredient) {
+        state.selectedIngredients.push(action.payload);
+      } else {
+        state.selectedIngredients.push(action.payload);
+      }
+      console.log(state.selectedIngredients)
     },
     removeIngredient: (state, action) => {
-      // Удаление ингредиента из массива по ID
-      state.selectedIngredients = state.selectedIngredients.filter(
-        (ingredient) => ingredient._id !== action.payload._id
+      const indexToRemove = state.selectedIngredients.findIndex(
+        (ingredient) => ingredient._id === action.payload._id
       );
+      
+      if (indexToRemove !== -1) {
+        state.selectedIngredients.splice(indexToRemove, 1);
+      }
     },
     calculateTotalCost: (state) => {
-      // Вычисление общей стоимости
       state.totalCost = state.selectedIngredients.reduce(
         (acc, ingredient) => acc + ingredient.price,
         0
       );
     },
     updateIngredientOrder: (state, action) => {
-      state.selectedIngredients = [...action.payload]; // Создаем новый массив
+      state.selectedIngredients = [...action.payload]; 
     },
   },
 });

@@ -20,13 +20,13 @@ import { fetchIngredients } from '../../services/ingredient-slice';
 
 import { createOrder, clearOrder } from '../../services/order-details-slice';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { getIngredientCount } from '../burger-ingredients/burger-ingredients';
 
 function BurgerConstructor() {
   const ItemType = 'INGREDIENT';
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredients.data);
-  const isLoading = useSelector((state) => state.ingredients.loading);
   const totalCost = useSelector((state) => state.burgerConstructor.totalCost);
   const selectedIngredients = useSelector(
     (state) => state.burgerConstructor.selectedIngredients
@@ -35,15 +35,24 @@ function BurgerConstructor() {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (ingredients.data) {
-      ingredients.data.forEach((ingredient) => {
-        dispatch(addIngredient(ingredient));
-      });
+      let bunAdded = false;
+
+      for (const ingredient of ingredients.data) {
+        if (ingredient.type === 'bun') {
+          if (!bunAdded) {
+            dispatch(addIngredient(ingredient));
+            bunAdded = true;
+          }
+        } else {
+          dispatch(addIngredient(ingredient));
+        }
+      }
     }
-  }, [dispatch, ingredients.data]);
+  }, [ingredients.data]);
 
   useEffect(() => {
     dispatch(calculateTotalCost(selectedIngredients));
@@ -52,12 +61,12 @@ function BurgerConstructor() {
   const [, drop] = useDrop({
     accept: ItemType,
     drop: (item) => {
-      console.log('Item dropped:', item);
       if (item.ingredient.type === 'bun') {
         handleRemoveIngredient(selectedBun._id);
+        console.log("удалил булку")
+        console.log(selectedIngredients)
         selectedBun = item.ingredient;
         dispatch(addIngredient(item.ingredient));
-        console.log(selectedIngredients);
         dispatch(calculateTotalCost(selectedIngredients));
       } else {
         dispatch(addIngredient(item.ingredient));
@@ -65,43 +74,38 @@ function BurgerConstructor() {
       }
     },
   });
-  const filling = ingredients?.data?.filter((item) => item.type !== 'bun');
-  const selectedFilling = filling?.filter((item) => {
-    return selectedIngredients.some((selectedItem) => selectedItem._id === item._id);
-  });
+
+  const selectedFilling = selectedIngredients.filter((item) => item.type !== 'bun');
   let selectedBun = selectedIngredients.find((item) => item.type === 'bun');
+
   const handleOrderClick = () => {
     const ingredientIds = selectedIngredients?.map((item) => item._id);
     dispatch(createOrder(ingredientIds));
     setShowModal(true);
   };
 
-  console.log(selectedBun);
-
   const handleCloseModal = () => {
     dispatch(clearOrder());
     setShowModal(false);
   };
-
   const handleRemoveIngredient = (ingredientId) => {
     dispatch(removeIngredient({ _id: ingredientId }));
     dispatch(calculateTotalCost(selectedIngredients));
+    getIngredientCount(selectedIngredients, ingredientId);
   };
 
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
-
-    // Создаем копии начинки и булок
+    
     const fillingIngredients = selectedIngredients.filter(
       (ingredient) => ingredient.type !== 'bun'
     );
     const bunIngredients = selectedIngredients.filter(
       (ingredient) => ingredient.type === 'bun'
     );
-
-    // Обновляем порядок ингредиентов для начинки
+  
     const updatedFillingIngredients = [...fillingIngredients];
     const [movedFillingIngredient] = updatedFillingIngredients.splice(
       result.source.index - bunIngredients.length,
@@ -112,22 +116,17 @@ function BurgerConstructor() {
       0,
       movedFillingIngredient
     );
-
-    // Объединяем начинку и булки
+  
+    console.log('fillingIngredients:', fillingIngredients);
+    console.log('updatedFillingIngredients:', updatedFillingIngredients);
+    
     const updatedIngredientsCombined = [...bunIngredients, ...updatedFillingIngredients];
-
-    // Отправляем обновленный массив в экшен
+  
+    console.log('updatedIngredientsCombined:', updatedIngredientsCombined);
+  
     dispatch(updateIngredientOrder(updatedIngredientsCombined));
   };
-
-  if (isLoading) {
-    return <div>Loading ingredients...</div>;
-  }
-
-  if (!ingredients?.data || ingredients.data.length === 0) {
-    return <div>No ingredients available.</div>;
-  }
-
+  
   return (
     <div className={constructorStyles.burgerConstructor} ref={drop}>
       <div className={constructorStyles.topBun}>
@@ -148,8 +147,12 @@ function BurgerConstructor() {
               className={constructorStyles.ingredientsWrapper}
             >
               <div className={constructorStyles.scrollableContent}>
-                {selectedFilling.map((item, index) => (
-                  <Draggable key={item._id} draggableId={item._id} index={index}>
+                {selectedFilling && selectedFilling.map((item, index) => (
+                  <Draggable
+                    key={`${item._id}_${index}`}
+                    draggableId={`${item._id}_${index}`}
+                    index={index}
+                  >
                     {(provided) => (
                       <div
                         ref={provided.innerRef}
@@ -180,6 +183,7 @@ function BurgerConstructor() {
           )}
         </Droppable>
       </DragDropContext>
+
       <div className={constructorStyles.bottomBun}>
         <ConstructorElement
           text={`${selectedBun?.name} (низ)`}

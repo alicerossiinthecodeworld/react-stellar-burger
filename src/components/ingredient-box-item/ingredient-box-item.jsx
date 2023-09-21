@@ -1,28 +1,19 @@
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import boxStyles from './ingredient-box-item.module.css';
 
 function IngredientBoxItem(props) {
-  const { imageSrc, alt, price, name, ingredient } = props;
-  const [count, setCount] = useState(ingredient.count || 0);
-
+  const { imageSrc, alt, price, name,сount, ingredient, onClick } = props;
   const [, ref] = useDrag({
     type: 'INGREDIENT',
-    item: { ingredient },
-    end: (item, monitor) => {
-      if (monitor.didDrop()) {
-        if (item.type !== "bun")
-        {setCount(count + 1);}
-      }
-    },
+    item: { ingredient }
   });
 
   return (
     <div
       className={boxStyles.ingredient__boxItem}
-      onClick={props.onClick}
+      onClick={onClick}
       draggable="true"
       ref={ref}
     >
@@ -31,7 +22,7 @@ function IngredientBoxItem(props) {
         {price} <CurrencyIcon type="primary" />
       </p>
       <h3 className={boxStyles.ingredient__name}>{name}</h3>
-      <Counter className={boxStyles.ingredient__counter} count={count} size="small" />
+      <Counter className={boxStyles.ingredient__counter} count={props.count} size="small" />
     </div>
   );
 }

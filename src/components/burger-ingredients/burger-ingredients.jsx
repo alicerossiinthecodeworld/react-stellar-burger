@@ -1,5 +1,5 @@
-import{ useState } from 'react';
-import { useSelector, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 import ingredientsStyles from './burger-ingredients.module.css';
@@ -8,18 +8,28 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { setCurrentIngredient, clearCurrentIngredient } from '../../services/ingredient-details-slice';
 
+export const getIngredientCount = (selectedIngredients, ingredientId) => {
+  console.log(selectedIngredients)
+  return selectedIngredients.filter((ingredient) => ingredient._id === ingredientId).length;
+};
+
 function BurgerIngredients() {
-  const dispatch = useDispatch(); // Инициализируем useDispatch
+  const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredients.data);
   const isLoading = useSelector((state) => state.ingredients.loading);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const selectedIngredients = useSelector(
+    (state) => state.burgerConstructor.selectedIngredients
+  );
+
   const handleOpenModal = (ingredient) => {
     dispatch(setCurrentIngredient(ingredient));
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    dispatch(clearCurrentIngredient)
+    dispatch(clearCurrentIngredient());
     setIsModalOpen(false);
   };
 
@@ -52,8 +62,8 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={ingredient.count}
-                ingredient = {ingredient}
+                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                ingredient={ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -69,8 +79,8 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={ingredient.count}
-                ingredient = {ingredient}
+                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                ingredient={ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -86,8 +96,8 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={ingredient.count}
-                ingredient = {ingredient}
+                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                ingredient={ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -103,8 +113,6 @@ function BurgerIngredients() {
     </div>
   );
 }
- 
-
 
 BurgerIngredients.propTypes = {
   isLoading: PropTypes.bool,
