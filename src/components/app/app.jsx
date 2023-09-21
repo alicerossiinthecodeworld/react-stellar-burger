@@ -5,20 +5,17 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-
 function App() {
   return (
-    <Provider store={store}>
-      <DndProvider backend={HTML5Backend}>
-        <div className={styles.page}>
-          <AppHeader />
-          <main className={styles.burgerZone}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </main>
-        </div>
-      </DndProvider>
-    </Provider>
+    <DndProvider backend={HTML5Backend}>
+      <div className={styles.page}>
+        <AppHeader />
+        <main className={styles.burgerZone}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </main>
+      </div>
+    </DndProvider>
   );
 }
 
