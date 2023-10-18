@@ -1,2 +1,2 @@
 # Каноническая работа проекта Stellar Burger 
-# Этап "Промежуточный проект. CRA-заготовка и структура папок под компоненты"
+](https://alicerossiinthecodeworld.github.io/react-stellar-burger/)https://alicerossiinthecodeworld.github.io/react-stellar-burger/
