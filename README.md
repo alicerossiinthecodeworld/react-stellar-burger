@@ -1,2 +1,2 @@
 # Каноническая работа проекта Stellar Burger 
-](https://alicerossiinthecodeworld.github.io/react-stellar-burger/)https://alicerossiinthecodeworld.github.io/react-stellar-burger/
+ccылка на проект : https://alicerossiinthecodeworld.github.io/react-stellar-burger/
