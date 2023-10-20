@@ -1,22 +1,22 @@
-import styles from './app.module.css';
-import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainPage from '../../pages/main-page/main-page';
+import LoginPage from '../../pages/login-page/login-page';
+import RegisterPage from '../../pages/register-page/register-page';
+import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
+import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
+import ProfilePage from '../../pages/profile-page/profile-page';
 
-function App() {
+export default function App() {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className={styles.page}>
-        <AppHeader />
-        <main className={styles.burgerZone}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </main>
-      </div>
-    </DndProvider>
+      <Router>
+        <Routes>
+             <Route path="/" element={<MainPage />}/>
+             <Route path="/login" element={<LoginPage/>}/>
+             <Route path="/register" element={<RegisterPage/>}/>
+             <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+             <Route path="/reset-password" element={<ResetPasswordPage/>}/>
+             <Route path="/profile" element={<ProfilePage/>}/>
+         </Routes>
+      </Router>
   );
-}
-
-export default App;
+} 

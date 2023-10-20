@@ -1,6 +1,7 @@
-import React from 'react';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import headerStyles from './app-header.module.css';
+import { Link } from 'react-router-dom';
+
 
 function AppHeader() {
   return (
@@ -16,10 +17,12 @@ function AppHeader() {
       <div className={headerStyles.headerLogo}>
         <Logo />
       </div>
-      <div className={headerStyles.headerItem}>
-        <ProfileIcon type="primary" />
-        <p className={headerStyles.headerText}>Личный кабинет</p>
-      </div>
+      <Link to="/profile">
+        <div className={headerStyles.headerItem}>
+            <ProfileIcon type="primary" />
+            <p className={headerStyles.headerText}>Личный кабинет</p>
+       </div>
+      </Link>
     </div>
   );
 }

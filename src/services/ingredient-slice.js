@@ -26,7 +26,6 @@ const ingredientsSlice = createSlice({
 
 export const { fetchIngredientsRequest, fetchIngredientsSuccess, fetchIngredientsFailure } = ingredientsSlice.actions;
 
-// Добавляем новое действие для выполнения запроса
 export const fetchIngredients = () => async (dispatch) => {
   try {
     dispatch(fetchIngredientsRequest());
