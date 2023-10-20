@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch} from 'react-redux'; // Импортируйте хуки для работы с Redux
 import { registerUser } from '../../services/registration-slice';
@@ -11,7 +11,7 @@ function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch(); // Создайте диспетчер для отправки экшенов
+  const dispatch = useDispatch(); 
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -32,7 +32,6 @@ function RegisterPage() {
       name: name,
     };
 
-    // Вызовите экшен для регистрации пользователя
     dispatch(registerUser(userData));
   };
 

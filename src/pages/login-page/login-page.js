@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'; // Импортируйте хуки для работы с Redux
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../services/auth-slice';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './login-page.module.css';

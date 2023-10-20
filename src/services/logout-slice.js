@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { request } from '../utils/api-config';
+import { updateIsAuthenticated } from './auth-slice';
 
 const logoutSlice = createSlice({
   name: 'logout',
   initialState: {
     success: false,
     error: null,
+    isAuthenticated: true, 
   },
   reducers: {
     logoutRequest: (state) => {
@@ -14,6 +16,7 @@ const logoutSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.success = true;
+      state.isAuthenticated = false;
     },
     logoutFailure: (state, action) => {
       state.success = false;
@@ -41,6 +44,7 @@ export const logoutUser = (refreshToken) => async (dispatch) => {
 
     if (response.success) {
       dispatch(logoutSuccess());
+      dispatch(updateIsAuthenticated(false));
     } else {
       dispatch(logoutFailure(response.message));
     }

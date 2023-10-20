@@ -3,6 +3,10 @@ import styles from './profile-page.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { useDispatch} from 'react-redux';
+import { logoutUser } from '../../services/logout-slice';
+
 
 
 function ProfilePage() {
@@ -20,6 +24,17 @@ function ProfilePage() {
 
   const handleNameChange = (e) => {
     setName(e.target.value);
+  };
+
+  const dispatch = useDispatch();
+  const refreshToken = Cookies.get('refreshToken');
+
+  const handleLogout = () => {
+    if (refreshToken) {
+      dispatch(logoutUser(refreshToken));
+    } else {
+      console.log('Refresh Token отсутствует. Невозможно выполнить логаут.');
+    }
   };
 
   const handleSave = (e) => {
@@ -44,7 +59,7 @@ function ProfilePage() {
             </Button>
           </Link>
           <Link to="/logout" className={styles.navLink}>
-            <Button htmlType="button" type="secondary" size="large">
+            <Button htmlType="button" type="secondary" size="large" onClick={handleLogout}>
               Выход
             </Button>
           </Link>

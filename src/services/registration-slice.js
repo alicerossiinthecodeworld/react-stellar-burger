@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { request } from '../utils/api-config';
+import { updateIsAuthenticated } from './auth-slice';
 
 const registrationSlice = createSlice({
   name: 'registration',
@@ -47,6 +48,7 @@ export const registerUser = (userData) => async (dispatch) => {
 
     if (response.success && response.user) {
       dispatch(registrationSuccess(response.user));
+      dispatch(updateIsAuthenticated(true));
     } else {
       dispatch(registrationFailure('Не получилось зарегистрироваться, пожалуйста, проверьте данные'));
     }
