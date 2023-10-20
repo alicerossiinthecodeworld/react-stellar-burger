@@ -1,31 +1,40 @@
-import{ useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 import ingredientsStyles from './burger-ingredients.module.css';
-import IngredientBoxItem from '../ingredientBoxItem/ingredientBoxItem';
+import IngredientBoxItem from '../ingredient-box-item/ingredient-box-item';
 import Modal from '../modal/modal';
-import IngredientDetails from '../ingredientDetails/ingredientDetails';
-import { BurgerContext } from '../../services/burger-context';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import { setCurrentIngredient, clearCurrentIngredient } from '../../services/ingredient-details-slice';
+
+export const getIngredientCount = (selectedIngredients, ingredientId) => {
+  console.log(selectedIngredients)
+  return selectedIngredients.filter((ingredient) => ingredient._id === ingredientId).length;
+};
 
 function BurgerIngredients() {
-  const { ingredients, isLoading, hasError} = useContext(BurgerContext);
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
+  const dispatch = useDispatch();
+  const ingredients = useSelector((state) => state.ingredients.data);
+  const isLoading = useSelector((state) => state.ingredients.loading);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const selectedIngredients = useSelector(
+    (state) => state.burgerConstructor.selectedIngredients
+  );
+
   const handleOpenModal = (ingredient) => {
-    setSelectedIngredient(ingredient);
+    dispatch(setCurrentIngredient(ingredient));
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
+    dispatch(clearCurrentIngredient());
     setIsModalOpen(false);
   };
 
   if (isLoading) {
     return <div>Loading ingredients...</div>;
-  }
-
-  if (hasError) {
-    console.log("Error occurred while fetching ingredients");
   }
 
   if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
@@ -53,7 +62,8 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={ingredient.count}
+                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                ingredient={ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -69,7 +79,8 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={ingredient.count}
+                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                ingredient={ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -85,7 +96,8 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={ingredient.count}
+                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                ingredient={ingredient}
                 onClick={() => handleOpenModal(ingredient)}
               />
             ))}
@@ -95,18 +107,15 @@ function BurgerIngredients() {
 
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <IngredientDetails ingredient={selectedIngredient} onClose={handleCloseModal} />
+          <IngredientDetails onClose={handleCloseModal} />
         </Modal>
       )}
     </div>
   );
 }
- 
-
 
 BurgerIngredients.propTypes = {
   isLoading: PropTypes.bool,
-  hasError: PropTypes.bool,
 };
 
 export default BurgerIngredients;

@@ -1,106 +1,209 @@
-import { useContext, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import {
+  ConstructorElement,
+  DragIcon,
+  CurrencyIcon,
+  Button,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './burger-constructor.module.css';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { BurgerContext, request } from '../../services/burger-context';
-import { useBurgerConstructorReducer } from '../../services/reducers/burger-constructor-reducers';
-import { CALCULATE_TOTAL_COST } from '../../services/actions/burger-constructor-actions';
+import {
+  addIngredient,
+  removeIngredient,
+  calculateTotalCost,
+  updateIngredientOrder, // Новый экшен для обновления порядка ингредиентов
+} from '../../services/burger-constructor-slice';
+import { fetchIngredients } from '../../services/ingredient-slice';
+
+import { createOrder, clearOrder } from '../../services/order-details-slice';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { getIngredientCount } from '../burger-ingredients/burger-ingredients';
 
 function BurgerConstructor() {
+  const ItemType = 'INGREDIENT';
   const [showModal, setShowModal] = useState(false);
-  const [orderNumber, setOrderNumber] = useState(null); 
-  const { ingredients, isLoading} = useContext(BurgerContext);
-  
-  const [state, dispatch] = useBurgerConstructorReducer();
+  const dispatch = useDispatch();
+  const ingredients = useSelector((state) => state.ingredients.data);
+  const totalCost = useSelector((state) => state.burgerConstructor.totalCost);
+  const selectedIngredients = useSelector(
+    (state) => state.burgerConstructor.selectedIngredients
+  );
+  const orderNumber = useSelector((state) => state.orderDetails.order.number);
 
   useEffect(() => {
-    if (!isLoading && ingredients?.data && Array.isArray(ingredients.data)) {
-      dispatch({ type: CALCULATE_TOTAL_COST, ingredients: ingredients.data });
-    }
-  }, [ingredients, isLoading, dispatch]);
+    dispatch(fetchIngredients());
+  }, []);
 
-  const bun = ingredients?.data?.find((item) => item.type === 'bun');
-  const filling = ingredients?.data?.filter((item) => item.type !== 'bun');
+  useEffect(() => {
+    if (ingredients.data) {
+      let bunAdded = false;
+
+      for (const ingredient of ingredients.data) {
+        if (ingredient.type === 'bun') {
+          if (!bunAdded) {
+            dispatch(addIngredient(ingredient));
+            bunAdded = true;
+          }
+        } else {
+          dispatch(addIngredient(ingredient));
+        }
+      }
+    }
+  }, [ingredients.data]);
+
+  useEffect(() => {
+    dispatch(calculateTotalCost(selectedIngredients));
+  }, [dispatch, selectedIngredients]);
+
+  const [, drop] = useDrop({
+    accept: ItemType,
+    drop: (item) => {
+      if (item.ingredient.type === 'bun') {
+        handleRemoveIngredient(selectedBun._id);
+        console.log("удалил булку")
+        console.log(selectedIngredients)
+        selectedBun = item.ingredient;
+        dispatch(addIngredient(item.ingredient));
+        dispatch(calculateTotalCost(selectedIngredients));
+      } else {
+        dispatch(addIngredient(item.ingredient));
+        dispatch(calculateTotalCost(selectedIngredients));
+      }
+    },
+  });
+
+  const selectedFilling = selectedIngredients.filter((item) => item.type !== 'bun');
+  let selectedBun = selectedIngredients.find((item) => item.type === 'bun');
 
   const handleOrderClick = () => {
-    const ingredientIds = ingredients?.data?.map((item) => item._id);
-    request("/orders", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ingredients: ingredientIds }),
-    })
-      .then((data) => {
-        if (data.success && data.order?.number) {
-          setOrderNumber(data.order.number);
-          setShowModal(true);
-        } else {
-          console.error('Failed to create order:', data);
-        }
-      })
-      .catch((error) => {
-        console.error('Error creating order:', error);
-      });
+    const ingredientIds = selectedIngredients?.map((item) => item._id);
+    dispatch(createOrder(ingredientIds));
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
+    dispatch(clearOrder());
     setShowModal(false);
   };
+  const handleRemoveIngredient = (ingredientId) => {
+    dispatch(removeIngredient({ _id: ingredientId }));
+    dispatch(calculateTotalCost(selectedIngredients));
+    getIngredientCount(selectedIngredients, ingredientId);
+  };
 
-  if (isLoading) {
-    return <div>Loading ingredients...</div>;
-  }
-
-  if (!ingredients?.data || ingredients.data.length === 0) {
-    return <div>No ingredients available.</div>;
-  }
-
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    
+    const fillingIngredients = selectedIngredients.filter(
+      (ingredient) => ingredient.type !== 'bun'
+    );
+    const bunIngredients = selectedIngredients.filter(
+      (ingredient) => ingredient.type === 'bun'
+    );
+  
+    const updatedFillingIngredients = [...fillingIngredients];
+    const [movedFillingIngredient] = updatedFillingIngredients.splice(
+      result.source.index - bunIngredients.length,
+      1
+    );
+    updatedFillingIngredients.splice(
+      result.destination.index - bunIngredients.length,
+      0,
+      movedFillingIngredient
+    );
+  
+    console.log('fillingIngredients:', fillingIngredients);
+    console.log('updatedFillingIngredients:', updatedFillingIngredients);
+    
+    const updatedIngredientsCombined = [...bunIngredients, ...updatedFillingIngredients];
+  
+    console.log('updatedIngredientsCombined:', updatedIngredientsCombined);
+  
+    dispatch(updateIngredientOrder(updatedIngredientsCombined));
+  };
+  
   return (
-    <div className={constructorStyles.burgerConstructor}>
+    <div className={constructorStyles.burgerConstructor} ref={drop}>
       <div className={constructorStyles.topBun}>
         <ConstructorElement
-          text={`${bun?.name} (верх)`}
-          price={bun?.price}
-          thumbnail={bun?.image_large}
+          text={`${selectedBun?.name} (верх)`}
+          price={selectedBun?.price}
+          thumbnail={selectedBun?.image_large}
           type="top"
           isLocked
         />
       </div>
-      <div className={constructorStyles.ingredientsWrapper}>
-        <div className={constructorStyles.scrollableContent}>
-          {filling.map((item) => (
-            <div key={item._id} className={constructorStyles.ingredientWrapper}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                className = {constructorStyles.item}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image_large}
-                type={item.type === 'bun' ? 'top' : undefined}
-                isLocked={item.type === 'bun'}
-              />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="selectedIngredients">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className={constructorStyles.ingredientsWrapper}
+            >
+              <div className={constructorStyles.scrollableContent}>
+                {selectedFilling && selectedFilling.map((item, index) => (
+                  <Draggable
+                    key={`${item._id}_${index}`}
+                    draggableId={`${item._id}_${index}`}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        onDrag={(e) => e.preventDefault()}
+                        className={constructorStyles.ingredientWrapper}
+                      >
+                        <DragIcon type="primary" />
+                        <ConstructorElement
+                          className={constructorStyles.item}
+                          text={item.name}
+                          price={item.price}
+                          thumbnail={item.image_large}
+                          type={item.type === 'bun' ? 'top' : undefined}
+                          isLocked={item.type === 'bun'}
+                          handleClose={() => {
+                            handleRemoveIngredient(item._id);
+                          }}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+
       <div className={constructorStyles.bottomBun}>
         <ConstructorElement
-          text={`${bun?.name} (низ)`}
-          price={bun?.price}
-          thumbnail={bun?.image_large}
+          text={`${selectedBun?.name} (низ)`}
+          price={selectedBun?.price}
+          thumbnail={selectedBun?.image_large}
           type="bottom"
           isLocked
         />
       </div>
       <div className={constructorStyles.order}>
         <div className={constructorStyles.orderPrice}>
-          {state.totalCost}
+          {totalCost}
           <CurrencyIcon className={constructorStyles.orderIcon} />
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={handleOrderClick}
+        >
           Оформить заказ
         </Button>
       </div>
@@ -113,9 +216,5 @@ function BurgerConstructor() {
     </div>
   );
 }
-
-BurgerConstructor.propTypes = {
-  isLoading: PropTypes.bool,
-};
 
 export default BurgerConstructor;
