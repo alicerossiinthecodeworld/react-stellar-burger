@@ -6,10 +6,12 @@ import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password
 import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import ProtectedRouteElement from '../../services/protected-route-element';
+import AppHeader from '../app-header/app-header';
 
 export default function App() {
   return (
     <Router>
+      <AppHeader/>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />

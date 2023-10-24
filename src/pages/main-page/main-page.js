@@ -1,4 +1,3 @@
-import AppHeader from "../../components/app-header/app-header";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import styles from "./main-page.module.css"
@@ -9,7 +8,6 @@ function MainPage() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.page}>
-        <AppHeader />
         <main className={styles.burgerZone}>
           <BurgerIngredients />
           <BurgerConstructor />

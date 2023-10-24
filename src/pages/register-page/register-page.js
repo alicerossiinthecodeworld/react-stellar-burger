@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch} from 'react-redux'; // Импортируйте хуки для работы с Redux
+import { useDispatch} from 'react-redux'; 
 import { registerUser } from '../../services/registration-slice';
-import AppHeader from '../../components/app-header/app-header';
 import styles from './register-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -37,7 +36,6 @@ function RegisterPage() {
 
   return (
     <div className={styles.page}>
-      <AppHeader />
       <form className={styles.registerForm}>
         <h2 className={styles.headerText}>Регистрация</h2>
         <Input id='name' placeholder='Имя' onChange={handleNameChange} value={name} extraClass={styles.input} />

@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { request } from '../utils/api-config'; 
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom'; // Импортируем useNavigate
 
 
 const authSlice = createSlice({
@@ -59,7 +58,6 @@ export const login = (userData) => async (dispatch) => {
     if (response.success && response.user) {
       dispatch(loginSuccess(response.user))
       console.log("залогинен успешно")
-      window.location.href = '/';
     } else {
       dispatch(loginFailure('Не получилось войти, проверьте данные'));
     }

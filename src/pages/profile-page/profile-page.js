@@ -1,4 +1,3 @@
-import AppHeader from '../../components/app-header/app-header';
 import styles from './profile-page.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
@@ -45,7 +44,6 @@ function ProfilePage() {
 
   return (
     <div className={styles.page}>
-      <AppHeader />
       <div className={styles.columns}>
         <div className={styles.buttonColumn}>
           <Link to="/profile" className={styles.navLink}>

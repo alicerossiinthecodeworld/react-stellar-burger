@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { request } from '../utils/api-config';
 import { updateIsAuthenticated } from './auth-slice';
+import Cookies from 'js-cookie';
+
 
 const registrationSlice = createSlice({
   name: 'registration',
@@ -17,6 +19,7 @@ const registrationSlice = createSlice({
     registrationSuccess: (state, action) => {
       state.loading = false;
       state.user = action.payload;
+      Cookies.set('refreshToken', action.payload.refreshToken, { expires: 365 }); 
     },
     registrationFailure: (state, action) => {
       state.loading = false;

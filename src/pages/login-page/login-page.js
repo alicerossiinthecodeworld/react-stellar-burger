@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../services/auth-slice';
-import AppHeader from '../../components/app-header/app-header';
 import styles from './login-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -27,7 +26,6 @@ function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <AppHeader />
       <form className={styles.loginForm}>
         <h2 className={styles.headerText}>Вход</h2>
         <Input id='email' placeholder='E-mail' onChange={handleEmailChange} value={email} extraClass={styles.input} />

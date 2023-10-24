@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import AppHeader from '../../components/app-header/app-header';
 import styles from './forgot-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { request } from '../../utils/api-config';
@@ -39,7 +38,6 @@ function ForgotPasswordPage() {
 
   return (
     <div className={styles.page}>
-      <AppHeader />
       <form className={styles.forgotPasswordForm}>
         <h2 className={styles.headerText}>Восстановление пароля</h2>
         <Input id='email' placeholder='E-mail' onChange={handleEmailChange} value={email} extraClass ={styles.input}/>

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import AppHeader from '../../components/app-header/app-header';
 import styles from './reset-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { request } from '../../utils/api-config';
@@ -44,7 +43,6 @@ function ResetPasswordPage() {
 
   return (
     <div className={styles.page}>
-      <AppHeader />
       <form className={styles.resetPasswordForm}>
         <h2 className={styles.headerText}>Восстановление пароля</h2>
         <Input id='newPassword' type='password' placeholder='Введите новый пароль' onChange={handleNewPasswordChange} value={newPassword} extraClass ={styles.input}/>
