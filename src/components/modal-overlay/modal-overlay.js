@@ -1,4 +1,3 @@
-import React from 'react';
 import modalStyles from './modal-overlay.module.css';
 
 const ModalOverlay = ({ children, ...props }) => {

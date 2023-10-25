@@ -9,7 +9,6 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { setCurrentIngredient, clearCurrentIngredient } from '../../services/ingredient-details-slice';
 
 export const getIngredientCount = (selectedIngredients, ingredientId) => {
-  console.log(selectedIngredients)
   return selectedIngredients.filter((ingredient) => ingredient._id === ingredientId).length;
 };
 
@@ -29,8 +28,10 @@ function BurgerIngredients() {
   };
 
   const handleCloseModal = () => {
-    dispatch(clearCurrentIngredient());
     setIsModalOpen(false);
+    dispatch(clearCurrentIngredient());
+    console.log("ингридиент очистился");
+
   };
 
   if (isLoading) {
@@ -107,7 +108,7 @@ function BurgerIngredients() {
 
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <IngredientDetails onClose={handleCloseModal} />
+          <IngredientDetails/>
         </Modal>
       )}
     </div>
