@@ -11,14 +11,23 @@ import AppHeader from '../app-header/app-header';
 export default function App() {
   return (
     <Router>
-      <AppHeader/>
+      <AppHeader />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/login" element={
+          <ProtectedRouteElement onlyUnAuth={true}>
+            <LoginPage />
+          </ProtectedRouteElement>} />
+        <Route path="/register" element={
+          <ProtectedRouteElement onlyUnAuth={true}>
+            <RegisterPage />
+          </ProtectedRouteElement>} />
+        <Route path="/forgot-password" element={
+          <ProtectedRouteElement onlyUnAuth={true}>
+            <ForgotPasswordPage />
+          </ProtectedRouteElement>} />
         <Route path="/reset-password" element={
-          <ProtectedRouteElement>
+          <ProtectedRouteElement onlyUnAuth={true}>
             <ResetPasswordPage />
           </ProtectedRouteElement>} />
         <Route

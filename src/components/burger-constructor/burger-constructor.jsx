@@ -14,13 +14,15 @@ import {
   addIngredient,
   removeIngredient,
   calculateTotalCost,
-  updateIngredientOrder, // Новый экшен для обновления порядка ингредиентов
+  updateIngredientOrder,
 } from '../../services/burger-constructor-slice';
 import { fetchIngredients } from '../../services/ingredient-slice';
 
 import { createOrder, clearOrder } from '../../services/order-details-slice';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { getIngredientCount } from '../burger-ingredients/burger-ingredients';
+import { useNavigate } from 'react-router-dom';
+
 
 function BurgerConstructor() {
   const ItemType = 'INGREDIENT';
@@ -32,7 +34,7 @@ function BurgerConstructor() {
   );
   const orderNumber = useSelector((state) => state.orderDetails.order.number);
   const hasSelectedIngredients = selectedIngredients.length > 0;
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -61,17 +63,24 @@ function BurgerConstructor() {
 
   const selectedFilling = selectedIngredients.filter((item) => item.type !== 'bun');
   let selectedBun = selectedIngredients.find((item) => item.type === 'bun');
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
 
   const handleOrderClick = () => {
-    const ingredientIds = selectedIngredients?.map((item) => item._id);
-    dispatch(createOrder(ingredientIds));
-    setShowModal(true);
+    if (isAuthenticated) {
+      const ingredientIds = selectedIngredients?.map((item) => item._id);
+      dispatch(createOrder(ingredientIds));
+      setShowModal(true);
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleCloseModal = () => {
     dispatch(clearOrder());
     setShowModal(false);
   };
+
   const handleRemoveIngredient = (ingredientId) => {
     dispatch(removeIngredient({ _id: ingredientId }));
     dispatch(calculateTotalCost(selectedIngredients));
@@ -116,17 +125,17 @@ function BurgerConstructor() {
       <DragDropContext onDragEnd={onDragEnd}>
         {hasSelectedIngredients ? (
           <div>
-          {selectedBun?(
-            <div className={constructorStyles.topBun}>
-              <ConstructorElement
-                text={`${selectedBun.name} (верх)`}
-                price={selectedBun.price}
-                thumbnail={selectedBun.image_large}
-                type="top"
-                isLocked
-              />
-            </div>
-            ):null}
+            {selectedBun ? (
+              <div className={constructorStyles.topBun}>
+                <ConstructorElement
+                  text={`${selectedBun.name} (верх)`}
+                  price={selectedBun.price}
+                  thumbnail={selectedBun.image_large}
+                  type="top"
+                  isLocked
+                />
+              </div>
+            ) : null}
             <Droppable droppableId="selectedIngredients">
               {(provided) => (
                 <div
@@ -170,17 +179,17 @@ function BurgerConstructor() {
                 </div>
               )}
             </Droppable>
-            {selectedBun?(
-            <div className={constructorStyles.bottomBun}>
-              <ConstructorElement
-                text={`${selectedBun.name} (низ)`}
-                price={selectedBun.price}
-                thumbnail={selectedBun.image_large}
-                type="bottom"
-                isLocked
-              />
-            </div>
-            ):null}
+            {selectedBun ? (
+              <div className={constructorStyles.bottomBun}>
+                <ConstructorElement
+                  text={`${selectedBun.name} (низ)`}
+                  price={selectedBun.price}
+                  thumbnail={selectedBun.image_large}
+                  type="bottom"
+                  isLocked
+                />
+              </div>
+            ) : null}
           </div>
         ) : (
           <Droppable droppableId="selectedIngredients">
@@ -206,7 +215,7 @@ function BurgerConstructor() {
           type="primary"
           size="large"
           onClick={handleOrderClick}
-          disabled={!(selectedBun&&selectedIngredients.length>1)}
+          disabled={!(selectedBun && selectedIngredients.length > 1)}
         >
           Оформить заказ
         </Button>

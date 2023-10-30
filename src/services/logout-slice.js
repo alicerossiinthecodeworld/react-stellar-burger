@@ -41,13 +41,9 @@ export const logoutUser = (refreshToken) => async (dispatch) => {
       },
       body: JSON.stringify({ token: refreshToken }),
     });
-
-    if (response.success) {
-      dispatch(logoutSuccess());
-      dispatch(updateIsAuthenticated(false));
-    } else {
-      dispatch(logoutFailure(response.message));
-    }
+    dispatch(logoutSuccess());
+    dispatch(updateIsAuthenticated(false));
+    return response;
   } catch (error) {
     dispatch(logoutFailure(`Error: ${error.message}`));
   }
