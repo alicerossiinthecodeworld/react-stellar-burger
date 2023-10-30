@@ -1,35 +1,30 @@
-import { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../services/auth-slice';
 import styles from './login-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import useForm from '../../hooks/use-form';
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({
+    email: '',
+    password: '',
+  });
 
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const authError = useSelector(state => state.auth.error);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
   const handleLogin = () => {
-    dispatch(login({ email, password }));
+    dispatch(login({ email: values.email, password: values.password }));
   };
 
   return (
     <div className={styles.page}>
       <form className={styles.loginForm}>
         <h2 className={styles.headerText}>Вход</h2>
-        <Input id='email' placeholder='E-mail' onChange={handleEmailChange} value={email} extraClass={styles.input} />
-        <Input id='password' placeholder='Пароль' onChange={handlePasswordChange} value={password} extraClass={styles.input} />
+        <Input id='email' placeholder='E-mail' onChange={handleChange} value={values.email} name="email" extraClass={styles.input} />
+        <Input id='password' placeholder='Пароль' onChange={handleChange} value={values.password} name="password" extraClass={styles.input} />
         <Button htmlType="button" type="primary" size="small" extraClass={styles.loginButton} onClick={handleLogin}>
           Войти
         </Button>

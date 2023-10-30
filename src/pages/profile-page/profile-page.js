@@ -1,29 +1,18 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './profile-page.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
-import { useDispatch} from 'react-redux';
 import { logoutUser } from '../../services/logout-slice';
-
-
+import useForm from '../../hooks/use-form';
 
 function ProfilePage() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
+  const { values, handleChange } = useForm({
+    email: '',
+    name: '',
+    password: '',
+  });
 
   const dispatch = useDispatch();
   const refreshToken = Cookies.get('refreshToken');
@@ -37,9 +26,9 @@ function ProfilePage() {
   };
 
   const handleSave = (e) => {
-    console.log(name);
-    console.log(email);
-    console.log(password);
+    console.log(values.name);
+    console.log(values.email);
+    console.log(values.password);
   };
 
   return (
@@ -64,14 +53,14 @@ function ProfilePage() {
           <p className={styles.additionalText}>В этом разделе вы можете изменить свои персональные данные</p>
         </div>
         <form className={styles.changeProfileForm}>
-          <Input id="name" placeholder="Имя" onChange={handleNameChange} value={name} name="name" extraClass={styles.input} />
-          <Input id="email" type='email' placeholder="E-mail" onChange={handleEmailChange} value={email} name="email" extraClass={styles.input} />
+          <Input id="name" placeholder="Имя" onChange={handleChange} value={values.name} name="name" extraClass={styles.input} />
+          <Input id="email" type='email' placeholder="E-mail" onChange={handleChange} value={values.email} name="email" extraClass={styles.input} />
           <Input
             type="password"
             id="password"
             placeholder="Пароль"
-            onChange={handlePasswordChange}
-            value={password}
+            onChange={handleChange}
+            value={values.password}
             name="password"
             extraClass={styles.input}
           />

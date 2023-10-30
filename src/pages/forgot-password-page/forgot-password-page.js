@@ -1,20 +1,17 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './forgot-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { request } from '../../utils/api-config';
+import useForm from '../../hooks/use-form';
 
 function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
+  const { values, handleChange } = useForm({
+    email: '',
+  });
 
   const emailData = {
-    email: email,
+    email: values.email,
   };
-
 
   const handleForgotPassword = () => {
     request('/password-reset', {
@@ -40,13 +37,26 @@ function ForgotPasswordPage() {
     <div className={styles.page}>
       <form className={styles.forgotPasswordForm}>
         <h2 className={styles.headerText}>Восстановление пароля</h2>
-        <Input id='email' placeholder='E-mail' onChange={handleEmailChange} value={email} extraClass ={styles.input}/>
-        <Button htmlType="button" type="primary" size="small" extraClass={styles.forgotPasswordButton} onClick={handleForgotPassword}>
+        <Input
+          id='email'
+          placeholder='E-mail'
+          onChange={handleChange}
+          value={values.email}
+          name="email"
+          extraClass={styles.input}
+        />
+        <Button
+          htmlType="button"
+          type="primary"
+          size="small"
+          extraClass={styles.forgotPasswordButton}
+          onClick={handleForgotPassword}
+        >
           Восстановить
         </Button>
       </form>
       <p className={styles.additionalText}>Вспомнили пароль? <Link to="/login"> Войти</Link></p>
-    </div >
+    </div>
   );
 }
 
