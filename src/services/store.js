@@ -4,9 +4,6 @@ import ingredientsReducer from './ingredient-slice';
 import ingredientDetailsReducer from './ingredient-details-slice';
 import orderDetailsReducer from './order-details-slice';
 import authReducer from './auth-slice';
-import registerReducer from './registration-slice';
-import logoutReducer from './logout-slice';
-
 
 const rootReducer = {
   ingredients: ingredientsReducer,
@@ -14,8 +11,6 @@ const rootReducer = {
   ingredientDetails: ingredientDetailsReducer,
   orderDetails: orderDetailsReducer,
   auth: authReducer,
-  reg: registerReducer,
-  logout: logoutReducer,
 };
 
 const store = configureStore({

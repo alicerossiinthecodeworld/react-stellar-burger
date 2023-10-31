@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { registerUser } from '../../services/registration-slice';
+import { Link, useNavigate} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './register-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useForm from '../../hooks/use-form';
+import { registerUser } from '../../services/auth-slice';
 
 function RegisterPage() {
   const { values, handleChange } = useForm({
@@ -13,6 +13,9 @@ function RegisterPage() {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const user = useSelector((store) => store.auth.user);
+
 
   const handleRegister = () => {
     const userData = {
@@ -20,8 +23,10 @@ function RegisterPage() {
       password: values.password,
       name: values.name,
     };
-
     dispatch(registerUser(userData));
+    if(user){
+      navigate("/")
+    }
   };
 
   return (

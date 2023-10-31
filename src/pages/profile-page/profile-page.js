@@ -1,10 +1,9 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './profile-page.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
-import { logoutUser } from '../../services/logout-slice';
+import { logoutUser } from '../../services/auth-slice';
 import useForm from '../../hooks/use-form';
 
 function ProfilePage() {
