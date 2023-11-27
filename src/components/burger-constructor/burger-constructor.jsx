@@ -48,7 +48,7 @@ function BurgerConstructor() {
     accept: ItemType,
     drop: (item) => {
       if (item.ingredient.type === 'bun' && selectedBun) {
-        handleRemoveIngredient(selectedBun._id)
+        handleRemoveIngredient(selectedBun)
         console.log("удалил булку")
         console.log(selectedIngredients)
         selectedBun = item.ingredient;
@@ -81,45 +81,28 @@ function BurgerConstructor() {
     setShowModal(false);
   };
 
-  const handleRemoveIngredient = (ingredientId) => {
-    dispatch(removeIngredient({ _id: ingredientId }));
+  const handleRemoveIngredient = (ingredient) => {
+    dispatch(removeIngredient(ingredient));
     dispatch(calculateTotalCost(selectedIngredients));
-    getIngredientCount(selectedIngredients, ingredientId);
+    getIngredientCount(selectedIngredients, ingredient._id);
   };
 
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
-
-    const fillingIngredients = selectedIngredients.filter(
-      (ingredient) => ingredient.type !== 'bun'
-    );
-    const bunIngredients = selectedIngredients.filter(
-      (ingredient) => ingredient.type === 'bun'
-    );
-
-    const updatedFillingIngredients = [...fillingIngredients];
-    const [movedFillingIngredient] = updatedFillingIngredients.splice(
-      result.source.index - bunIngredients.length,
-      1
-    );
-    updatedFillingIngredients.splice(
-      result.destination.index - bunIngredients.length,
-      0,
-      movedFillingIngredient
-    );
-
-    console.log('fillingIngredients:', fillingIngredients);
-    console.log('updatedFillingIngredients:', updatedFillingIngredients);
-
-    const updatedIngredientsCombined = [...bunIngredients, ...updatedFillingIngredients];
-
-    console.log('updatedIngredientsCombined:', updatedIngredientsCombined);
-
-    dispatch(updateIngredientOrder(updatedIngredientsCombined));
+  
+    const startIndex = result.source.index;
+    const endIndex = result.destination.index;
+    console.log(selectedIngredients[startIndex+1])
+    const updatedIngredients = [...selectedIngredients]
+    const temp = updatedIngredients[startIndex+1];
+    updatedIngredients[startIndex+1] = updatedIngredients[endIndex+1];
+    updatedIngredients[endIndex+1] = temp;
+    dispatch(updateIngredientOrder(updatedIngredients));
   };
-
+  
+  
   return (
     <div className={constructorStyles.burgerConstructor} ref={drop}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -146,8 +129,8 @@ function BurgerConstructor() {
                   <div className={constructorStyles.scrollableContent}>
                     {selectedFilling && selectedFilling.map((item, index) => (
                       <Draggable
-                        key={`${item._id}_${index}`}
-                        draggableId={`${item._id}_${index}`}
+                        key={`${item.uniqueId}`}
+                        draggableId={`${item.uniqueId}`}
                         index={index}
                       >
                         {(provided) => (
@@ -167,7 +150,7 @@ function BurgerConstructor() {
                               type={item.type === 'bun' ? 'top' : undefined}
                               isLocked={item.type === 'bun'}
                               handleClose={() => {
-                                handleRemoveIngredient(item._id);
+                                handleRemoveIngredient(item);
                               }}
                             />
                           </div>

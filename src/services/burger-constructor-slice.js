@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { v4 as uuid4 } from 'uuid';
+
 
 const initialState = {
   selectedIngredients: [], 
@@ -10,24 +12,19 @@ const burgerConstructorSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: (state, action) => {
-      const existingIngredient = state.selectedIngredients.find(
-        (ingredient) => ingredient._id === action.payload._id
-      );
-      if (existingIngredient) {
-        state.selectedIngredients.push(action.payload);
-      } else {
-        state.selectedIngredients.push(action.payload);
-      }
-      console.log(state.selectedIngredients)
+      const ingredientToAdd = {
+        ...action.payload,
+        uniqueId: uuid4(),
+      };
+      console.log(ingredientToAdd.uniqueId)
+      state.selectedIngredients.push(ingredientToAdd);
+      console.log(state.selectedIngredients);
     },
     removeIngredient: (state, action) => {
-      const indexToRemove = state.selectedIngredients.findIndex(
-        (ingredient) => ingredient._id === action.payload._id
+      const uniqueIdToRemove = action.payload.uniqueId;
+      state.selectedIngredients = state.selectedIngredients.filter(
+        (ingredient) => ingredient.uniqueId !== uniqueIdToRemove
       );
-      
-      if (indexToRemove !== -1) {
-        state.selectedIngredients.splice(indexToRemove, 1);
-      }
     },
     calculateTotalCost: (state) => {
       state.totalCost = state.selectedIngredients.reduce(
