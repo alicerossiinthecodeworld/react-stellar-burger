@@ -31,7 +31,7 @@ function RegisterPage() {
 
   return (
     <div className={styles.page}>
-      <form className={styles.registerForm}>
+      <form className={styles.registerForm} onSubmit={handleRegister}>
         <h2 className={styles.headerText}>Регистрация</h2>
         <Input
           id='name'
@@ -61,7 +61,7 @@ function RegisterPage() {
         />
 
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="small"
           extraClass={styles.registerButton}

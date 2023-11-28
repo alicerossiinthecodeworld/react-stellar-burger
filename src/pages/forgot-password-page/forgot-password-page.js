@@ -13,7 +13,8 @@ function ForgotPasswordPage() {
     email: values.email,
   };
 
-  const handleForgotPassword = () => {
+  const handleForgotPassword = (event) => {
+    event.preventDefault()
     request('/password-reset', {
       method: 'POST',
       headers: {
@@ -35,7 +36,7 @@ function ForgotPasswordPage() {
 
   return (
     <div className={styles.page}>
-      <form className={styles.forgotPasswordForm}>
+      <form className={styles.forgotPasswordForm} onSubmit={handleForgotPassword}>
         <h2 className={styles.headerText}>Восстановление пароля</h2>
         <Input
           id='email'
@@ -46,7 +47,7 @@ function ForgotPasswordPage() {
           extraClass={styles.input}
         />
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="small"
           extraClass={styles.forgotPasswordButton}

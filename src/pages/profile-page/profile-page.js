@@ -25,6 +25,7 @@ function ProfilePage() {
   };
 
   const handleSave = (e) => {
+    e.preventDefault()
     console.log(values.name);
     console.log(values.email);
     console.log(values.password);
@@ -51,7 +52,7 @@ function ProfilePage() {
           </Link>
           <p className={styles.additionalText}>В этом разделе вы можете изменить свои персональные данные</p>
         </div>
-        <form className={styles.changeProfileForm}>
+        <form className={styles.changeProfileForm} onSubmit={handleSave}>
           <Input id="name" placeholder="Имя" onChange={handleChange} value={values.name} name="name" extraClass={styles.input} />
           <Input id="email" type='email' placeholder="E-mail" onChange={handleChange} value={values.email} name="email" extraClass={styles.input} />
           <Input
@@ -64,7 +65,7 @@ function ProfilePage() {
             extraClass={styles.input}
           />
           <div className={styles.buttonsZone}>
-            <Button htmlType="button" type="secondary" size="small">
+            <Button htmlType="submit" type="secondary" size="small">
               отмена
             </Button>
             <Button

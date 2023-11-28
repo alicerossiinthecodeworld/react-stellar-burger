@@ -38,7 +38,7 @@ function ResetPasswordPage() {
 
   return (
     <div className={styles.page}>
-      <form className={styles.resetPasswordForm}>
+      <form className={styles.resetPasswordForm} onSubmit={handleResetPassword}> 
         <h2 className={styles.headerText}>Восстановление пароля</h2>
         <Input
           id='newPassword'

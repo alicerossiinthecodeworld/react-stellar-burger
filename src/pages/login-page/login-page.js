@@ -14,17 +14,18 @@ function LoginPage() {
   const dispatch = useDispatch();
   const authError = useSelector(state => state.auth.error);
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault()
     dispatch(login({ email: values.email, password: values.password }));
   };
 
   return (
     <div className={styles.page}>
-      <form className={styles.loginForm}>
+      <form className={styles.loginForm} onSubmit={handleLogin}>
         <h2 className={styles.headerText}>Вход</h2>
         <Input id='email' placeholder='E-mail' onChange={handleChange} value={values.email} name="email" extraClass={styles.input} />
         <Input id='password' placeholder='Пароль' onChange={handleChange} value={values.password} name="password" extraClass={styles.input} />
-        <Button htmlType="button" type="primary" size="small" extraClass={styles.loginButton} onClick={handleLogin}>
+        <Button htmlType="submit" type="primary" size="small" extraClass={styles.loginButton} onSubmit={handleLogin}>
           Войти
         </Button>
       </form>
