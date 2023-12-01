@@ -16,9 +16,7 @@ const burgerConstructorSlice = createSlice({
         ...action.payload,
         uniqueId: uuid4(),
       };
-      console.log(ingredientToAdd.uniqueId)
       state.selectedIngredients.push(ingredientToAdd);
-      console.log(state.selectedIngredients);
     },
     removeIngredient: (state, action) => {
       const uniqueIdToRemove = action.payload.uniqueId;

@@ -7,13 +7,16 @@ import ResetPasswordPage from '../../pages/reset-password-page/reset-password-pa
 import ProfilePage from '../../pages/profile-page/profile-page';
 import ProtectedRouteElement from '../../services/protected-route-element';
 import AppHeader from '../app-header/app-header';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 export default function App() {
   return (
     <Router>
       <AppHeader />
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<MainPage/>}>
+          <Route path="ingredient/:ingredientId" element={<MainPage />} />
+        </Route>
         <Route path="/login" element={
           <ProtectedRouteElement onlyUnAuth={true}>
             <LoginPage />

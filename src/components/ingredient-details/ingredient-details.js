@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
 import ingredientStyles from './ingredient-details.module.css';
-import { useSelector} from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 const IngredientDetails = () => {
-  const currentIngredient = useSelector(state => state.ingredientDetails.currentIngredient);
+  const { ingredientId } = useParams();
+  const ingredients = useSelector((state) => state.ingredients.data)
+  if (!ingredients || !ingredients.data) {
+    return null
+  }
+  const currentIngredient = ingredients.data.find(ingredient => ingredient._id === ingredientId)
   return (
     <div className={ingredientStyles.ingredientWindow}>
       <h2 className={ingredientStyles.ingredientHeader}>Детали ингредиента</h2>
@@ -17,10 +23,6 @@ const IngredientDetails = () => {
       </div>
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  onClose: PropTypes.func.isRequired,
 };
 
 export default IngredientDetails;

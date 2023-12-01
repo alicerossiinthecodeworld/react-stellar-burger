@@ -1,48 +1,42 @@
-import { useState} from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 import ingredientsStyles from './burger-ingredients.module.css';
 import IngredientBoxItem from '../ingredient-box-item/ingredient-box-item';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { setCurrentIngredient, clearCurrentIngredient } from '../../services/ingredient-details-slice';
 
 export const getIngredientCount = (selectedIngredients, ingredientId) => {
   return selectedIngredients.filter((ingredient) => ingredient._id === ingredientId).length;
 };
 
 function BurgerIngredients() {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const ingredients = useSelector((state) => state.ingredients.data);
-  const isLoading = useSelector((state) => state.ingredients.loading);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isLoading = useSelector((state) => state.ingredients.loading);  
 
   const selectedIngredients = useSelector(
     (state) => state.burgerConstructor.selectedIngredients
   );
 
-  const handleOpenModal = (ingredient) => {
-    dispatch(setCurrentIngredient(ingredient));
-    setIsModalOpen(true);
+  const handleIngredientClick = (ingredientId) => {
+    navigate(`/ingredient/${ingredientId}`)
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    dispatch(clearCurrentIngredient());
-    console.log("ингридиент очистился");
-
-  };
 
   if (isLoading) {
     return <div>Loading ingredients...</div>;
   }
+
 
   if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
     return <div>No ingredients available.</div>;
   }
 
   const { data } = ingredients;
+
 
   const bunIngredients = data.filter((item) => item.type === 'bun');
   const sauceIngredients = data.filter((item) => item.type === 'sauce');
@@ -63,9 +57,9 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                count={getIngredientCount(selectedIngredients, ingredient._id)}
                 ingredient={ingredient}
-                onClick={() => handleOpenModal(ingredient)}
+                onClick={() => handleIngredientClick(ingredient._id)}
               />
             ))}
           </div>
@@ -80,9 +74,9 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                count={getIngredientCount(selectedIngredients, ingredient._id)}
                 ingredient={ingredient}
-                onClick={() => handleOpenModal(ingredient)}
+                onClick={() => handleIngredientClick(ingredient._id)}
               />
             ))}
           </div>
@@ -97,20 +91,14 @@ function BurgerIngredients() {
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={getIngredientCount(selectedIngredients, ingredient._id)} // Обновляем значение каунта
+                count={getIngredientCount(selectedIngredients, ingredient._id)}
                 ingredient={ingredient}
-                onClick={() => handleOpenModal(ingredient)}
+                onClick={() => handleIngredientClick(ingredient._id)}
               />
             ))}
           </div>
         </div>
       </div>
-
-      {isModalOpen && (
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <IngredientDetails/>
-        </Modal>
-      )}
     </div>
   );
 }
