@@ -14,9 +14,11 @@ function AppHeader() {
         <ListIcon type="primary" />
         <p className={headerStyles.headerText}>Лента заказов</p>
       </div>
+      <Link to="/">
       <div className={headerStyles.headerLogo}>
         <Logo />
       </div>
+      </Link>
       <Link to="/profile">
         <div className={headerStyles.headerItem}>
             <ProfileIcon type="primary" />

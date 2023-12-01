@@ -14,19 +14,17 @@ function RegisterPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const user = useSelector((store) => store.auth.user);
 
 
-  const handleRegister = () => {
+  const handleRegister = (e) => {
+    e.preventDefault()
     const userData = {
       email: values.email,
       password: values.password,
       name: values.name,
     };
-    dispatch(registerUser(userData));
-    if(user){
-      navigate("/")
-    }
+    console.log(dispatch(registerUser(userData)))
+    navigate("/")
   };
 
   return (

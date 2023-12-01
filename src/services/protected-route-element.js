@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 const ProtectedRouteElement = ({ onlyUnAuth = false, children }) => {
   const user = useSelector((state) => state.auth.user);
   const location = useLocation()
+  let isAuthentificated = useSelector((state) => state.auth.isAuthenticated);
+  console.log(isAuthentificated)
 
   if (onlyUnAuth && user) {
     const { from } = location.state || { from: { pathname: "/" } };

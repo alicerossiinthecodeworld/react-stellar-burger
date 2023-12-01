@@ -8,7 +8,6 @@ import Modal from '../../components/modal/modal';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import { clearCurrentIngredient } from '../../services/ingredient-details-slice';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function MainPage() {

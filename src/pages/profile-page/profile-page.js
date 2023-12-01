@@ -1,36 +1,47 @@
 import { Link } from 'react-router-dom';
 import styles from './profile-page.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
-import Cookies from 'js-cookie';
-import { logoutUser } from '../../services/auth-slice';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { logoutUser, updateUser } from '../../services/auth-slice';
 import useForm from '../../hooks/use-form';
 
 function ProfilePage() {
+  const user = useSelector((state) => state.auth.user);
   const { values, handleChange } = useForm({
-    email: '',
-    name: '',
+    email: user.email,
+    name: user.name,
     password: '',
   });
 
   const dispatch = useDispatch();
-  const refreshToken = Cookies.get('refreshToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  console.log(refreshToken)
 
   const handleLogout = () => {
     if (refreshToken) {
-      dispatch(logoutUser(refreshToken));
+      dispatch(logoutUser());
     } else {
       console.log('Refresh Token отсутствует. Невозможно выполнить логаут.');
     }
   };
 
   const handleSave = (e) => {
-    e.preventDefault()
-    console.log(values.name);
-    console.log(values.email);
-    console.log(values.password);
-  };
+    e.preventDefault(); 
+    const updatedUserData = {
+      email: values.email,
+      name: values.name,
+      password: values.password, 
+    };
 
+    dispatch(updateUser(updatedUserData, refreshToken))
+      .then(() => {
+        console.log('Профиль успешно обновлен');
+      })
+      .catch((error) => {
+        console.error('Ошибка при обновлении профиля:', error);
+      });
+  };
   return (
     <div className={styles.page}>
       <div className={styles.columns}>

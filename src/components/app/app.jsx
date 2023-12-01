@@ -7,9 +7,18 @@ import ResetPasswordPage from '../../pages/reset-password-page/reset-password-pa
 import ProfilePage from '../../pages/profile-page/profile-page';
 import ProtectedRouteElement from '../../services/protected-route-element';
 import AppHeader from '../app-header/app-header';
-import IngredientDetails from '../ingredient-details/ingredient-details';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getSavedUserData, loginSuccess } from '../../services/auth-slice';
 
-export default function App() {
+export default function App(){
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const userData = getSavedUserData(); 
+    if (userData) {
+      dispatch(loginSuccess(userData));
+    }
+  }, [dispatch]);
   return (
     <Router>
       <AppHeader />
