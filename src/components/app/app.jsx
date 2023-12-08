@@ -5,7 +5,7 @@ import RegisterPage from '../../pages/register-page/register-page';
 import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
 import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
-import ProtectedRouteElement from '../../services/protected-route-element';
+import ProtectedRouteElement from '../protected-route/protected-route-element';
 import AppHeader from '../app-header/app-header';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
