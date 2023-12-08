@@ -3,8 +3,11 @@ import styles from './forgot-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { request } from '../../utils/api-config';
 import useForm from '../../hooks/use-form';
+import { useNavigate } from 'react-router-dom';
+
 
 function ForgotPasswordPage() {
+  const navigate = useNavigate()
   const { values, handleChange } = useForm({
     email: '',
   });
@@ -25,6 +28,8 @@ function ForgotPasswordPage() {
       .then((data) => {
         if (data.success) {
           console.log('Письмо направлено успешно:', data);
+          navigate('/reset-password')
+          
         } else {
           console.error('Ошибка восстановления пароля:', data.message);
         }
