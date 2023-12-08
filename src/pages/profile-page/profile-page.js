@@ -76,14 +76,13 @@ function ProfilePage() {
             extraClass={styles.input}
           />
           <div className={styles.buttonsZone}>
-            <Button htmlType="submit" type="secondary" size="small">
+            <Button htmlType="button" type="secondary" size="small">
               отмена
             </Button>
             <Button
               htmlType="button"
-              type="primary"
+              type="submit"
               size="medium"
-              onClick={handleSave}
               extraClass={styles.forgotPasswordButton}
             >
               Сохранить

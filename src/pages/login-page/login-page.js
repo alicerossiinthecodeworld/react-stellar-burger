@@ -25,7 +25,7 @@ function LoginPage() {
         <h2 className={styles.headerText}>Вход</h2>
         <Input id='email' placeholder='E-mail' onChange={handleChange} value={values.email} name="email" extraClass={styles.input} />
         <Input id='password' placeholder='Пароль' onChange={handleChange} value={values.password} name="password" extraClass={styles.input} />
-        <Button htmlType="submit" type="primary" size="small" extraClass={styles.loginButton} onSubmit={handleLogin}>
+        <Button htmlType="submit" type="primary" size="small" extraClass={styles.loginButton}>
           Войти
         </Button>
       </form>

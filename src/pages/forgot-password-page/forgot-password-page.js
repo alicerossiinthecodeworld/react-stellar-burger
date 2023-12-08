@@ -51,7 +51,6 @@ function ForgotPasswordPage() {
           type="primary"
           size="small"
           extraClass={styles.forgotPasswordButton}
-          onClick={handleForgotPassword}
         >
           Восстановить
         </Button>

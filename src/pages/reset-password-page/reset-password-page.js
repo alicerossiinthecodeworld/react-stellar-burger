@@ -58,11 +58,10 @@ function ResetPasswordPage() {
           extraClass={styles.input}
         />
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="small"
           extraClass={styles.resetPasswordButton}
-          onClick={handleResetPassword}
         >
           Cохранить
         </Button>

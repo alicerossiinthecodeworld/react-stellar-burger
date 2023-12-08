@@ -63,7 +63,6 @@ function RegisterPage() {
           type="primary"
           size="small"
           extraClass={styles.registerButton}
-          onClick={handleRegister}
         >
           Зарегистрироваться
         </Button>
