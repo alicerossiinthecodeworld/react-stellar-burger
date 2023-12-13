@@ -6,10 +6,12 @@ import { Link } from 'react-router-dom';
 function AppHeader() {
   return (
     <div className={headerStyles.header}>
+       <Link to="/">
       <div className={headerStyles.headerItem}>
         <BurgerIcon type="primary" />
         <p className={headerStyles.headerText}>Конструктор</p>
       </div>
+      </Link>
       <div className={headerStyles.headerItem}>
         <ListIcon type="primary" />
         <p className={headerStyles.headerText}>Лента заказов</p>
