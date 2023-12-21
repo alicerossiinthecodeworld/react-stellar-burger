@@ -9,24 +9,35 @@ import IngredientDetails from '../../components/ingredient-details/ingredient-de
 import { clearCurrentIngredient } from '../../services/ingredient-details-slice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { IngredientInfoPage } from '../ingredient-info-page/ingredient-info-page';
 
 function MainPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+
   const handleCloseModal = () => {
     dispatch(clearCurrentIngredient());
-    navigate('/')
+    navigate('/');
   };
 
+  const isIngredientClick = location.state?.fromIngredientClick;
+  
+  const shouldShowIngredientDetails = /* Ваше условие здесь, например: */
+    location.pathname.startsWith('/ingredients/') && !isIngredientClick
+
+  if (shouldShowIngredientDetails) {
+    console.log('нада')
+    return (<div><IngredientInfoPage/></div>)
+  }
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.page}>
         <main className={styles.burgerZone}>
           <BurgerIngredients/>
-          <BurgerConstructor />
+          <BurgerConstructor/>
         </main>
-        {location.pathname.startsWith('/ingredient/') && (
+        {location.pathname.startsWith('/ingredients/') && isIngredientClick && (
           <Modal isOpen={true} onClose={handleCloseModal}>
             <IngredientDetails />
           </Modal>

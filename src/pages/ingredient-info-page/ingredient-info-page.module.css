@@ -1,0 +1,59 @@
+.page {
+  display: flex;
+  flex-direction: column;
+ }
+
+.ingredientHeader {
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  text-align: center;
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+}
+
+.ingredientPic {
+  Width: 480px;
+  Height: 240px;
+  margin: 0 auto;
+}
+
+.ingredientTitle{
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  margin-top: 0;
+}
+
+.ingredientText{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 120px;
+}
+.ingredientNumber{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 120px;
+}
+
+.ingredientData{
+  color:darkgray;
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
+  grid-template-rows: repeat(2, 20px);
+  column-gap: 5px;
+  margin: 0 auto;
+}

@@ -55,7 +55,7 @@ function BurgerIngredients() {
 
 
   const handleIngredientClick = (ingredientId) => {
-    navigate(`/ingredient/${ingredientId}`)
+    navigate(`/ingredients/${ingredientId}`, { state: { fromIngredientClick: true }})
   };
 
   if (isLoading) {

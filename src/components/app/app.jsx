@@ -24,7 +24,7 @@ export default function App(){
       <AppHeader />
       <Routes>
         <Route path="/" element={<MainPage/>}>
-          <Route path="ingredient/:ingredientId" element={<MainPage />} />
+          <Route path="ingredients/:ingredientId" element={<MainPage />} />
         </Route>
         <Route path="/login" element={
           <ProtectedRouteElement onlyUnAuth={true}>
