@@ -1,13 +1,15 @@
-import { useState, useRef } from 'react';
+import {useRef } from 'react';
+import { setActiveTab } from '../../services/active-tab-slice';
+import { useDispatch, useSelector} from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import tabsStyles from './ingredient-tabs.module.css';
 
-function IngredientTabs() {
-  const [current, setCurrent] = useState('buns');
+function IngredientTabs () {
+  const dispatch = useDispatch();
+  const current = useSelector((state) => state.activeTab.current);
   const bunsAnchorRef = useRef(null);
   const sauceAnchorRef = useRef(null);
   const fillingsAnchorRef = useRef(null);
-
   const scrollToAnchor = (anchorRef) => {
     if (anchorRef.current) {
       anchorRef.current.scrollIntoView({
@@ -18,7 +20,7 @@ function IngredientTabs() {
   };
 
   const handleTabClickWithScroll = (value, anchorRef) => {
-    setCurrent(value);
+    dispatch(setActiveTab(value));
     scrollToAnchor(anchorRef);
   };
 

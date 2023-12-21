@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { BASE_URL } from '../utils/api-config';
+import { request } from '../utils/api-config';
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
@@ -27,17 +27,13 @@ const ingredientsSlice = createSlice({
 export const { fetchIngredientsRequest, fetchIngredientsSuccess, fetchIngredientsFailure } = ingredientsSlice.actions;
 
 export const fetchIngredients = () => async (dispatch) => {
-  try {
-    dispatch(fetchIngredientsRequest());
-    const response = await fetch(`${BASE_URL}/ingredients`);
-    const data = await response.json();
-    if (response.ok) {
-      dispatch(fetchIngredientsSuccess(data));
-    } else {
-      dispatch(fetchIngredientsFailure(`Ошибка ${response.status}`));
-    }
-  } catch (error) {
-    dispatch(fetchIngredientsFailure(`Ошибка: ${error.message}`));
+  dispatch(fetchIngredientsRequest());
+  const response = await request(`/ingredients`);
+  if (response.success) {
+    dispatch(fetchIngredientsSuccess(response));
+  } else {
+
+    dispatch(fetchIngredientsFailure(`Ошибка ${response.status}`));
   }
 };
 
