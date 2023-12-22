@@ -28,8 +28,7 @@ function ForgotPasswordPage() {
       .then((data) => {
         if (data.success) {
           console.log('Письмо направлено успешно:', data);
-          navigate('/reset-password')
-          
+          navigate('/reset-password', { state: { fromForgotPassword: true }});          
         } else {
           console.error('Ошибка восстановления пароля:', data.message);
         }

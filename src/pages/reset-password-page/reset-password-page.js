@@ -1,4 +1,5 @@
-import React from 'react';
+import { useEffect } from 'react';
+import {useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styles from './reset-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,6 +7,12 @@ import { request } from '../../utils/api-config';
 import useForm from '../../hooks/use-form';
 
 function ResetPasswordPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isFromForgotPassword= location.state?.fromForgotPassword;
+  console.log(`забыл парольку ${isFromForgotPassword}`)
+
+
   const { values, handleChange } = useForm({
     code: '',
     newPassword: '',
@@ -35,6 +42,12 @@ function ResetPasswordPage() {
         console.error('Ошибка при отправке запроса:', error);
       });
   };
+  useEffect(() => {
+    if (!isFromForgotPassword) {
+      navigate("/forgot-password");
+    }
+  }, [isFromForgotPassword, navigate]);
+
 
   return (
     <div className={styles.page}>
