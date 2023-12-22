@@ -1,11 +1,13 @@
 .orderWindow {
+  width: 520px;
+  border-radius: 40px;
   color: white;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: black;
+  padding-bottom: 60px;
 }
 
 .orderId {
@@ -32,7 +34,7 @@
   width: 120px;
   height: 120px;
   background-color: darkblue;
-  margin-bottom: 60px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,6 +45,7 @@
   font-family: 'JetBrains Mono';
   font-weight: 400;
   font-size: 16px;
+  margin-bottom: 50px;
   line-height: 24px;
   text-align: center;
   padding: 0;
