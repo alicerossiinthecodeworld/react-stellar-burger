@@ -91,18 +91,18 @@ function BurgerConstructor() {
     if (!result.destination) {
       return;
     }
-  
+
     const startIndex = result.source.index;
     const endIndex = result.destination.index;
-    console.log(selectedIngredients[startIndex+1])
+    console.log(selectedIngredients[startIndex + 1])
     const updatedIngredients = [...selectedIngredients]
-    const temp = updatedIngredients[startIndex+1];
-    updatedIngredients[startIndex+1] = updatedIngredients[endIndex+1];
-    updatedIngredients[endIndex+1] = temp;
+    const temp = updatedIngredients[startIndex + 1];
+    updatedIngredients[startIndex + 1] = updatedIngredients[endIndex + 1];
+    updatedIngredients[endIndex + 1] = temp;
     dispatch(updateIngredientOrder(updatedIngredients));
   };
-  
-  
+
+
   return (
     <div className={constructorStyles.burgerConstructor} ref={drop}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -141,7 +141,7 @@ function BurgerConstructor() {
                             onDrag={(e) => e.preventDefault()}
                             className={constructorStyles.ingredientWrapper}
                           >
-                            <DragIcon type="primary" />
+                            <DragIcon type="primary"  className = {constructorStyles.dragIcon}/>
                             <ConstructorElement
                               className={constructorStyles.item}
                               text={item.name}

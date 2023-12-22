@@ -61,9 +61,16 @@
   padding-top: 20px;
 }
 
+
 .ingredientWrapper{
   margin-top: 10px;
+  display: flex;
+  flex-direction: row;
   margin-bottom: 10px;
+}
+
+.dragIcon {
+  margin-right: 10px;
 }
 
 .emptyMessage{
