@@ -1,5 +1,5 @@
 import { Link, useNavigate} from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import styles from './register-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useForm from '../../hooks/use-form';

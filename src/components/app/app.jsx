@@ -10,6 +10,7 @@ import AppHeader from '../app-header/app-header';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getSavedUserData, loginSuccess } from '../../services/auth-slice';
+import { fetchIngredients } from '../../services/ingredient-slice';
 
 export default function App(){
   const dispatch = useDispatch();
@@ -19,6 +20,9 @@ export default function App(){
       dispatch(loginSuccess(userData));
     }
   }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, []);
   return (
     <Router>
       <AppHeader />
