@@ -41,6 +41,7 @@ const authSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.success = true;
+      state.user = undefined; 
       state.isAuthenticated = false;
       state.isAuthChecked = true;
       localStorage.removeItem('userData');
