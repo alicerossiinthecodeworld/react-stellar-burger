@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { request } from '../utils/api-config'; 
+import { request } from '../utils/api-config';
 
 
 const authSlice = createSlice({
@@ -41,7 +41,7 @@ const authSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.success = true;
-      state.user = undefined; 
+      state.user = undefined;
       state.isAuthenticated = false;
       state.isAuthChecked = true;
       localStorage.removeItem('userData');
@@ -144,8 +144,8 @@ export const registerUser = (userData) => async (dispatch) => {
       },
       body: JSON.stringify(userData),
     });
-    
-    if(response && response.user) {
+
+    if (response && response.user) {
       dispatch(registrationSuccess(response.user));
       dispatch(saveRefreshToken(response.refreshToken));
     } else {
@@ -156,7 +156,7 @@ export const registerUser = (userData) => async (dispatch) => {
   }
 };
 export const updateUser = (userData) => async (dispatch) => {
-  const AccessToken =await refreshAccessToken()
+  const AccessToken = await refreshAccessToken()
   try {
     dispatch(updateUserRequest());
     const response = await request('/auth/user', {
@@ -185,7 +185,7 @@ export const logoutUser = () => async (dispatch) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ token: localStorage.getItem('refreshToken')}),
+      body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
     });
     dispatch(logoutSuccess());
     localStorage.removeItem('refreshToken')
@@ -215,17 +215,16 @@ export function getSavedUserData() {
 
 async function refreshAccessToken() {
   const refreshToken = localStorage.getItem('refreshToken');
+  try {
+    const response = await request('/auth/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: refreshToken })
+    })
 
-
-  const response = await request('/auth/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token: refreshToken })
-  })
-
-  if (response.success) {
     return response.accessToken;
-  } else {
+  }
+  catch (error) {
     console.error('Failed to refresh token');
   }
 }
