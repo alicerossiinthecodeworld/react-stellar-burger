@@ -80,8 +80,7 @@ function ProfilePage() {
               отмена
             </Button>
             <Button
-              htmlType="button"
-              type="submit"
+              htmlType="submit"
               size="medium"
               extraClass={styles.forgotPasswordButton}
             >
