@@ -56,7 +56,7 @@ function ProfilePage() {
               История заказов
             </Button>
           </Link>
-          <Link to="/logout" className={styles.navLink}>
+          <Link to="/" className={styles.navLink}>
             <Button htmlType="button" type="secondary" size="large" onClick={handleLogout}>
               Выход
             </Button>
