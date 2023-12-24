@@ -157,6 +157,7 @@ export const registerUser = (userData) => async (dispatch) => {
 };
 export const updateUser = (userData) => async (dispatch) => {
   const AccessToken = await refreshAccessToken()
+  console.log('access', AccessToken)
   try {
     dispatch(updateUserRequest());
     const response = await request('/auth/user', {
@@ -219,9 +220,9 @@ async function refreshAccessToken() {
     const response = await request('/auth/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: refreshToken })
+      body: JSON.stringify({ token: refreshToken }),
     })
-
+    localStorage.setItem('refreshToken', response.refreshToken);
     return response.accessToken;
   }
   catch (error) {

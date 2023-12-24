@@ -16,8 +16,7 @@ function ProfilePage() {
 
   const dispatch = useDispatch();
   const refreshToken = localStorage.getItem('refreshToken');
-  console.log(refreshToken)
-
+ 
   const handleLogout = () => {
     if (refreshToken) {
       dispatch(logoutUser());
@@ -33,10 +32,12 @@ function ProfilePage() {
       name: values.name,
       password: values.password, 
     };
-
-    dispatch(updateUser(updatedUserData, refreshToken))
+    
+    dispatch(updateUser(updatedUserData))
       .then(() => {
         console.log('Профиль успешно обновлен');
+        handleChange({ target: { name: 'email', value: updatedUserData.email } });
+        handleChange({ target: { name: 'name', value: updatedUserData.name } });  
       })
       .catch((error) => {
         console.error('Ошибка при обновлении профиля:', error);
