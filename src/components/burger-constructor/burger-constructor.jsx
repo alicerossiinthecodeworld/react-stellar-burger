@@ -16,7 +16,6 @@ import {
   calculateTotalCost,
   updateIngredientOrder,
 } from '../../services/burger-constructor-slice';
-import { fetchIngredients } from '../../services/ingredient-slice';
 
 import { createOrder, clearOrder } from '../../services/order-details-slice';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -35,10 +34,6 @@ function BurgerConstructor() {
   const orderNumber = useSelector((state) => state.orderDetails.order.number);
   const hasSelectedIngredients = selectedIngredients.length > 0;
   const navigate = useNavigate()
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
 
   useEffect(() => {
     dispatch(calculateTotalCost(selectedIngredients));
