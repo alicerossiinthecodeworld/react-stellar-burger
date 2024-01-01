@@ -7,18 +7,18 @@
   align-items: center;
   margin: 0 auto;
   background-color: #2f2f37;
-  width: 100%;
+  width: 93%;
 }
 
 .headerItem{
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-right: 15px;
+  margin-right: 10px;
   column-gap: 10px;
 }
 .headerLogo{
-  margin-left: 250px;
+  margin-left: 150px;
   margin-right: 400px;
 }
 

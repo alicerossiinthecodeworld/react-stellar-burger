@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getSavedUserData, loginSuccess } from '../../services/auth-slice';
 import { fetchIngredients } from '../../services/ingredient-slice';
+import FeedPage from '../../pages/feed-page/feed-page';
 
 export default function App(){
   const dispatch = useDispatch();
@@ -54,6 +55,10 @@ export default function App(){
             </ProtectedRouteElement>
           }
         />
+        <Route
+          path="/feed"
+          element={<FeedPage />} 
+        />  
       </Routes>
     </Router>
   );

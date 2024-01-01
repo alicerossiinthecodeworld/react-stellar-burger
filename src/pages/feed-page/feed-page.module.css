@@ -1,0 +1,199 @@
+.orderBox {
+  border-radius: 40px;
+  background-color: #2f2f37;
+  width: 584px;
+  max-height: 250px;
+  margin-bottom: 10px;
+}
+
+.columnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 200px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.page {
+  display: flex;
+  flex-direction: row;
+}
+
+.ingredientImages {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.image {
+  position: relative;
+  height: 64px;
+  width: 64px;
+  border-radius: 100px;
+  border: 2px #801AB2 solid;
+  opacity: 1; 
+  background-color: black;
+}
+
+.orderId {
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-left: 20px;
+}
+
+.orderHeaderZone {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ordersZone {
+  margin-left: 60px;
+}
+
+.orderDate {
+  margin-top: 20px;
+  margin-right: 20px;
+  text-align: center;
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8585AD;
+}
+
+.header {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: white;
+  max-width: 530px;
+  padding: 0;
+}
+
+.name {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: white;
+  margin-left: 20px;
+  margin-top: 0px;
+}
+
+.priceZone{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.orderPrice{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  column-gap: 10px;
+  margin-right: 20px;
+  align-items: center
+}
+
+.priceDigits{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-bottom: 20px;
+}
+
+.ordersScrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ordersScrollbar::-webkit-scrollbar-track {
+  background-color: #2F2F37;
+}
+
+.ordersScrollbar::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
+.orderStatus::-webkit-scrollbar {
+  width: 8px;
+}
+
+.orderStatus::-webkit-scrollbar-track {
+  background-color: #2F2F37;
+}
+
+.orderStatus::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
+
+.ordersScrollbar{
+  max-height: 850px; 
+  width: 605px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+.infoZone{
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+  margin-top: 80px;
+}
+
+.orderStatus{
+  display: flex;
+  flex-direction: column;
+}
+
+.columnRow{
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+.orderNumber{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-bottom: 20px;
+  color: #00CCCC;
+}
+
+.columnHeader{
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: white;
+  margin-left: 20px;
+  margin-top: 0px;
+}
+
+.totalDigit{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 144px;
+  line-height: 120px;
+  color: white;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
