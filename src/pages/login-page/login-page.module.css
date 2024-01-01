@@ -1,0 +1,43 @@
+.page {
+  margin: 0 auto;
+}
+
+.loginForm{
+  margin: 0 auto;
+  width: 480px;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction:column;
+}
+
+.loginButton{
+  margin: 0 auto;
+  width: 128px;
+}
+
+.headerText{
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: #F2F2F3;
+  padding: 0;
+  margin-bottom: 26px;
+}
+
+.additionalText{
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8585AD;
+  padding-bottom: 15px;
+}
+
+.input{
+  margin-bottom: 26px;
+}

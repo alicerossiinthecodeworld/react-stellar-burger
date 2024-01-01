@@ -1,0 +1,22 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  max-width: 1440px;
+  background-color: #131316;
+  color: #f2f2f3;
+  margin: 0 auto;
+}
+
+.page {
+  margin: 0 auto;
+}
+
+.burgerZone{
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  column-gap: 130px;
+  justify-content: center;
+}

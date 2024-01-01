@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import {
@@ -14,45 +14,26 @@ import {
   addIngredient,
   removeIngredient,
   calculateTotalCost,
-  updateIngredientOrder, // Новый экшен для обновления порядка ингредиентов
+  updateIngredientOrder,
 } from '../../services/burger-constructor-slice';
-import { fetchIngredients } from '../../services/ingredient-slice';
 
 import { createOrder, clearOrder } from '../../services/order-details-slice';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { getIngredientCount } from '../burger-ingredients/burger-ingredients';
+import { useNavigate } from 'react-router-dom';
+
 
 function BurgerConstructor() {
   const ItemType = 'INGREDIENT';
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const ingredients = useSelector((state) => state.ingredients.data);
   const totalCost = useSelector((state) => state.burgerConstructor.totalCost);
   const selectedIngredients = useSelector(
     (state) => state.burgerConstructor.selectedIngredients
   );
   const orderNumber = useSelector((state) => state.orderDetails.order.number);
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
-
-  useEffect(() => {
-    if (ingredients.data) {
-      let bunAdded = false;
-
-      for (const ingredient of ingredients.data) {
-        if (ingredient.type === 'bun') {
-          if (!bunAdded) {
-            dispatch(addIngredient(ingredient));
-            bunAdded = true;
-          }
-        } else {
-          dispatch(addIngredient(ingredient));
-        }
-      }
-    }
-  }, [ingredients.data]);
+  const hasSelectedIngredients = selectedIngredients.length > 0;
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(calculateTotalCost(selectedIngredients));
@@ -61,8 +42,8 @@ function BurgerConstructor() {
   const [, drop] = useDrop({
     accept: ItemType,
     drop: (item) => {
-      if (item.ingredient.type === 'bun') {
-        handleRemoveIngredient(selectedBun._id);
+      if (item.ingredient.type === 'bun' && selectedBun) {
+        handleRemoveIngredient(selectedBun)
         console.log("удалил булку")
         console.log(selectedIngredients)
         selectedBun = item.ingredient;
@@ -77,122 +58,131 @@ function BurgerConstructor() {
 
   const selectedFilling = selectedIngredients.filter((item) => item.type !== 'bun');
   let selectedBun = selectedIngredients.find((item) => item.type === 'bun');
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
 
   const handleOrderClick = () => {
-    const ingredientIds = selectedIngredients?.map((item) => item._id);
-    dispatch(createOrder(ingredientIds));
-    setShowModal(true);
+    if (isAuthenticated) {
+      const ingredientIds = selectedIngredients?.map((item) => item._id);
+      dispatch(createOrder(ingredientIds));
+      setShowModal(true);
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleCloseModal = () => {
     dispatch(clearOrder());
     setShowModal(false);
   };
-  const handleRemoveIngredient = (ingredientId) => {
-    dispatch(removeIngredient({ _id: ingredientId }));
+
+  const handleRemoveIngredient = (ingredient) => {
+    dispatch(removeIngredient(ingredient));
     dispatch(calculateTotalCost(selectedIngredients));
-    getIngredientCount(selectedIngredients, ingredientId);
+    getIngredientCount(selectedIngredients, ingredient._id);
   };
 
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
-    
-    const fillingIngredients = selectedIngredients.filter(
-      (ingredient) => ingredient.type !== 'bun'
-    );
-    const bunIngredients = selectedIngredients.filter(
-      (ingredient) => ingredient.type === 'bun'
-    );
-  
-    const updatedFillingIngredients = [...fillingIngredients];
-    const [movedFillingIngredient] = updatedFillingIngredients.splice(
-      result.source.index - bunIngredients.length,
-      1
-    );
-    updatedFillingIngredients.splice(
-      result.destination.index - bunIngredients.length,
-      0,
-      movedFillingIngredient
-    );
-  
-    console.log('fillingIngredients:', fillingIngredients);
-    console.log('updatedFillingIngredients:', updatedFillingIngredients);
-    
-    const updatedIngredientsCombined = [...bunIngredients, ...updatedFillingIngredients];
-  
-    console.log('updatedIngredientsCombined:', updatedIngredientsCombined);
-  
-    dispatch(updateIngredientOrder(updatedIngredientsCombined));
+
+    const startIndex = result.source.index;
+    const endIndex = result.destination.index;
+    console.log(selectedIngredients[startIndex + 1])
+    const updatedIngredients = [...selectedIngredients]
+    const temp = updatedIngredients[startIndex + 1];
+    updatedIngredients[startIndex + 1] = updatedIngredients[endIndex + 1];
+    updatedIngredients[endIndex + 1] = temp;
+    dispatch(updateIngredientOrder(updatedIngredients));
   };
-  
+
+
   return (
     <div className={constructorStyles.burgerConstructor} ref={drop}>
-      <div className={constructorStyles.topBun}>
-        <ConstructorElement
-          text={`${selectedBun?.name} (верх)`}
-          price={selectedBun?.price}
-          thumbnail={selectedBun?.image_large}
-          type="top"
-          isLocked
-        />
-      </div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="selectedIngredients">
-          {(provided) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className={constructorStyles.ingredientsWrapper}
-            >
-              <div className={constructorStyles.scrollableContent}>
-                {selectedFilling && selectedFilling.map((item, index) => (
-                  <Draggable
-                    key={`${item._id}_${index}`}
-                    draggableId={`${item._id}_${index}`}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        onDrag={(e) => e.preventDefault()}
-                        className={constructorStyles.ingredientWrapper}
-                      >
-                        <DragIcon type="primary" />
-                        <ConstructorElement
-                          className={constructorStyles.item}
-                          text={item.name}
-                          price={item.price}
-                          thumbnail={item.image_large}
-                          type={item.type === 'bun' ? 'top' : undefined}
-                          isLocked={item.type === 'bun'}
-                          handleClose={() => {
-                            handleRemoveIngredient(item._id);
-                          }}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
+        {hasSelectedIngredients ? (
+          <div>
+            {selectedBun ? (
+              <div className={constructorStyles.topBun}>
+                <ConstructorElement
+                  text={`${selectedBun.name} (верх)`}
+                  price={selectedBun.price}
+                  thumbnail={selectedBun.image_large}
+                  type="top"
+                  isLocked
+                />
               </div>
-            </div>
-          )}
-        </Droppable>
+            ) : null}
+            <Droppable droppableId="selectedIngredients">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={constructorStyles.ingredientsWrapper}
+                >
+                  <div className={constructorStyles.scrollableContent}>
+                    {selectedFilling && selectedFilling.map((item, index) => (
+                      <Draggable
+                        key={`${item.uniqueId}`}
+                        draggableId={`${item.uniqueId}`}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            onDrag={(e) => e.preventDefault()}
+                            className={constructorStyles.ingredientWrapper}
+                          >
+                            <DragIcon type="primary"  className = {constructorStyles.dragIcon}/>
+                            <ConstructorElement
+                              className={constructorStyles.item}
+                              text={item.name}
+                              price={item.price}
+                              thumbnail={item.image_large}
+                              type={item.type === 'bun' ? 'top' : undefined}
+                              isLocked={item.type === 'bun'}
+                              handleClose={() => {
+                                handleRemoveIngredient(item);
+                              }}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                </div>
+              )}
+            </Droppable>
+            {selectedBun ? (
+              <div className={constructorStyles.bottomBun}>
+                <ConstructorElement
+                  text={`${selectedBun.name} (низ)`}
+                  price={selectedBun.price}
+                  thumbnail={selectedBun.image_large}
+                  type="bottom"
+                  isLocked
+                />
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <Droppable droppableId="selectedIngredients">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className={constructorStyles.emptyMessage}
+              >
+                Пожалуйста, перенесите сюда булку и ингредиенты для создания заказа.
+              </div>
+            )}
+          </Droppable>
+        )}
       </DragDropContext>
-
-      <div className={constructorStyles.bottomBun}>
-        <ConstructorElement
-          text={`${selectedBun?.name} (низ)`}
-          price={selectedBun?.price}
-          thumbnail={selectedBun?.image_large}
-          type="bottom"
-          isLocked
-        />
-      </div>
       <div className={constructorStyles.order}>
         <div className={constructorStyles.orderPrice}>
           {totalCost}
@@ -203,6 +193,7 @@ function BurgerConstructor() {
           type="primary"
           size="large"
           onClick={handleOrderClick}
+          disabled={!(selectedBun && selectedIngredients.length > 1)}
         >
           Оформить заказ
         </Button>

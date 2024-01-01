@@ -4,7 +4,7 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import boxStyles from './ingredient-box-item.module.css';
 
 function IngredientBoxItem(props) {
-  const { imageSrc, alt, price, name,сount, ingredient, onClick } = props;
+  const { imageSrc, alt, price, name, ingredient, onClick } = props;
   const [, ref] = useDrag({
     type: 'INGREDIENT',
     item: { ingredient }

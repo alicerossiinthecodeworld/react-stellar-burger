@@ -9,6 +9,10 @@ const Modal = ({ isOpen, onClose, children }) => {
     onClose();
   }, [onClose]);
 
+  const handleModalClick = (event) => {
+    event.stopPropagation();
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -18,10 +22,7 @@ const Modal = ({ isOpen, onClose, children }) => {
 
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
-    } else {
-      document.removeEventListener('keydown', handleKeyDown);
     }
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
@@ -33,11 +34,15 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return ReactDOM.createPortal(
     <div className="modal" onClick={handleOverlayClick}>
-      <ModalOverlay>{children}
-      <div className={modalstyles.close}>
-        <CloseIcon onClick={onClose} />
-      </div></ModalOverlay>
-    </div>,
+      <ModalOverlay>
+        <div className={modalstyles.modalContent} onClick={handleModalClick}>
+          {children}
+          <div className={modalstyles.close}>
+            <CloseIcon onClick={onClose} />
+          </div>
+        </div>
+      </ModalOverlay>
+    </div >,
     document.getElementById('modals')
   );
 };

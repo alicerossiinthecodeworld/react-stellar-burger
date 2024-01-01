@@ -1,40 +1,47 @@
-.ingredientWindow {
-  color: white;
-  position: relative;
+.page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: black;
-}
+ }
 
-.ingredientHeader{
+.ingredientHeader {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  text-align: center;
   font-family: 'JetBrains Mono';
   font-weight: 700;
   font-size: 36px;
   line-height: 40px;
-  text-align: start;
-  margin: 0;
 }
 
-.ingredientPic{
-  width: 520px;
-  height: 240px;
+.ingredientPic {
+  Width: 480px;
+  Height: 240px;
   margin: 0 auto;
 }
 
 .ingredientTitle{
   font-family: 'JetBrains Mono';
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
   text-align: center;
+  margin-top: 0;
 }
 
 .ingredientText{
-  font-family: 'JetBrains Mono';
+  font-family: 'Iceland';
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 120px;
+}
+.ingredientNumber{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
   line-height: 24px;
   margin: 0 auto;
   text-align: center;
@@ -45,5 +52,10 @@
   color:darkgray;
   display: grid;
   grid-template-columns: repeat(4, 120px);
+  grid-template-rows: repeat(2, 20px);
   column-gap: 5px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+  padding-left: 70px;
+  padding-right: 70px;
 }
