@@ -45,12 +45,12 @@
 }
 
 .ingredientsWrapper {
-  max-height: 400px; /* Adjust the height as needed */
+  max-height: 400px; 
   overflow-y: auto;
 }
 
 .scrollableContent {
-  padding: 0; /* Add some padding to separate the ingredients from the buns */
+  padding: 0; 
 }
 
 .topBun{

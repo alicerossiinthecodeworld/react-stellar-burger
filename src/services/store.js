@@ -5,6 +5,7 @@ import ingredientDetailsReducer from './ingredient-details-slice';
 import orderDetailsReducer from './order-details-slice';
 import authReducer from './auth-slice';
 import activeTabReducer from './active-tab-slice';
+import ordersSliceReducer from './orders-slice';
 
 const rootReducer = {
   ingredients: ingredientsReducer,
@@ -13,6 +14,7 @@ const rootReducer = {
   orderDetails: orderDetailsReducer,
   auth: authReducer,
   activeTab: activeTabReducer,
+  orders: ordersSliceReducer,
 };
 
 const store = configureStore({
