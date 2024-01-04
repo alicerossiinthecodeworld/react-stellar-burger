@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { request } from '../utils/api-config';
 
 const ordersSlice = createSlice({
   name: 'orders',
@@ -29,5 +30,15 @@ const ordersSlice = createSlice({
 });
 
 export const { setOrders, setLoading, setError, setTotal, setTotalToday } = ordersSlice.actions;
+
+export const fetchOrderById = (orderId) => async () => {
+  try {
+    const response = await request(`/orders/${orderId}`)
+    console.log(response)
+    return response.orders[0];
+  } catch (error) {
+    console.log(`Error: ${error.message}`);
+  }
+};
 
 export default ordersSlice.reducer;

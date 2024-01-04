@@ -34,3 +34,8 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.navLink {
+  text-decoration: none; 
+  color: inherit; 
+}

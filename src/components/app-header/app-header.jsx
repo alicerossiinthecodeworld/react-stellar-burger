@@ -6,24 +6,24 @@ import { Link } from 'react-router-dom';
 function AppHeader() {
   return (
     <div className={headerStyles.header}>
-      <Link to="/">
+      <Link to="/" className={headerStyles.navLink}>
         <div className={headerStyles.headerItem}>
           <BurgerIcon type="primary" />
           <p className={headerStyles.headerText}>Конструктор</p>
         </div>
       </Link>
-      <Link to='/feed'>
+      <Link to='/feed' className={headerStyles.navLink}>
         <div className={headerStyles.headerItem}>
           <ListIcon type="primary" />
           <p className={headerStyles.headerText}>Лента заказов</p>
         </div>
       </Link>
-      <Link to="/">
+      <Link to="/" className={headerStyles.navLink}>
         <div className={headerStyles.headerLogo}>
           <Logo />
         </div>
       </Link>
-      <Link to="/profile">
+      <Link to="/profile" className={headerStyles.navLink}>
         <div className={headerStyles.headerItem}>
           <ProfileIcon type="primary" />
           <p className={headerStyles.headerText}>Личный кабинет</p>

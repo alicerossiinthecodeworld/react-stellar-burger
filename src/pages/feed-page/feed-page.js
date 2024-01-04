@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOrders, setError, setLoading, setTotal, setTotalToday } from '../../services/orders-slice';
 import styles from './feed-page.module.css';
 import {
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { formatDate } from '../../utils/data';
 
 function FeedPage() {
   const dispatch = useDispatch();
@@ -36,12 +38,9 @@ function FeedPage() {
 
     socket.onclose = () => {
       dispatch(setLoading(false));
-    };
-
-    return () => {
       socket.close();
     };
-  }, [dispatch]);
+  }, []);
 
   const getOrderPrice = (order) => {
     return order.ingredients.reduce((total, ingredientId) => {
@@ -55,12 +54,11 @@ function FeedPage() {
       const ingredient = ingredients.find(ing => ing._id === ingredientId);
       return ingredient.image;
     });
-    console.log(images)
     return images;
   };
 
   if (orders.length === 0) {
-    return <div>
+    return <div className = {styles.notFound}>
       <h1>Лента заказов</h1>
       <p>Заказы отсутствуют</p>
     </div>;
@@ -77,25 +75,6 @@ function FeedPage() {
   const getOrdersByStatus = (status) => {
     return chunkArray(orders.filter(order => order.status === status), 10);
   };
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-
-    const options = { hour: '2-digit', minute: '2-digit' };
-    const timeString = date.toLocaleTimeString('ru-RU', options);
-
-    if (date.getDate() === now.getDate() &&
-      date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear()) {
-      return `Сегодня, ${timeString}  i-GMT+3`;
-    }
-    else {
-      const dateOptions = { day: 'numeric', month: 'long' };
-      const dateStringFormatted = date.toLocaleDateString('ru-RU', dateOptions);
-      return `${dateStringFormatted}, ${timeString}  i-GMT+3`;
-    }
-  }
 
   const renderColumns = (ordersChunks) => {
     return ordersChunks.map((ordersChunk, index) => (
@@ -116,7 +95,8 @@ function FeedPage() {
         <h1 className={styles.header}>Лента заказов</h1>
         <div className={styles.ordersScrollbar}>
           {orders.map(order => (
-            <div key={order._id} className={styles.orderBox}>
+           <Link to={`/feed/${order.number}`} key={order.number}  className={styles.navLink}>
+            <div key={order.number} className={styles.orderBox}>
               <div className={styles.orderHeaderZone}>
                 <p className={styles.orderId}>#{order.number}</p>
                 <p className={styles.orderDate}>{formatDate(order.createdAt)}</p>
@@ -124,7 +104,9 @@ function FeedPage() {
               <p className={styles.name}>{order.name}</p>
               <div className={styles.priceZone}>
                 <div className={styles.ingredientImages}>
-                  {getIngredientImages(order).map((imageSrc, index) => (
+                  {getIngredientImages(order).
+                  slice(0, 8).
+                  map((imageSrc, index) => (
                     <img className={styles.image} key={index} src={imageSrc} alt={`Ingredient ${index}`}
                       style={{
                         marginLeft: index === 0 ? '0' : '-20px',
@@ -139,6 +121,7 @@ function FeedPage() {
                 </div>
               </div>
             </div>
+            </Link>
           ))}
         </div>
       </div>

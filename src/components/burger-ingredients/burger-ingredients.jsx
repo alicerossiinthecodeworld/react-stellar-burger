@@ -70,8 +70,7 @@ function BurgerIngredients() {
   const bunIngredients = data.filter((item) => item.type === 'bun');
   const sauceIngredients = data.filter((item) => item.type === 'sauce');
   const mainIngredients = data.filter((item) => item.type === 'main');
-  console.log(ingredientBoxWrapperRef)
-
+  
   return (
     <div>
       <h1 className={ingredientsStyles.ingredient__header}>Соберите бургер</h1>

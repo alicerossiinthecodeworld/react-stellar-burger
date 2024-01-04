@@ -2,7 +2,7 @@
   border-radius: 40px;
   background-color: #2f2f37;
   width: 584px;
-  max-height: 250px;
+  min-height: 250px;
   margin-bottom: 10px;
 }
 
@@ -196,4 +196,15 @@
   color: white;
   padding: 0;
   margin: 0 0 20px 0;
+}
+
+
+.navLink {
+  text-decoration: none; 
+  color: inherit; 
+}
+
+.notFound {
+  margin: 40px auto;
+  text-align: center;
 }

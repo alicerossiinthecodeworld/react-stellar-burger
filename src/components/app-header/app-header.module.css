@@ -28,3 +28,8 @@
   line-height: 24px;
   color: rgb(133, 133, 173)
 }
+
+.navLink {
+  text-decoration: none; 
+  color: inherit; 
+}
