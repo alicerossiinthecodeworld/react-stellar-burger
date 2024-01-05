@@ -123,3 +123,14 @@
   margin: 40px auto;
   text-align: center;
 }
+
+.header {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: white;
+  max-width: 530px;
+  padding: 0;
+  margin-left: 80px;
+}

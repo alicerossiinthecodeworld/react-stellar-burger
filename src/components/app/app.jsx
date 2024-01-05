@@ -13,6 +13,7 @@ import { getSavedUserData, loginSuccess } from '../../services/auth-slice';
 import { fetchIngredients } from '../../services/ingredient-slice';
 import OrderInfoPage from '../../pages/order-info-page/order-info-page';
 import FeedPage from '../../pages/feed-page/feed-page';
+import ProfileFeedPage from '../../pages/profile-feed-page/profile-feed-page';
 
 export default function App(){
   const dispatch = useDispatch();
@@ -55,6 +56,14 @@ export default function App(){
           element={
             <ProtectedRouteElement>
               <ProfilePage />
+            </ProtectedRouteElement>
+          }
+        />
+                <Route
+          path="/profile/orders"
+          element={
+            <ProtectedRouteElement>
+              <ProfileFeedPage/>
             </ProtectedRouteElement>
           }
         />

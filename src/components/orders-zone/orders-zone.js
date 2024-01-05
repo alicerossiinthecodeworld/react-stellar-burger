@@ -26,7 +26,6 @@ const OrdersFeedZone = ({orders}) => {
 
   return (
     <div className={styles.ordersZone}>
-    <h1 className={styles.header}>Лента заказов</h1>
     <div className={styles.ordersScrollbar}>
       {orders.map(order => (
        <Link to={`/feed/${order.number}`} key={order.number}  className={styles.navLink}>

@@ -39,7 +39,7 @@ function FeedPage() {
   }, []);
 
   if (orders.length === 0) {
-    return <div className = {styles.notFound}>
+    return <div className={styles.notFound}>
       <h1>Лента заказов</h1>
       <p>Заказы отсутствуют</p>
     </div>;
@@ -61,7 +61,7 @@ function FeedPage() {
     return ordersChunks.map((ordersChunk, index) => (
       <div key={index} className={styles.column}>
         {ordersChunk.map(order => (
-          <div className = {styles.orderNumber} key={order._id}>{order.number}</div>
+          <div className={styles.orderNumber} key={order._id}>{order.number}</div>
         ))}
       </div>
     ));
@@ -72,23 +72,26 @@ function FeedPage() {
 
   return (
     <div className={styles.page}>
-      <OrdersFeedZone orders={orders}/>
+      <div className={styles.ordersZone}>
+        <h1 className={styles.header}>Лента заказов</h1>
+        <OrdersFeedZone orders={orders} />
+      </div>
       <div className={styles.infoZone}>
         <div className={styles.columnRow}>
           {readyOrders.length > 0 ? (
-          <div className={styles.orderStatus}>
-            <p className={styles.columnHeader}>Готовы</p>
-            <div className={styles.columnRow}>
-              {renderColumns(readyOrders)}
-            </div>
-          </div>):<div></div>}
+            <div className={styles.orderStatus}>
+              <p className={styles.columnHeader}>Готовы</p>
+              <div className={styles.columnRow}>
+                {renderColumns(readyOrders)}
+              </div>
+            </div>) : <div></div>}
           {inProgressOrders.length > 0 ? (
-          <div className={styles.orderStatus}>
-            <p className={styles.columnHeader}>В работе</p>
-            <div className={styles.columnRow}>
-              {renderColumns(inProgressOrders)}
-            </div>
-          </div>):<div></div>}
+            <div className={styles.orderStatus}>
+              <p className={styles.columnHeader}>В работе</p>
+              <div className={styles.columnRow}>
+                {renderColumns(inProgressOrders)}
+              </div>
+            </div>) : <div></div>}
         </div>
         <div className={styles.total}>
           <p className={styles.columnHeader}>Выполнено за все время</p>
