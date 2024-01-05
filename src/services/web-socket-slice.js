@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Переносим создание сокета вне слайса Redux
 let socketInstance = null;
 
 const websocketSlice = createSlice({
