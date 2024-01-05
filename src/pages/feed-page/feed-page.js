@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOrders, setError, setLoading, setTotal, setTotalToday } from '../../services/orders-slice';
+import { connectWebSocket, disconnect } from '../../services/web-socket-slice';
+
 import styles from './feed-page.module.css';
 
 import OrdersFeedZone from '../../components/orders-zone/orders-zone';
@@ -11,32 +13,35 @@ function FeedPage() {
   const total = useSelector(state => state.orders.total);
   const totalToday = useSelector(state => state.orders.totalToday);
 
-
   useEffect(() => {
-    const socket = new WebSocket('wss://norma.nomoreparties.space/orders/all');
+    const fetchData = async () => {
+      const socketUrl = `wss://norma.nomoreparties.space/orders/all`;
 
-    socket.onopen = () => {
-      dispatch(setLoading(true));
-    };
+      const onOpen = () => {
+        dispatch(setLoading(true));
+      };
 
-    socket.onmessage = event => {
-      const data = JSON.parse(event.data);
-      if (data.orders.length > 0) {
-        dispatch(setOrders(data.orders));
-      }
-      dispatch(setTotal(data.total))
-      dispatch(setTotalToday(data.totalToday))
-    };
+      const onMessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data && data.orders && data.orders.length > 0) {
+          dispatch(setOrders(data.orders));
+        }
+        dispatch(setTotal(data.total))
+        dispatch(setTotalToday(data.totalToday))
+      };
 
-    socket.onerror = error => {
-      dispatch(setError(error.message));
-    };
+      const onError = (error) => {
+        dispatch(setError(error.message));
+      };
 
-    socket.onclose = () => {
-      dispatch(setLoading(false));
-      socket.close();
-    };
-  }, []);
+      dispatch(connectWebSocket(socketUrl, onOpen, onMessage, onError));
+
+      return () => {
+        dispatch(disconnect());
+      };
+    }
+    fetchData();
+  }, [dispatch]);
 
   if (orders.length === 0) {
     return <div className={styles.notFound}>

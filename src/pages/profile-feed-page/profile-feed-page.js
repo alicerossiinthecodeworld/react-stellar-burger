@@ -5,40 +5,37 @@ import OrdersFeedZone from "../../components/orders-zone/orders-zone";
 import { refreshAccessToken } from "../../services/auth-slice";
 import ProfileColumn from "../../components/profile-column/profile-column";
 import styles from './profile-feed-page.module.css';
+import { connectWebSocket, disconnect } from '../../services/web-socket-slice';
 
 const ProfileFeedPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const accessToken = await refreshAccessToken();
-        const socket = new WebSocket(`wss://norma.nomoreparties.space/orders?token=${accessToken.replace('Bearer ', '')}`);
+      const accessToken = await refreshAccessToken();
+      const socketUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken.replace('Bearer ', '')}`;
 
-        socket.onopen = () => {
-          dispatch(setProfileFeedLoading(true));
-        };
+      const onOpen = () => {
+        dispatch(setProfileFeedLoading(true));
+      };
 
-        socket.onmessage = (event) => {
-          const data = JSON.parse(event.data);
-          if (data && data.orders && data.orders.length > 0) {
-            dispatch(setProfileOrders(data.orders));
-          }
-        };
+      const onMessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data && data.orders && data.orders.length > 0) {
+          dispatch(setProfileOrders(data.orders));
+        }
+      };
 
-        socket.onerror = (error) => {
-          dispatch(setProfileFeedError(error.message));
-        };
-
-        socket.onclose = () => {
-          dispatch(setProfileFeedLoading(false));
-          socket.close();
-        };
-      } catch (error) {
+      const onError = (error) => {
         dispatch(setProfileFeedError(error.message));
-      }
-    };
+      };
 
+      dispatch(connectWebSocket(socketUrl, onOpen, onMessage, onError));
+
+      return () => {
+        dispatch(disconnect());
+      };
+    }
     fetchData();
   }, [dispatch]);
 

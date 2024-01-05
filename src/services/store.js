@@ -7,6 +7,7 @@ import authReducer from './auth-slice';
 import activeTabReducer from './active-tab-slice';
 import ordersSliceReducer from './orders-slice';
 import profileOrdersReducer from './profile-orders-slice';
+import webSocketReducer from './web-socket-slice';
 
 const rootReducer = {
   ingredients: ingredientsReducer,
@@ -16,7 +17,8 @@ const rootReducer = {
   auth: authReducer,
   activeTab: activeTabReducer,
   orders: ordersSliceReducer,
-  profileOrders: profileOrdersReducer
+  profileOrders: profileOrdersReducer,
+  webSocket: webSocketReducer,
 };
 
 const store = configureStore({
