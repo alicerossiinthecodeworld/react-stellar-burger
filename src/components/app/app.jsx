@@ -11,6 +11,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getSavedUserData, loginSuccess } from '../../services/auth-slice';
 import { fetchIngredients } from '../../services/ingredient-slice';
+import OrderInfoPage from '../../pages/order-info-page/order-info-page';
+import FeedPage from '../../pages/feed-page/feed-page';
+import ProfileFeedPage from '../../pages/profile-feed-page/profile-feed-page';
 
 export default function App(){
   const dispatch = useDispatch();
@@ -27,6 +30,8 @@ export default function App(){
     <Router>
       <AppHeader />
       <Routes>
+        <Route path="/feed/:orderId" element={<OrderInfoPage/>}>
+        </Route>
         <Route path="/" element={<MainPage/>}>
           <Route path="ingredients/:ingredientId" element={<MainPage />} />
         </Route>
@@ -54,6 +59,18 @@ export default function App(){
             </ProtectedRouteElement>
           }
         />
+                <Route
+          path="/profile/orders"
+          element={
+            <ProtectedRouteElement>
+              <ProfileFeedPage/>
+            </ProtectedRouteElement>
+          }
+        />
+        <Route
+          path="/feed"
+          element={<FeedPage />} 
+        />  
       </Routes>
     </Router>
   );

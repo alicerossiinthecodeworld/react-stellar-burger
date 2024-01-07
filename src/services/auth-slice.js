@@ -214,7 +214,7 @@ export function getSavedUserData() {
   return null;
 }
 
-async function refreshAccessToken() {
+export async function refreshAccessToken() {
   const refreshToken = localStorage.getItem('refreshToken');
   try {
     const response = await request('/auth/token', {

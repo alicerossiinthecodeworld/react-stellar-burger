@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
 import styles from './profile-page.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { logoutUser, updateUser } from '../../services/auth-slice';
+import { updateUser } from '../../services/auth-slice';
 import useForm from '../../hooks/use-form';
+import ProfileColumn from '../../components/profile-column/profile-column';
 
 function ProfilePage() {
   const user = useSelector((state) => state.auth.user);
@@ -15,15 +15,6 @@ function ProfilePage() {
   });
 
   const dispatch = useDispatch();
-  const refreshToken = localStorage.getItem('refreshToken');
- 
-  const handleLogout = () => {
-    if (refreshToken) {
-      dispatch(logoutUser());
-    } else {
-      console.log('Refresh Token отсутствует. Невозможно выполнить логаут.');
-    }
-  };
 
   const handleSave = (e) => {
     e.preventDefault(); 
@@ -46,24 +37,7 @@ function ProfilePage() {
   return (
     <div className={styles.page}>
       <div className={styles.columns}>
-        <div className={styles.buttonColumn}>
-          <Link to="/profile" className={styles.navLink}>
-            <Button htmlType="button" type="secondary" size="large">
-              Профиль
-            </Button>
-          </Link>
-          <Link to="/profile/orders" className={styles.navLink}>
-            <Button htmlType="button" type="secondary" size="large">
-              История заказов
-            </Button>
-          </Link>
-          <Link to="/" className={styles.navLink}>
-            <Button htmlType="button" type="secondary" size="large" onClick={handleLogout}>
-              Выход
-            </Button>
-          </Link>
-          <p className={styles.additionalText}>В этом разделе вы можете изменить свои персональные данные</p>
-        </div>
+        <ProfileColumn additionalText ={"В этом разделе вы можете изменить свои персональные данные"}/>
         <form className={styles.changeProfileForm} onSubmit={handleSave}>
           <Input id="name" placeholder="Имя" onChange={handleChange} value={values.name} name="name" extraClass={styles.input} />
           <Input id="email" type='email' placeholder="E-mail" onChange={handleChange} value={values.email} name="email" extraClass={styles.input} />
@@ -78,7 +52,7 @@ function ProfilePage() {
           />
           <div className={styles.buttonsZone}>
             <Button htmlType="button" type="secondary" size="small">
-              отмена
+              Отмена
             </Button>
             <Button
               htmlType="submit"

@@ -1,0 +1,153 @@
+.orderHeaderZone {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ordersZone {
+  margin-left: 60px;
+}
+
+.orderStatus{
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: white;
+  margin-left: 20px;
+  margin-top: 0px;
+}
+
+.priceZone{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.orderNumber{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-bottom: 20px;
+  color: #00CCCC;
+}
+
+.orderDate {
+  margin-top: 20px;
+  margin-right: 20px;
+  text-align: center;
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8585AD;
+}
+
+.orderBox {
+  border-radius: 40px;
+  background-color: #2f2f37;
+  width: 584px;
+  min-height: 250px;
+  margin-bottom: 10px;
+}
+
+.ordersScrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ordersScrollbar::-webkit-scrollbar-track {
+  background-color: #2F2F37;
+}
+
+.ordersScrollbar::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
+.orderStatus::-webkit-scrollbar {
+  width: 8px;
+}
+
+.orderStatus::-webkit-scrollbar-track {
+  background-color: #2F2F37;
+}
+
+.orderStatus::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
+
+.ordersScrollbar{
+  max-height: 850px; 
+  width: 605px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.orderPrice{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  column-gap: 10px;
+  margin-right: 20px;
+  align-items: center
+}
+
+.header {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: white;
+  max-width: 530px;
+  padding: 0;
+}
+
+.navLink {
+  text-decoration: none; 
+  color: inherit; 
+}
+
+.orderHeaderZone {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ingredientImages {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.image {
+  position: relative;
+  height: 64px;
+  width: 64px;
+  border-radius: 100px;
+  border: 2px #801AB2 solid;
+  opacity: 1; 
+  background-color: black;
+}
+
+.orderId {
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-left: 20px;
+}
+
+.priceDigits{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-bottom: 20px;
+}
