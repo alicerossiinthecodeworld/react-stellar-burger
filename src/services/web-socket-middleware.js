@@ -6,9 +6,7 @@ import { setProfileOrders } from './profile-orders-slice'
 
 export const socketMiddleware = () => {
   return ({ dispatch }) => (next) => (action) => {
-    console.log(action)
     if (action.type === "wsConnection") {
-      console.log("tut")
       const url = action.payload.url;
       const socketInstance = new WebSocket(url);
 
