@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 let socketInstance = null;
 
@@ -6,55 +7,36 @@ const websocketSlice = createSlice({
   name: 'websocket',
   initialState: {
     socketUrl: null,
-    eventHandlers: {
-      onOpen: null,
-      onMessage: null,
-      onError: null,
-    },
+    feedType: null,
   },
   reducers: {
     connect: (state, action) => {
       state.socketUrl = action.payload.url;
-      state.eventHandlers = { ...action.payload.eventHandlers };
+    },
+    setFeedType: (state, action) => {
+      state.feedType = action.payload
     },
     disconnect: (state) => {
       state.socketUrl = null;
-      state.eventHandlers = {
-        onOpen: null,
-        onMessage: null,
-        onError: null,
-      };
+      state.feedType = null;
     },
   },
 });
 
-export const { connect, disconnect } = websocketSlice.actions;
+export const { connect, disconnect, setFeedType } = websocketSlice.actions;
 
-
-export const connectWebSocket = (socketUrl, onOpen, onMessage, onError) => async (dispatch) => {
+export const connectWebSocket = (socketUrl, feedType) => (dispatch) => {
   if (socketInstance !== null) {
     socketInstance.close();
   }
-
+  console.log(`feed:${feedType}`)
+  dispatch(setFeedType(feedType));
   socketInstance = new WebSocket(socketUrl);
-
-  if (onOpen) {
-    socketInstance.onopen = onOpen;
-  }
-
-  if (onMessage) {
-    socketInstance.onmessage = onMessage;
-  }
-
-  if (onError) {
-    socketInstance.onerror = onError;
-  }
-
-  socketInstance.onclose = () => {
-    socketInstance = null;
-    dispatch(disconnect());
+  socketInstance.onopen = () => {
+    dispatch({ type: "wsConnection", payload: { "url": socketUrl, "feed": feedType } });
   };
 };
+
 
 
 export default websocketSlice.reducer;

@@ -17,24 +17,7 @@ function FeedPage() {
     const fetchData = async () => {
       const socketUrl = `wss://norma.nomoreparties.space/orders/all`;
 
-      const onOpen = () => {
-        dispatch(setLoading(true));
-      };
-
-      const onMessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data && data.orders && data.orders.length > 0) {
-          dispatch(setOrders(data.orders));
-        }
-        dispatch(setTotal(data.total))
-        dispatch(setTotalToday(data.totalToday))
-      };
-
-      const onError = (error) => {
-        dispatch(setError(error.message));
-      };
-
-      dispatch(connectWebSocket(socketUrl, onOpen, onMessage, onError));
+      dispatch(connectWebSocket(socketUrl, 'feed', dispatch));
 
       return () => {
         dispatch(disconnect());

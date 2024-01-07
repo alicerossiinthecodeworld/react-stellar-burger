@@ -14,24 +14,7 @@ const ProfileFeedPage = () => {
     const fetchData = async () => {
       const accessToken = await refreshAccessToken();
       const socketUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken.replace('Bearer ', '')}`;
-
-      const onOpen = () => {
-        dispatch(setProfileFeedLoading(true));
-      };
-
-      const onMessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data && data.orders && data.orders.length > 0) {
-          dispatch(setProfileOrders(data.orders));
-        }
-      };
-
-      const onError = (error) => {
-        dispatch(setProfileFeedError(error.message));
-      };
-
-      dispatch(connectWebSocket(socketUrl, onOpen, onMessage, onError));
-
+      dispatch(connectWebSocket(socketUrl, 'profile'));
       return () => {
         dispatch(disconnect());
       };
