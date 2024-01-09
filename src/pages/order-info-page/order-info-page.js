@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { fetchOrderById } from '../../services/orders-slice';
+import { fetchOrderById } from '../../services/order-details-slice';
 import { formatDate } from '../../utils/data';
 import {
   CurrencyIcon,
@@ -11,7 +11,7 @@ import styles from './order-info-page.module.css'
 export const OrderInfoPage = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
-  const orders = useSelector((state) => state.orders.data);
+  const orders = useSelector((state) => state.orders.orders);
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -20,13 +20,11 @@ export const OrderInfoPage = () => {
   useEffect(() => {
     setLoading(true);
     const foundOrder = orders && orders.find((order) => order.number === orderId);
-
     if (foundOrder) {
       setOrder(foundOrder);
       setLoading(false);
     } else {
       let isMounted = true;
-
       dispatch(fetchOrderById(orderId))
         .then((response) => {
           if (isMounted) {

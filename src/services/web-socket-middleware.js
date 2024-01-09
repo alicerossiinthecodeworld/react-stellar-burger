@@ -1,30 +1,33 @@
-import { connect, disconnect, wsMessage } from "./web-socket-slice";
-import { WebSocketConnection } from './actions/actions'
 import { refreshAccessToken } from "./auth-slice";
-
-export const socketMiddleware = () => {
+import { WebSocketConnection } from "./actions/feed-actions";
+export const socketMiddleware = ( {wsActions}) => {
+  const {
+    wsConnect,
+    onClose,
+    onError,
+    onMessage,
+  } = wsActions;
   return ({ dispatch }) => (next) => (action) => {
     if (action.type === WebSocketConnection) {
-      const url = action.payload.url;
-      const socketInstance = new WebSocket(url);
+      const socketInstance = new WebSocket(action.payload.url);
 
       socketInstance.onopen = () => {
-        dispatch(connect({ url }));
+        dispatch(wsConnect(action.payload.url));
       };
 
       socketInstance.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        dispatch(onError(error))
       };
 
       socketInstance.onmessage = (event) => {
         const { data } = event;
         const parsedData = JSON.parse(data);
         if (data?.message === 'Invalid or missing token') { refreshAccessToken() }
-        dispatch(wsMessage(parsedData))
+        dispatch(onMessage(parsedData))
       };
 
       socketInstance.onclose = () => {
-        dispatch(disconnect());
+        dispatch(onClose());
       };
     }
     return next(action);

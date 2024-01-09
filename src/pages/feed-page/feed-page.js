@@ -1,32 +1,30 @@
+import { useSelector, useDispatch} from 'react-redux';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setOrders, setError, setLoading, setTotal, setTotalToday } from '../../services/orders-slice';
-import { connectWebSocket, disconnect } from '../../services/web-socket-slice';
-
 import styles from './feed-page.module.css';
-
+import { FeedWsClose } from '../../services/actions/feed-actions';
 import OrdersFeedZone from '../../components/orders-zone/orders-zone';
-
+import { connectWebSocket } from '../../utils/web-socket-utils';
 function FeedPage() {
   const dispatch = useDispatch();
-  const orders = useSelector(state => state.orders.data);
-  const total = useSelector(state => state.orders.total);
-  const totalToday = useSelector(state => state.orders.totalToday);
 
   useEffect(() => {
     const fetchData = async () => {
       const socketUrl = `wss://norma.nomoreparties.space/orders/all`;
 
-      dispatch(connectWebSocket(socketUrl, 'feed'));
+      dispatch(connectWebSocket(socketUrl));
 
       return () => {
-        dispatch(disconnect());
+        dispatch(FeedWsClose());
       };
     }
     fetchData();
   }, [dispatch]);
+   
+  const orders = useSelector(state => state.orders.orders);
+  const total = useSelector(state => state.orders.total);
+  const totalToday = useSelector(state => state.orders.totalToday);
 
-  if (orders.length === 0) {
+  if (!orders || orders.length === 0) {
     return <div className={styles.notFound}>
       <h1>Лента заказов</h1>
       <p>Заказы отсутствуют</p>

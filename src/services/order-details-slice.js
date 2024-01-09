@@ -35,6 +35,17 @@ export const {
   clearOrder,
 } = orderSlice.actions;
 
+
+export const fetchOrderById = (orderId) => async () => {
+  try {
+    const response = await request(`/orders/${orderId}`)
+    console.log(response)
+    return response.orders[0];
+  } catch (error) {
+    console.log(`Error: ${error.message}`);
+  }
+};
+
 export const createOrder = (ingredientIds) => async (dispatch) => {
   try {
     const AccessToken = await refreshAccessToken()
