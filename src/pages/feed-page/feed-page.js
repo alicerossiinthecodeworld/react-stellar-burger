@@ -17,7 +17,7 @@ function FeedPage() {
     const fetchData = async () => {
       const socketUrl = `wss://norma.nomoreparties.space/orders/all`;
 
-      dispatch(connectWebSocket(socketUrl, 'feed', dispatch));
+      dispatch(connectWebSocket(socketUrl, 'feed'));
 
       return () => {
         dispatch(disconnect());

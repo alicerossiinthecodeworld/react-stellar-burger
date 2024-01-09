@@ -1,12 +1,10 @@
-import { connect, disconnect } from "./web-socket-slice";
-import { setTotal, setOrders, setTotalToday } from "./orders-slice";
-import { setProfileOrders } from './profile-orders-slice'
-
-
+import { connect, disconnect, wsMessage } from "./web-socket-slice";
+import { WebSocketConnection } from './actions/actions'
+import { refreshAccessToken } from "./auth-slice";
 
 export const socketMiddleware = () => {
   return ({ dispatch }) => (next) => (action) => {
-    if (action.type === "wsConnection") {
+    if (action.type === WebSocketConnection) {
       const url = action.payload.url;
       const socketInstance = new WebSocket(url);
 
@@ -21,17 +19,8 @@ export const socketMiddleware = () => {
       socketInstance.onmessage = (event) => {
         const { data } = event;
         const parsedData = JSON.parse(data);
-        if (action.payload.feed === 'profile') {
-          if (parsedData && parsedData.orders && parsedData.orders.length > 0) {
-            dispatch(setProfileOrders(parsedData.orders));
-          }
-        } else {
-          if (parsedData && parsedData.orders && parsedData.orders.length > 0) {
-            dispatch(setOrders(parsedData.orders));
-            dispatch(setTotal(parsedData.total));
-            dispatch(setTotalToday(parsedData.totalToday));
-          }
-        }
+        if (data?.message === 'Invalid or missing token') { refreshAccessToken() }
+        dispatch(wsMessage(parsedData))
       };
 
       socketInstance.onclose = () => {
@@ -41,4 +30,3 @@ export const socketMiddleware = () => {
     return next(action);
   };
 };
-

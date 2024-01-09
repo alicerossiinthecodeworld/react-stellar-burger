@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-
-let socketInstance = null;
-
+import { WebSocketConnection } from './actions/actions';
+import { setProfileOrders } from './profile-orders-slice';
+import { setOrders, setTotal, setTotalToday } from './orders-slice';
 const websocketSlice = createSlice({
   name: 'websocket',
   initialState: {
@@ -14,29 +13,45 @@ const websocketSlice = createSlice({
       state.socketUrl = action.payload.url;
     },
     setFeedType: (state, action) => {
-      state.feedType = action.payload
+      state.feedType = action.payload;
     },
     disconnect: (state) => {
       state.socketUrl = null;
       state.feedType = null;
     },
+    wsMessage: (state, action) =>
+    { const parsedData = action.payload
+      if (state.feed === 'profile') {
+      if (parsedData && parsedData.orders && parsedData.orders.length > 0) {
+        dispatch(setProfileOrders(parsedData.orders));
+      }
+    } else {
+      if (parsedData && parsedData.orders && parsedData.orders.length > 0) {
+        dispatch(setOrders(parsedData.orders));
+        dispatch(setTotal(parsedData.total));
+        dispatch(setTotalToday(parsedData.totalToday));
+      }
+    }}
   },
-});
+})
+  
+export const { connect, disconnect, setFeedType, wsMessage} = websocketSlice.actions;
+let socketInstance = null;
 
-export const { connect, disconnect, setFeedType } = websocketSlice.actions;
 
-export const connectWebSocket = (socketUrl, feedType) => (dispatch) => {
-  if (socketInstance !== null) {
-    socketInstance.close();
-  }
-  console.log(`feed:${feedType}`)
-  dispatch(setFeedType(feedType));
-  socketInstance = new WebSocket(socketUrl);
-  socketInstance.onopen = () => {
-    dispatch({ type: "wsConnection", payload: { "url": socketUrl, "feed": feedType } });
+export const connectWebSocket = (socketUrl, feedType) => {
+  return (dispatch) => {
+
+    if (socketInstance !== null) {
+      socketInstance.close();
+    }
+    dispatch(setFeedType(feedType));
+    socketInstance = new WebSocket(socketUrl);
+
+    socketInstance.onopen = () => {
+      dispatch({ type: WebSocketConnection, payload: { url: socketUrl, feed: feedType } });
+    };
   };
 };
-
-
 
 export default websocketSlice.reducer;
