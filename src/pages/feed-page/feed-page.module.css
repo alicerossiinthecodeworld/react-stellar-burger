@@ -1,0 +1,136 @@
+.orderBox {
+  border-radius: 40px;
+  background-color: #2f2f37;
+  width: 584px;
+  min-height: 250px;
+  margin-bottom: 10px;
+}
+
+.columnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 200px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.page {
+  display: flex;
+  flex-direction: row;
+}
+
+.orderHeaderZone {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ordersZone {
+  margin-left: 60px;
+}
+
+.header {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: white;
+  max-width: 530px;
+  padding: 0;
+}
+
+.orderPrice{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  column-gap: 10px;
+  margin-right: 20px;
+  align-items: center
+}
+
+.ordersScrollbar{
+  max-height: 850px; 
+  width: 605px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+.infoZone{
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+  margin-top: 80px;
+}
+
+.orderStatus{
+  display: flex;
+  flex-direction: column;
+}
+
+.columnRow{
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+.orderNumber{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-bottom: 20px;
+  color: #00CCCC;
+}
+
+.columnHeader{
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: white;
+  margin-left: 20px;
+  margin-top: 0px;
+}
+
+.totalDigit{
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 144px;
+  line-height: 120px;
+  color: white;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+
+.navLink {
+  text-decoration: none; 
+  color: inherit; 
+}
+
+.notFound {
+  margin: 40px auto;
+  text-align: center;
+}
+
+.header {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: white;
+  max-width: 530px;
+  padding: 0;
+  margin-left: 80px;
+}

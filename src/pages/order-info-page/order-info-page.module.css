@@ -1,0 +1,105 @@
+.orderNumber {
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin: 40px auto 20px auto;
+  max-width: 250px;
+}
+
+.orderName {
+  max-width: 640px;
+  margin: 0 auto 20px auto;
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.orderStatus {
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 auto 40px auto;
+  color: #00CCCC;
+  max-width: 640px;
+}
+
+.containsHeader {
+  margin: 0 auto;
+  max-width: 640px;
+  margin-bottom: 20px;
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.contains {
+  margin: 0 auto;
+  max-width: 680px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  margin-top: 20px;
+}
+
+.containsImg {
+  height: 64px;
+  width: 64px;
+  border-radius: 100px;
+  border: 2px #801AB2 solid;
+  opacity: 1;
+  background-color: black;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.containsItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 20px;
+  justify-content: space-between;
+  margin-right: 20px;
+}
+
+.containsTitle {
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  width: 400px;
+  margin-left: 20px;
+}
+
+.containsPrice {
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  width: 200px;
+  margin-right: 0px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+.orderTime {
+  color: #8585AD;
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.orderTotal{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 720px;
+}

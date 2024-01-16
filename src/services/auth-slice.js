@@ -11,7 +11,8 @@ const authSlice = createSlice({
     error: null,
     success: false,
     isAuthChecked: false,
-    refreshToken: localStorage.getItem('refreshToken')
+    refreshToken: localStorage.getItem('refreshToken'),
+    accessToken: localStorage.getItem('accessToken')
   },
   reducers: {
     loginRequest: (state) => {
@@ -91,6 +92,10 @@ const authSlice = createSlice({
     saveRefreshToken: (state, action) => {
       state.refreshToken = action.payload
       localStorage.setItem('refreshToken', action.payload);
+    },
+    saveAccessToken: (state, action) => {
+      state.accessToken = action.payload
+      localStorage.setItem('accessToken', action.payload);
     }
   },
 });
@@ -109,7 +114,8 @@ export const {
   updateUserFailure,
   updateUserRequest,
   updateUserSuccess,
-  saveRefreshToken
+  saveRefreshToken,
+  saveAccessToken
 } = authSlice.actions;
 
 export const login = (userData) => async (dispatch) => {
@@ -126,6 +132,7 @@ export const login = (userData) => async (dispatch) => {
     if (response.success && response.user) {
       dispatch(loginSuccess(response.user))
       dispatch(saveRefreshToken(response.refreshToken))
+      dispatch(saveAccessToken(response.accessToken))
     } else {
       dispatch(loginFailure('Не получилось войти, проверьте данные'));
     }
@@ -148,6 +155,7 @@ export const registerUser = (userData) => async (dispatch) => {
     if (response && response.user) {
       dispatch(registrationSuccess(response.user));
       dispatch(saveRefreshToken(response.refreshToken));
+      dispatch(saveAccessToken(response.accessToken))
     } else {
       dispatch(registrationFailure('Не получилось зарегистрироваться, пожалуйста, проверьте данные'));
     }
@@ -190,6 +198,7 @@ export const logoutUser = () => async (dispatch) => {
     });
     dispatch(logoutSuccess());
     localStorage.removeItem('refreshToken')
+    localStorage.removeItem('accessToken')
     localStorage.removeItem('userData')
     return response;
   } catch (error) {
@@ -214,7 +223,7 @@ export function getSavedUserData() {
   return null;
 }
 
-async function refreshAccessToken() {
+export async function refreshAccessToken() {
   const refreshToken = localStorage.getItem('refreshToken');
   try {
     const response = await request('/auth/token', {
@@ -223,6 +232,7 @@ async function refreshAccessToken() {
       body: JSON.stringify({ token: refreshToken }),
     })
     localStorage.setItem('refreshToken', response.refreshToken);
+    localStorage.setItem('accessToken', response.accessToken)
     return response.accessToken;
   }
   catch (error) {

@@ -1,0 +1,6 @@
+.columns{
+  display: flex;
+  flex-direction: row;
+  margin-top: 80px;
+  text-decoration: none; 
+}

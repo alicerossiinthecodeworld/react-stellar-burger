@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { request } from '../utils/api-config';
+import { refreshAccessToken } from './auth-slice';
 
 const orderSlice = createSlice({
   name: 'order',
@@ -34,13 +35,26 @@ export const {
   clearOrder,
 } = orderSlice.actions;
 
+
+export const fetchOrderById = (orderId) => async () => {
+  try {
+    const response = await request(`/orders/${orderId}`)
+    console.log(response)
+    return response.orders[0];
+  } catch (error) {
+    console.log(`Error: ${error.message}`);
+  }
+};
+
 export const createOrder = (ingredientIds) => async (dispatch) => {
   try {
+    const AccessToken = await refreshAccessToken()
     dispatch(createOrderRequest());
     const response = await request('/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': AccessToken
       },
       body: JSON.stringify({ ingredients: ingredientIds }),
     });
