@@ -1,25 +1,50 @@
-import {useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { useInView } from 'react-intersection-observer';
 import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 import ingredientsStyles from './burger-ingredients.module.css';
 import IngredientBoxItem from '../ingredient-box-item/ingredient-box-item';
 import { setActiveTab } from '../../services/active-tab-slice';
+import { RootState } from '../../services/store';
 
-export const getIngredientCount = (selectedIngredients, ingredientId) => {
-  return selectedIngredients.filter((ingredient) => ingredient._id === ingredientId).length;
+
+enum IngredientType {
+  Bun = "bun",
+  Filling = "filling",
+  Sauce = "sauce",
+  Main = "main"
+}
+
+export type Ingredient = {
+  _id: string;
+  name: string;
+  type: IngredientType;
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
+  __v: number;
+  uniqueId: string;
+};
+
+
+
+export const getIngredientCount = (selectedIngredients: Ingredient[], ingredientId: string) => {
+  return selectedIngredients.filter((ingredient: Ingredient) => ingredient._id === ingredientId).length;
 };
 
 function BurgerIngredients() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const ingredients = useSelector((state) => state.ingredients.data);
-  const isLoading = useSelector((state) => state.ingredients.loading);  
-  const selectedIngredients = useSelector((state) => state.burgerConstructor.selectedIngredients);
+  const ingredients = useSelector((state: RootState) => state.ingredients.data);
+  const isLoading = useSelector((state: RootState) => state.ingredients.loading);
+  const selectedIngredients = useSelector((state: RootState) => state.burgerConstructor.selectedIngredients);
   const ingredientBoxWrapperRef = useRef(null);
 
   const [bunRef, bunInView] = useInView({
@@ -38,24 +63,24 @@ function BurgerIngredients() {
   function getView() {
     if (bunInView) {
       return 'buns';
-    } 
+    }
     if (sauceInView) {
       return 'sauces';
-    } 
+    }
     if (mainInView) {
       return 'fillings';
-    } 
-    return 'none'; 
+    }
+    return 'none';
   }
-  
+
   useEffect(() => {
     const newActiveTab = getView();
     dispatch(setActiveTab(newActiveTab));
   }, [bunInView, sauceInView, mainInView]);
 
 
-  const handleIngredientClick = (ingredientId) => {
-    navigate(`/ingredients/${ingredientId}`, { state: { fromIngredientClick: true }})
+  const handleIngredientClick = (ingredientId: string) => {
+    navigate(`/ingredients/${ingredientId}`, { state: { fromIngredientClick: true } })
   };
 
   if (isLoading) {
@@ -67,43 +92,45 @@ function BurgerIngredients() {
   }
 
   const { data } = ingredients;
-  const bunIngredients = data.filter((item) => item.type === 'bun');
-  const sauceIngredients = data.filter((item) => item.type === 'sauce');
-  const mainIngredients = data.filter((item) => item.type === 'main');
-  
+  const bunIngredients = data.filter((item: Ingredient) => item.type === 'bun');
+  const sauceIngredients = data.filter((item: Ingredient) => item.type === 'sauce');
+  const mainIngredients = data.filter((item: Ingredient) => item.type === 'main');
   return (
     <div>
       <h1 className={ingredientsStyles.ingredient__header}>Соберите бургер</h1>
-      <IngredientTabs/>
+      <IngredientTabs />
       <div ref={ingredientBoxWrapperRef} className={ingredientsStyles.ingredient__boxWrapper}>
         <div ref={bunRef} className={ingredientsStyles.ingredient__box} id='buns'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Булки</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            {bunIngredients.map((ingredient) => (
-              <IngredientBoxItem
-                key={ingredient._id}
-                imageSrc={ingredient.image}
-                alt={ingredient.name}
-                price={ingredient.price}
-                name={ingredient.name}
-                count={getIngredientCount(selectedIngredients, ingredient._id)}
-                ingredient={ingredient}
-                onClick={() => handleIngredientClick(ingredient._id)}
-              />
-            ))}
+            {bunIngredients.map((ingredient: Ingredient, index: number) => {
+              return (
+                <IngredientBoxItem
+                  key={index} 
+                  imageSrc={ingredient.image}
+                  alt={ingredient.name}
+                  price={ingredient.price}
+                  name={ingredient.name}
+                  ingredientCount={getIngredientCount(selectedIngredients, ingredient._id)}
+                  ingredient={ingredient}
+                  onClick={() => handleIngredientClick(ingredient._id)}
+                />
+              );
+            })}
           </div>
+
         </div>
         <div ref={sauceRef} className={ingredientsStyles.ingredient__box} id='sauces'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Соусы</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            {sauceIngredients.map((ingredient) => (
+            {sauceIngredients.map((ingredient: Ingredient, index: number) => (
               <IngredientBoxItem
-                key={ingredient._id}
+                key={index}
                 imageSrc={ingredient.image}
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={getIngredientCount(selectedIngredients, ingredient._id)}
+                ingredientCount={getIngredientCount(selectedIngredients, ingredient._id)}
                 ingredient={ingredient}
                 onClick={() => handleIngredientClick(ingredient._id)}
               />
@@ -113,14 +140,14 @@ function BurgerIngredients() {
         <div ref={mainRef} className={ingredientsStyles.ingredient__box} id='fillings'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Начинка</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            {mainIngredients.map((ingredient) => (
+            {mainIngredients.map((ingredient: Ingredient, index: number) => (
               <IngredientBoxItem
-                key={ingredient._id}
+                key={index}
                 imageSrc={ingredient.image}
                 alt={ingredient.name}
                 price={ingredient.price}
                 name={ingredient.name}
-                count={getIngredientCount(selectedIngredients, ingredient._id)}
+                ingredientCount={getIngredientCount(selectedIngredients, ingredient._id)}
                 ingredient={ingredient}
                 onClick={() => handleIngredientClick(ingredient._id)}
               />
@@ -132,8 +159,5 @@ function BurgerIngredients() {
   );
 }
 
-BurgerIngredients.propTypes = {
-  isLoading: PropTypes.bool,
-};
 
 export default BurgerIngredients;

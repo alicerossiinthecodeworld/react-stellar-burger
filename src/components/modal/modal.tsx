@@ -1,20 +1,26 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import modalstyles from './modal.module.css';
 
-const Modal = ({ isOpen, onClose, children }) => {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
+
+const Modal = ({ isOpen, onClose, children }:ModalProps) => {
   const handleOverlayClick = useCallback(() => {
     onClose();
   }, [onClose]);
 
-  const handleModalClick = (event) => {
+  const handleModalClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
   };
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
       }
@@ -38,12 +44,12 @@ const Modal = ({ isOpen, onClose, children }) => {
         <div className={modalstyles.modalContent} onClick={handleModalClick}>
           {children}
           <div className={modalstyles.close}>
-            <CloseIcon onClick={onClose} />
+            <CloseIcon type='primary' onClick={onClose}/>
           </div>
         </div>
       </ModalOverlay>
     </div >,
-    document.getElementById('modals')
+    document.getElementById('modals')!
   );
 };
 

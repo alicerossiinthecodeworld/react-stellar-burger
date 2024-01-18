@@ -23,11 +23,10 @@ function MainPage() {
 
   const isIngredientClick = location.state?.fromIngredientClick;
   
-  const shouldShowIngredientDetails = /* Ваше условие здесь, например: */
+  const shouldShowIngredientDetails = 
     location.pathname.startsWith('/ingredients/') && !isIngredientClick
 
   if (shouldShowIngredientDetails) {
-    console.log('нада')
     return (<div><IngredientInfoPage/></div>)
   }
   return (

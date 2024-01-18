@@ -1,10 +1,19 @@
-import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import boxStyles from './ingredient-box-item.module.css';
+import { Ingredient } from '../burger-ingredients/burger-ingredients'
 
-function IngredientBoxItem(props) {
-  const { imageSrc, alt, price, name, ingredient, onClick } = props;
+type Props = {
+  imageSrc: string,
+  alt: string,
+  price: number,
+  name: string,
+  ingredient: Ingredient, 
+  onClick: () => void,
+  ingredientCount: number
+};
+
+function IngredientBoxItem({ imageSrc, alt, price, name, ingredient, onClick, ingredientCount }: Props) {
   const [, ref] = useDrag({
     type: 'INGREDIENT',
     item: { ingredient }
@@ -22,18 +31,11 @@ function IngredientBoxItem(props) {
         {price} <CurrencyIcon type="primary" />
       </p>
       <h3 className={boxStyles.ingredient__name}>{name}</h3>
-      <Counter className={boxStyles.ingredient__counter} count={props.count} size="small" />
+      <div className={boxStyles.ingredient__counter}>
+        <Counter count={ingredientCount} size="small" />
+      </div>
     </div>
   );
 }
-
-IngredientBoxItem.propTypes = {
-  imageSrc: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  ingredient: PropTypes.object.isRequired,
-  onClick: PropTypes.func,
-};
 
 export default IngredientBoxItem;

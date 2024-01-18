@@ -3,14 +3,15 @@ import { setActiveTab } from '../../services/active-tab-slice';
 import { useDispatch, useSelector} from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import tabsStyles from './ingredient-tabs.module.css';
+import { RootState } from '../../services/store';
 
 function IngredientTabs () {
   const dispatch = useDispatch();
-  const current = useSelector((state) => state.activeTab.current);
+  const current = useSelector((state:RootState) => state.activeTab.current);
   const bunsAnchorRef = useRef(null);
   const sauceAnchorRef = useRef(null);
   const fillingsAnchorRef = useRef(null);
-  const scrollToAnchor = (anchorRef) => {
+  const scrollToAnchor = (anchorRef: React.RefObject<HTMLElement>) => {
     if (anchorRef.current) {
       anchorRef.current.scrollIntoView({
         behavior: 'smooth',
@@ -19,7 +20,7 @@ function IngredientTabs () {
     }
   };
 
-  const handleTabClickWithScroll = (value, anchorRef) => {
+  const handleTabClickWithScroll = (value:string, anchorRef: React.RefObject<HTMLElement>) => {
     dispatch(setActiveTab(value));
     scrollToAnchor(anchorRef);
   };
@@ -31,7 +32,7 @@ function IngredientTabs () {
         className={tabsStyles.ingredient__tab}
         onClick={() => handleTabClickWithScroll('buns', bunsAnchorRef)}
       >
-        <Tab value="buns" active={current === 'buns'}>
+        <Tab value="buns" active={current === 'buns'} onClick={() => handleTabClickWithScroll('buns', bunsAnchorRef)}>
           Булки
         </Tab>
       </a>
@@ -41,7 +42,7 @@ function IngredientTabs () {
         ref={sauceAnchorRef} 
         onClick={() => handleTabClickWithScroll('sauces', sauceAnchorRef)}
       >
-        <Tab value="sauces" active={current === 'sauces'}>
+        <Tab value="sauces" active={current === 'sauces'} onClick={() => handleTabClickWithScroll('buns', bunsAnchorRef)}>
           Соусы
         </Tab>
       </a>
@@ -51,7 +52,7 @@ function IngredientTabs () {
         ref={fillingsAnchorRef} 
         onClick={() => handleTabClickWithScroll('fillings', fillingsAnchorRef)}
       >
-        <Tab value="fillings" active={current === 'fillings'}>
+        <Tab value="fillings" active={current === 'fillings'} onClick={() => handleTabClickWithScroll('buns', bunsAnchorRef)}>
           Начинки
         </Tab>
       </a>

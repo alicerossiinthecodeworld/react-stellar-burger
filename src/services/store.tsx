@@ -1,4 +1,4 @@
-import { configureStore, createReducer } from '@reduxjs/toolkit';
+import { configureStore} from '@reduxjs/toolkit';
 import burgerConstructorReducer from './burger-constructor-slice';
 import ingredientsReducer from './ingredient-slice';
 import ingredientDetailsReducer from './ingredient-details-slice';
@@ -22,8 +22,8 @@ const rootReducer = {
 };
 
 const middle1 = socketMiddleware(
-  {neededUrl: 'wss://norma.nomoreparties.space/orders?token=', wsActions: wsFeedActions, isProfile: false, wsFeedActions});
-const middle2 = socketMiddleware({neededUrl: 'wss://norma.nomoreparties.space/orders?token=', wsActions: wsProfileActions, isProfile: true});
+  {wsActions: wsFeedActions});
+const middle2 = socketMiddleware({wsActions: wsProfileActions});
 
 
 const store = configureStore({
@@ -34,4 +34,4 @@ const store = configureStore({
 })
 
 export default store;
-
+export type RootState = ReturnType<any>;

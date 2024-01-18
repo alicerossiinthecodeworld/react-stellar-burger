@@ -1,8 +1,18 @@
-import PropTypes from 'prop-types';
+import { Ingredient } from "../burger-ingredients/burger-ingredients";
 
-const IngredientDetailDisplay = ({ ingredient, styles }) => {
+export type StylesType = {
+  page: string;
+  ingredientHeader: string;
+  ingredientPic: string;
+  ingredientTitle: string;
+  ingredientData: string;
+  ingredientText: string;
+  ingredientNumber: string;
+};
+
+
+const IngredientDetailDisplay = ({ingredient, styles}: { ingredient: Ingredient, styles: StylesType}) => {
   if (!ingredient) return null;
-  console.log(styles)
   return (
     <div className = {styles.page}>
       <h2 className={styles.ingredientHeader}>Детали ингредиента</h2>
@@ -21,9 +31,5 @@ const IngredientDetailDisplay = ({ ingredient, styles }) => {
     </div>
   )
 }
-IngredientDetailDisplay.propTypes = {
-  ingredient: PropTypes.object.isRequired,
-  styles: PropTypes.object.isRequired,
-};
 
 export default IngredientDetailDisplay;
