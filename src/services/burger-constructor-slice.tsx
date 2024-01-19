@@ -1,9 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuid4 } from 'uuid';
+import { Ingredient } from '../components/burger-ingredients/burger-ingredients';
 
 
-const initialState = {
-  selectedIngredients: [], 
+type burgerConstructorState = {
+  selectedIngredients:Ingredient[]|null;
+  totalCost: number,
+};
+
+const initialState:burgerConstructorState= {
+  selectedIngredients: null as Ingredient[] | null, 
   totalCost: 0,
 };
 
@@ -16,20 +22,26 @@ const burgerConstructorSlice = createSlice({
         ...action.payload,
         uniqueId: uuid4(),
       };
-      state.selectedIngredients.push(ingredientToAdd);
+      if (!state.selectedIngredients){state.selectedIngredients=[]}
+      state.selectedIngredients?.push(ingredientToAdd);
     },
     removeIngredient: (state, action) => {
       const uniqueIdToRemove = action.payload.uniqueId;
-      state.selectedIngredients = state.selectedIngredients.filter(
-        (ingredient) => ingredient.uniqueId !== uniqueIdToRemove
-      );
+      if (state.selectedIngredients !== null) {
+        state.selectedIngredients = state.selectedIngredients.filter(
+          (ingredient) => ingredient.uniqueId !== uniqueIdToRemove
+        );
+      }
     },
     calculateTotalCost: (state) => {
-      state.totalCost = state.selectedIngredients.reduce(
-        (acc, ingredient) => acc + ingredient.price,
-        0
-      );
+      if (state.selectedIngredients !== null) {
+        state.totalCost = state.selectedIngredients.reduce(
+          (acc, ingredient) => acc + ingredient.price,
+          0
+        );
+      }
     },
+    
     updateIngredientOrder: (state, action) => {
       state.selectedIngredients = [...action.payload]; 
     },

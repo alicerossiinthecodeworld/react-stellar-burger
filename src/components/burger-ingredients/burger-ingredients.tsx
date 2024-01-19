@@ -9,8 +9,7 @@ import IngredientBoxItem from '../ingredient-box-item/ingredient-box-item';
 import { setActiveTab } from '../../services/active-tab-slice';
 import { RootState } from '../../services/store';
 
-
-enum IngredientType {
+export enum IngredientType {
   Bun = "bun",
   Filling = "filling",
   Sauce = "sauce",
@@ -42,9 +41,9 @@ export const getIngredientCount = (selectedIngredients: Ingredient[], ingredient
 function BurgerIngredients() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const ingredients = useSelector((state: RootState) => state.ingredients.data);
+  const ingredients = useSelector((state: RootState) => state.ingredients.data?.data)||[];
   const isLoading = useSelector((state: RootState) => state.ingredients.loading);
-  const selectedIngredients = useSelector((state: RootState) => state.burgerConstructor.selectedIngredients);
+  const selectedIngredients = useSelector((state: RootState) => state.burgerConstructor.selectedIngredients)|| [];
   const ingredientBoxWrapperRef = useRef(null);
 
   const [bunRef, bunInView] = useInView({
@@ -87,14 +86,15 @@ function BurgerIngredients() {
     return <div>Loading ingredients...</div>;
   }
 
-  if (!Array.isArray(ingredients.data) || ingredients.data.length === 0) {
-    return <div>No ingredients available.</div>;
-  }
-
-  const { data } = ingredients;
-  const bunIngredients = data.filter((item: Ingredient) => item.type === 'bun');
-  const sauceIngredients = data.filter((item: Ingredient) => item.type === 'sauce');
-  const mainIngredients = data.filter((item: Ingredient) => item.type === 'main');
+  const bunIngredients = Array.isArray(ingredients) 
+    ? ingredients.filter((item: Ingredient) => item.type === IngredientType.Bun)
+    : [];
+  const sauceIngredients = Array.isArray(ingredients) 
+    ? ingredients.filter((item: Ingredient) => item.type === IngredientType.Sauce)
+    : [];
+  const mainIngredients = Array.isArray(ingredients) 
+    ? ingredients.filter((item: Ingredient) => item.type === IngredientType.Main)
+    : [];
   return (
     <div>
       <h1 className={ingredientsStyles.ingredient__header}>Соберите бургер</h1>
@@ -103,7 +103,7 @@ function BurgerIngredients() {
         <div ref={bunRef} className={ingredientsStyles.ingredient__box} id='buns'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Булки</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            {bunIngredients.map((ingredient: Ingredient, index: number) => {
+            {bunIngredients?.map((ingredient: Ingredient, index: number) => {
               return (
                 <IngredientBoxItem
                   key={index} 
@@ -123,7 +123,7 @@ function BurgerIngredients() {
         <div ref={sauceRef} className={ingredientsStyles.ingredient__box} id='sauces'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Соусы</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            {sauceIngredients.map((ingredient: Ingredient, index: number) => (
+            {sauceIngredients?.map((ingredient: Ingredient, index: number) => (
               <IngredientBoxItem
                 key={index}
                 imageSrc={ingredient.image}
@@ -140,7 +140,7 @@ function BurgerIngredients() {
         <div ref={mainRef} className={ingredientsStyles.ingredient__box} id='fillings'>
           <h2 className={ingredientsStyles.ingredient__boxHeader}>Начинка</h2>
           <div className={ingredientsStyles.ingredient__boxItems}>
-            {mainIngredients.map((ingredient: Ingredient, index: number) => (
+            {mainIngredients?.map((ingredient: Ingredient, index: number) => (
               <IngredientBoxItem
                 key={index}
                 imageSrc={ingredient.image}

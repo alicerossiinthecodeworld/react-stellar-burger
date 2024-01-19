@@ -4,6 +4,7 @@ import { login } from '../../services/auth-slice';
 import styles from './login-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useForm from '../../hooks/use-form';
+import { RootState } from '../../services/store';
 
 function LoginPage() {
   const { values, handleChange } = useForm({
@@ -12,10 +13,10 @@ function LoginPage() {
   });
 
   const dispatch = useDispatch();
-  const authError = useSelector(state => state.auth.error);
+  const authError = useSelector((state:RootState) => state.auth.error);
 
-  const handleLogin = (event) => {
-    event.preventDefault()
+  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     dispatch(login({ email: values.email, password: values.password }));
   };
 

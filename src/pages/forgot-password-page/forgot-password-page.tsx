@@ -4,6 +4,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import { request } from '../../utils/api-config';
 import useForm from '../../hooks/use-form';
 import { useNavigate } from 'react-router-dom';
+import { FormEvent } from 'react';
 
 
 function ForgotPasswordPage() {
@@ -16,7 +17,7 @@ function ForgotPasswordPage() {
     email: values.email,
   };
 
-  const handleForgotPassword = (event) => {
+  const handleForgotPassword = (event:FormEvent) => {
     event.preventDefault()
     request('/password-reset', {
       method: 'POST',

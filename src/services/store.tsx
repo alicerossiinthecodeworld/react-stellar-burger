@@ -25,7 +25,6 @@ const middle1 = socketMiddleware(
   {wsActions: wsFeedActions});
 const middle2 = socketMiddleware({wsActions: wsProfileActions});
 
-
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => {
@@ -33,5 +32,10 @@ const store = configureStore({
   }
 })
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export type CustomError = {
+  message: string;
+};
 export default store;
-export type RootState = ReturnType<any>;
+

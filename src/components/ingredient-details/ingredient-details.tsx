@@ -8,12 +8,14 @@ import { StylesType } from '../ingredient-detail-display/ingredient-detail-displ
 
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
-  const ingredients = useSelector((state:RootState) => state.ingredients.data)
-  if (!ingredients || !ingredients.data) {
+  const ingredients = useSelector((state:RootState) => state.ingredients.data?.data)
+  if (!ingredients || !ingredients) {
     return null
   }
-  const ingredient:Ingredient = ingredients.data.find((ingredient:Ingredient) => ingredient._id === ingredientId)
-  return (
+  const ingredient: Ingredient | undefined = ingredients.find((ingredient: Ingredient) => ingredient._id === ingredientId);
+  if (!ingredient) {
+    return null; 
+  }  return (
     <div className={styles.page}>
       <IngredientDetailDisplay ingredient = {ingredient} styles={styles as StylesType} />
     </div>

@@ -5,7 +5,7 @@ import { logoutUser } from '../../services/auth-slice';
 import { useDispatch } from 'react-redux';
 
 
-const ProfileColumn = (additionalText) => {
+const ProfileColumn = (additionalText:{additionalText:string}) => {
   const refreshToken = localStorage.getItem('refreshToken');
   const dispatch = useDispatch();
   const text = additionalText.additionalText

@@ -1,19 +1,38 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { request } from '../utils/api-config';
+import { AppDispatch, CustomError } from './store';
 
+type UserType = {
+  email: string,
+  name: string,
+  password: string
+}
+
+type AuthStateType = {
+  user: UserType | null,
+  isAuthenticated: boolean,
+  loading: boolean,
+  error?: object | null,
+  success: boolean,
+  isAuthChecked: boolean,
+  refreshToken: string|null,
+  accessToken: string|null
+}
+
+const authState: AuthStateType = {
+  user: null,
+  isAuthenticated: false,
+  loading: false,
+  error: null,
+  success: false,
+  isAuthChecked: false,
+  refreshToken: localStorage.getItem('refreshToken'),
+  accessToken: localStorage.getItem('accessToken')
+}
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: null,
-    isAuthenticated: false,
-    loading: false,
-    error: null,
-    success: false,
-    isAuthChecked: false,
-    refreshToken: localStorage.getItem('refreshToken'),
-    accessToken: localStorage.getItem('accessToken')
-  },
+  initialState:authState,
   reducers: {
     loginRequest: (state) => {
       state.loading = true;
@@ -42,7 +61,7 @@ const authSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.success = true;
-      state.user = undefined;
+      state.user = null;
       state.isAuthenticated = false;
       state.isAuthChecked = true;
       localStorage.removeItem('userData');
@@ -62,7 +81,7 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.success = true;
       state.isAuthenticated = true
-      localStorage.setItem('refreshToken', action.payload.refreshToken, { expires: 365 });
+      localStorage.setItem('refreshToken', action.payload.refreshToken);
       state.isAuthChecked = true;
     },
     registrationFailure: (state, action) => {
@@ -118,7 +137,10 @@ export const {
   saveAccessToken
 } = authSlice.actions;
 
-export const login = (userData) => async (dispatch) => {
+export const login = (userData: {
+  email: string,
+  password: string
+}) => async (dispatch: AppDispatch) => {
   try {
     dispatch(loginRequest());
     const response = await request('/auth/login', {
@@ -137,11 +159,12 @@ export const login = (userData) => async (dispatch) => {
       dispatch(loginFailure('Не получилось войти, проверьте данные'));
     }
   } catch (error) {
-    dispatch(loginFailure(`Error: ${error.message}`));
+    const loginError = error as CustomError; 
+    dispatch(loginFailure(`Error: ${loginError.message}`));
   }
 };
 
-export const registerUser = (userData) => async (dispatch) => {
+export const registerUser = (userData:UserType) => async (dispatch:AppDispatch) => {
   try {
     dispatch(registrationRequest());
     const response = await request('/auth/register', {
@@ -160,10 +183,11 @@ export const registerUser = (userData) => async (dispatch) => {
       dispatch(registrationFailure('Не получилось зарегистрироваться, пожалуйста, проверьте данные'));
     }
   } catch (error) {
-    dispatch(registrationFailure(`Error: ${error.message}`));
+    const registrationError = error as CustomError; 
+    dispatch(registrationFailure(`Error: ${registrationError.message}`));
   }
 };
-export const updateUser = (userData) => async (dispatch) => {
+export const updateUser = (userData:UserType) => async (dispatch:AppDispatch) => {
   const AccessToken = await refreshAccessToken()
   console.log('access', AccessToken)
   try {
@@ -183,11 +207,12 @@ export const updateUser = (userData) => async (dispatch) => {
       dispatch(updateUserFailure('Не удалось обновить данные пользователя'));
     }
   } catch (error) {
-    dispatch(updateUserFailure(`Error: ${error.message}`));
+    const updateUserError = error as CustomError; 
+    dispatch(updateUserFailure(`Error: ${updateUserError.message}`));
   }
 };
 
-export const logoutUser = () => async (dispatch) => {
+export const logoutUser = () => async (dispatch:AppDispatch) => {
   try {
     const response = await request('/auth/logout', {
       method: 'POST',
@@ -202,7 +227,8 @@ export const logoutUser = () => async (dispatch) => {
     localStorage.removeItem('userData')
     return response;
   } catch (error) {
-    dispatch(logoutFailure(`Error: ${error.message}`));
+    let logoutError = error as CustomError; 
+    dispatch(logoutFailure(`Error: ${logoutError.message}`));
   }
 };
 

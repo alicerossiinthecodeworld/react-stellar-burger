@@ -1,9 +1,15 @@
 import { ProfileFeedWsClose, ProfileFeedWsOpen, ProfileFeedWsConnecting,ProfileFeedWsError,ProfileFeedWsMessage } from '../actions/profile-feed-actions';
 import { WebsocketStatus } from '../../utils/web-socket-utils';
 import { createReducer } from '@reduxjs/toolkit';
+import { Order } from '../../components/orders-zone/orders-zone';
 
 
-const initialState = {
+type profileFeedStateType = {
+  status: WebsocketStatus,
+  profileOrders: null|Order[],
+  connectingError: string
+}
+const initialState: profileFeedStateType = {
   status: WebsocketStatus.OFFLINE,
   profileOrders: [],
   connectingError: ''
@@ -22,10 +28,12 @@ export const ProfileFeedReducer = createReducer(initialState, (builder) => {
         state.status = WebsocketStatus.OFFLINE;
     })
     .addCase(ProfileFeedWsError, (state, action) => {
-        state.connectingError = action.payload;
+      state.connectingError = typeof action.payload === 'string' ? action.payload : '';
     })
     .addCase(ProfileFeedWsMessage, (state, action) => {
-      state.profileOrders = action.payload.orders
+      if (action.payload) {
+        state.profileOrders = action.payload.orders || [];
+      }
     })
 })
 

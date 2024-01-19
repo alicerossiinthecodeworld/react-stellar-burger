@@ -1,8 +1,15 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { ReactElement} from 'react';
+import { RootState } from '../../services/store';
 
-const ProtectedRouteElement = ({ onlyUnAuth = false, children }) => {
-  const user = useSelector((state) => state.auth.user);
+type ProtectedRouteElementProps = {
+  onlyUnAuth?: boolean,
+  children: ReactElement | null
+}
+
+const ProtectedRouteElement = ({ onlyUnAuth = false, children }:ProtectedRouteElementProps) => {
+  const user = useSelector((state:RootState) => state.auth.user);
   const location = useLocation()
 
   if (onlyUnAuth && user) {

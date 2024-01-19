@@ -10,7 +10,6 @@ function ResetPasswordPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const isFromForgotPassword= location.state?.fromForgotPassword;
-  console.log(`забыл парольку ${isFromForgotPassword}`)
 
 
   const { values, handleChange } = useForm({

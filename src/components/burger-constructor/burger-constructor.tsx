@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DropResult } from 'react-beautiful-dnd';
-import { Ingredient } from '../burger-ingredients/burger-ingredients';
+import { Ingredient, IngredientType } from '../burger-ingredients/burger-ingredients';
 import { useDrop } from 'react-dnd';
 import {
   ConstructorElement,
@@ -36,41 +36,43 @@ function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const totalCost = useSelector((state:RootState) => state.burgerConstructor.totalCost);
-  const selectedIngredients = useSelector(
-    (state:RootState) => state.burgerConstructor.selectedIngredients
-  );
-  const orderNumber = useSelector((state:RootState) => state.orderDetails.order.number);
-  const hasSelectedIngredients = selectedIngredients.length > 0;
+  const selectedIngredients: Ingredient[] | null = useSelector(
+    (state: RootState) => state.burgerConstructor.selectedIngredients
+  ); 
+  const orderNumber = useSelector((state:RootState) => state.orderDetails.order?.number);
+  const hasSelectedIngredients =  selectedIngredients && selectedIngredients.length > 0;
   const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(calculateTotalCost(selectedIngredients));
+    dispatch(calculateTotalCost());
   }, [dispatch, selectedIngredients]);
 
   const [, drop] = useDrop({
     accept: ItemType,
     drop: (item:IngredientData) => {
-      if (item.ingredient.type === 'bun' && selectedBun) {
+      if (item.ingredient.type === IngredientType.Bun && selectedBun) {
         handleRemoveIngredient(selectedBun)
         selectedBun = item.ingredient;
         dispatch(addIngredient(item.ingredient));
-        dispatch(calculateTotalCost(selectedIngredients));
+        dispatch(calculateTotalCost());
       } else {
         dispatch(addIngredient(item.ingredient));
-        dispatch(calculateTotalCost(selectedIngredients));
+        dispatch(calculateTotalCost());
       }
     },
   });
 
-  const selectedFilling = selectedIngredients.filter((item:Ingredient) => item.type !== 'bun');
-  let selectedBun = selectedIngredients.find((item:Ingredient) => item.type === 'bun');
+  const selectedFilling = selectedIngredients?.filter((item:Ingredient) => item.type !== IngredientType.Bun);
+  let selectedBun = selectedIngredients?.find((item:Ingredient) => item.type === IngredientType.Bun);
   const isAuthenticated = useSelector((state:RootState) => state.auth.isAuthenticated);
 
 
   const handleOrderClick = () => {
     if (isAuthenticated) {
-      const ingredientIds = selectedIngredients?.map((item:Ingredient) => item._id);
-      dispatch(createOrder(ingredientIds));
+      const ingredientIds = selectedIngredients?.map((item: Ingredient) => (item._id)) || [];
+      console.log(selectedIngredients)
+      console.log(ingredientIds)
+      dispatch(createOrder(ingredientIds));      
       setShowModal(true);
     } else {
       navigate('/login');
@@ -84,9 +86,11 @@ function BurgerConstructor() {
 
   const handleRemoveIngredient = (ingredient:Ingredient) => {
     dispatch(removeIngredient(ingredient));
-    dispatch(calculateTotalCost(selectedIngredients));
-    getIngredientCount(selectedIngredients, ingredient._id);
-  };
+    dispatch(calculateTotalCost());
+    if (selectedIngredients) {
+      getIngredientCount(selectedIngredients, ingredient._id);
+    }
+      };
 
   const onDragEnd = (result:DropResult) => {
     console.log(result)
@@ -96,8 +100,7 @@ function BurgerConstructor() {
 
     const startIndex = result.source.index;
     const endIndex = result.destination.index;
-    console.log(selectedIngredients[startIndex + 1])
-    const updatedIngredients = [...selectedIngredients]
+    const updatedIngredients = selectedIngredients ? [...selectedIngredients] : [];
     const temp = updatedIngredients[startIndex + 1];
     updatedIngredients[startIndex + 1] = updatedIngredients[endIndex + 1];
     updatedIngredients[endIndex + 1] = temp;
@@ -205,15 +208,15 @@ function BurgerConstructor() {
           type="primary"
           size="large"
           onClick={handleOrderClick}
-          disabled={!(selectedBun && selectedIngredients.length > 1)}
+          disabled={!(selectedBun && selectedIngredients && selectedIngredients.length > 1)}
         >
           Оформить заказ
         </Button>
       </div>
 
-      {showModal && (
+      {showModal && orderNumber && (
         <Modal isOpen={showModal} onClose={handleCloseModal}>
-          <OrderDetails orderNumber={orderNumber} onClose={handleCloseModal} />
+          <OrderDetails orderNumber={orderNumber} onClose={handleCloseModal}/>
         </Modal>
       )}
     </div>
