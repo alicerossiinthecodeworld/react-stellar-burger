@@ -57,8 +57,7 @@ export const fetchOrderById = async(orderId: number) => {
   }
 };
 
-
-export const createOrder = (ingredientIds:string[]) => async (dispatch: AppDispatch) => {
+export const createOrder = (ingredientIds:number[]) => async (dispatch: AppDispatch) => {
   try {
     const AccessToken = await refreshAccessToken()
     dispatch(createOrderRequest());

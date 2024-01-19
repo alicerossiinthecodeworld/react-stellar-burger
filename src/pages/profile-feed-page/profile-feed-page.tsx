@@ -10,7 +10,7 @@ import { RootState } from '../../services/store';
 
 const ProfileFeedPage = () => {
   const dispatch = useDispatch()
-  const orders = useSelector((state: RootState) => state.profileOrders.profileOrders);
+  const orders = useSelector((state:RootState) => state.profileOrders.profileOrders);
   console.log(orders)
   useEffect(() => {
     const fetchData = async () => {
