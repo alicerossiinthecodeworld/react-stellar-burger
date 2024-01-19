@@ -6,10 +6,11 @@ import { connectWebSocket } from '../../utils/web-socket-utils';
 import OrdersFeedZone from "../../components/orders-zone/orders-zone";
 import ProfileColumn from "../../components/profile-column/profile-column";
 import styles from './profile-feed-page.module.css';
+import { RootState } from '../../services/store';
 
 const ProfileFeedPage = () => {
   const dispatch = useDispatch()
-  const orders = useSelector((state) => state.profileOrders.profileOrders);
+  const orders = useSelector((state:RootState) => state.profileOrders.profileOrders);
   console.log(orders)
   useEffect(() => {
     const fetchData = async () => {

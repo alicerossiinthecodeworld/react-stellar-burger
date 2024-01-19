@@ -1,9 +1,7 @@
 import orderStyles from './order-details.module.css'
-import PropTypes from 'prop-types';
-
 import { CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
-const OrderDetails = ({ orderNumber}) => {
+const OrderDetails = ({ orderNumber, onClose }:{orderNumber:number, onClose:() => void;}) => {
   return (
     <div className={orderStyles.orderWindow}>
       <p className={orderStyles.orderId}>{orderNumber}</p>
@@ -15,10 +13,6 @@ const OrderDetails = ({ orderNumber}) => {
       <p className={orderStyles.orderText}>Дождитесь готовности на орбитальной станции</p>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  onClose: PropTypes.func.isRequired,
 };
 
 

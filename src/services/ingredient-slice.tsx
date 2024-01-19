@@ -1,13 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Ingredient } from '../components/burger-ingredients/burger-ingredients';
 import { request } from '../utils/api-config';
+import { AppDispatch } from './store';
+
+type IngredientState = {
+  data: {data:Ingredient[]} | null; 
+  loading: boolean;
+  error: string | null;
+};
+
+const initialState: IngredientState = {
+  data: null,
+  loading: false,
+  error: null,
+}
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
-  initialState: {
-    data: [],
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {
     fetchIngredientsRequest: (state) => {
       state.loading = true;
@@ -26,7 +36,7 @@ const ingredientsSlice = createSlice({
 
 export const { fetchIngredientsRequest, fetchIngredientsSuccess, fetchIngredientsFailure } = ingredientsSlice.actions;
 
-export const fetchIngredients = () => async (dispatch) => {
+export const fetchIngredients = () => async (dispatch:AppDispatch) => {
   dispatch(fetchIngredientsRequest());
   const response = await request(`/ingredients`);
   if (response.success) {

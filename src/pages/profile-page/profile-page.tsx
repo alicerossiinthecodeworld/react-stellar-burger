@@ -3,20 +3,22 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { useSelector, useDispatch } from 'react-redux';
 
 import { updateUser } from '../../services/auth-slice';
-import useForm from '../../hooks/use-form';
+import useForm, { createSyntheticEvent } from '../../hooks/use-form';
 import ProfileColumn from '../../components/profile-column/profile-column';
+import { RootState } from '../../services/store';
+import { FormEvent } from 'react';
 
 function ProfilePage() {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state:RootState) => state.auth.user);
   const { values, handleChange } = useForm({
-    email: user.email,
-    name: user.name,
+    email: user?.email||'',
+    name: user?.name||'',
     password: '',
   });
 
   const dispatch = useDispatch();
 
-  const handleSave = (e) => {
+  const handleSave = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
     const updatedUserData = {
       email: values.email,
@@ -25,14 +27,11 @@ function ProfilePage() {
     };
     
     dispatch(updateUser(updatedUserData))
-      .then(() => {
-        console.log('Профиль успешно обновлен');
-        handleChange({ target: { name: 'email', value: updatedUserData.email } });
-        handleChange({ target: { name: 'name', value: updatedUserData.name } });  
-      })
-      .catch((error) => {
-        console.error('Ошибка при обновлении профиля:', error);
-      });
+
+    console.log('Профиль успешно обновлен');
+    handleChange(createSyntheticEvent('email', updatedUserData.email));
+    handleChange(createSyntheticEvent('name', updatedUserData.name));
+    handleChange(createSyntheticEvent('password', updatedUserData.password)); 
   };
   return (
     <div className={styles.page}>

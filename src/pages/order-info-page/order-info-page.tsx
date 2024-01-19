@@ -7,57 +7,45 @@ import {
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './order-info-page.module.css'
+import { RootState } from '../../services/store';
+import { Order } from '../../components/orders-zone/orders-zone';
+import { Ingredient } from '../../components/burger-ingredients/burger-ingredients';
+import { number } from 'prop-types';
 
 export const OrderInfoPage = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
-  const orders = useSelector((state) => state.orders.orders);
-  const [order, setOrder] = useState(null);
+  const orders = useSelector((state: RootState) => state.orders.orders);
+  const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const ingredients = useSelector(state => state.ingredients.data.data);
+  const ingredients = useSelector((state: RootState) => state.ingredients.data?.data);
 
   useEffect(() => {
-    setLoading(true);
-    const foundOrder = orders && orders.find((order) => order.number === orderId);
-    if (foundOrder) {
-      setOrder(foundOrder);
-      setLoading(false);
-    } else {
-      let isMounted = true;
-      dispatch(fetchOrderById(orderId))
-        .then((response) => {
-          if (isMounted) {
-            setOrder(response);
-            setLoading(false);
-          }
-        })
-        .catch((error) => {
-          setError(error);
-          setLoading(false);
-        });
+    const fetchOrder = async () => {
+      setLoading(true);
+      const foundOrder = orders?.find((o: Order) => o.number === Number(orderId));
+      if (foundOrder) {
+        setOrder(foundOrder);
+        setLoading(false);
+      } else {
+        const fetchedOrder = await dispatch(fetchOrderById(Number(orderId)));
+        setOrder(fetchedOrder);
+        setLoading(false);
+      }
+    };
 
-      return () => {
-        isMounted = false;
-      };
-    }
+    fetchOrder();
   }, [orderId, orders, dispatch]);
 
-  const getOrderPrice = (order) => {
-    if (!order || !order.ingredients || !ingredients || !ingredients.length) {
-      return 0;
-    }
-  
-    return order.ingredients.reduce((total, ingredientId) => {
-      const ingredient = ingredients.find((ing) => ing._id === ingredientId);
-      return total + (ingredient ? Number(ingredient.price) : 0);
-    }, 0);
+
+  const getOrderPrice = (order: Order) => {
+    return order?.ingredients?.reduce((total, ingredientId) => {
+      const ingredient = ingredients?.find((ing: Ingredient) => ing._id === ingredientId);
+      return total + (ingredient?.price ?? 0) * (order.ingredients.filter(id => id === ingredientId).length);
+    }, 0) ?? 0;
   };
 
-
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
   return (
     <div>
       {order ? (
@@ -69,8 +57,8 @@ export const OrderInfoPage = () => {
           <div className={styles.contains}>
             {order && ingredients && (
               Array.from(new Set(order.ingredients)).map((ingredientId) => {
-                const ingredient = ingredients.find((ing) => ing._id === ingredientId);
-                const count = order.ingredients.filter((id) => id === ingredientId).length;
+                const ingredient = ingredients.find((ing: Ingredient) => ing._id === ingredientId);
+                const count = order.ingredients.filter((id: string) => id === ingredientId).length;
                 if (ingredient) {
                   return (
                     <div className={styles.containsItem} key={ingredient._id}>
@@ -78,7 +66,9 @@ export const OrderInfoPage = () => {
                       <span className={styles.containsTitle}>{ingredient.name}</span>
                       <span className={styles.containsPrice}>
                         {`${count} x ${ingredient.price}`}
-                        <CurrencyIcon className={styles.currencyIcon} />
+                        <div className={styles.currencyIcon}>
+                          <CurrencyIcon type='primary' />
+                        </div>
                       </span>
                     </div>
                   );
@@ -90,7 +80,9 @@ export const OrderInfoPage = () => {
               <p className={styles.orderTime}>{formatDate(order.createdAt)}</p>
               <span className={styles.containsPrice}>
                 {getOrderPrice(order)}
-                <CurrencyIcon className={styles.currencyIcon} />
+                <div className={styles.currencyIcon}>
+                  <CurrencyIcon type='primary' />
+                </div>
               </span>
             </div>
           </div>;

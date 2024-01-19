@@ -2,8 +2,10 @@ import { useSelector, useDispatch} from 'react-redux';
 import { useEffect } from 'react';
 import styles from './feed-page.module.css';
 import { FeedWsClose } from '../../services/actions/feed-actions';
-import OrdersFeedZone from '../../components/orders-zone/orders-zone';
+import OrdersFeedZone, { OrderStatus, Order } from '../../components/orders-zone/orders-zone';
 import { connectWebSocket } from '../../utils/web-socket-utils';
+import { RootState } from '../../services/store';
+
 function FeedPage() {
   const dispatch = useDispatch();
 
@@ -20,9 +22,9 @@ function FeedPage() {
     fetchData();
   }, [dispatch]);
    
-  const orders = useSelector(state => state.orders.orders);
-  const total = useSelector(state => state.orders.total);
-  const totalToday = useSelector(state => state.orders.totalToday);
+  const orders = useSelector((state:RootState) => state.orders.orders);
+  const total = useSelector((state:RootState) => state.orders.total);
+  const totalToday = useSelector((state:RootState) => state.orders.totalToday);
 
   if (!orders || orders.length === 0) {
     return <div className={styles.notFound}>
@@ -31,7 +33,7 @@ function FeedPage() {
     </div>;
   }
 
-  const chunkArray = (array, size) => {
+  const chunkArray = (array:Array<Order>, size:number) => {
     const result = [];
     for (let i = 0; i < array.length; i += size) {
       result.push(array.slice(i, i + size));
@@ -39,22 +41,22 @@ function FeedPage() {
     return result;
   };
 
-  const getOrdersByStatus = (status) => {
-    return chunkArray(orders.filter(order => order.status === status), 10);
+  const getOrdersByStatus = (status:OrderStatus) => {
+    return chunkArray(orders.filter((order:Order) => order.status === status), 10);
   };
 
-  const renderColumns = (ordersChunks) => {
-    return ordersChunks.map((ordersChunk, index) => (
+  const renderColumns = (ordersChunks:Order[][]) => {
+    return ordersChunks.map((ordersChunk:Order[], index:number) => (
       <div key={index} className={styles.column}>
-        {ordersChunk.map(order => (
+        {ordersChunk.map((order:Order) => (
           <div className={styles.orderNumber} key={order._id}>{order.number}</div>
         ))}
       </div>
     ));
   };
 
-  const readyOrders = getOrdersByStatus('done');
-  const inProgressOrders = getOrdersByStatus('pending');
+  const readyOrders = getOrdersByStatus(OrderStatus.Done);
+  const inProgressOrders = getOrdersByStatus(OrderStatus.Pending);
 
   return (
     <div className={styles.page}>
