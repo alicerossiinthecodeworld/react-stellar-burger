@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DropResult } from 'react-beautiful-dnd';
 import { Ingredient, IngredientType } from '../burger-ingredients/burger-ingredients';

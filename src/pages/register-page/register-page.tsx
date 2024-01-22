@@ -5,6 +5,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import useForm from '../../hooks/use-form';
 import { registerUser } from '../../services/auth-slice';
 import { FormEvent } from 'react';
+import React from 'react';
 
 function RegisterPage() {
   const { values, handleChange } = useForm({

@@ -3,6 +3,7 @@ import styles from './profile-column.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { logoutUser } from '../../services/auth-slice';
 import { useDispatch } from 'react-redux';
+import React from 'react';
 
 
 const ProfileColumn = (additionalText:{additionalText:string}) => {

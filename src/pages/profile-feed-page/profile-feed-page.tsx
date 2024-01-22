@@ -7,6 +7,7 @@ import OrdersFeedZone from "../../components/orders-zone/orders-zone";
 import ProfileColumn from "../../components/profile-column/profile-column";
 import styles from './profile-feed-page.module.css';
 import { RootState } from '../../services/store';
+import React from 'react';
 
 const ProfileFeedPage = () => {
   const dispatch = useDispatch()

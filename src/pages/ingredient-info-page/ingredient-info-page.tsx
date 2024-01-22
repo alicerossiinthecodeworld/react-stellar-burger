@@ -4,6 +4,7 @@ import IngredientDetailDisplay, { StylesType } from '../../components/ingredient
 import ingredientInfoStyles from './ingredient-info-page.module.css';
 import { RootState } from '../../services/store';
 import { Ingredient } from '../../components/burger-ingredients/burger-ingredients';
+import React from 'react';
 
 export const IngredientInfoPage = () => {
   const { ingredientId } = useParams();

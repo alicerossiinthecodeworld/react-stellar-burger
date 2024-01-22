@@ -25,7 +25,7 @@ const ingredientsSlice = createSlice({
     },
     fetchIngredientsSuccess: (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      state.data = action.payload.data;
     },
     fetchIngredientsFailure: (state, action) => {
       state.loading = false;
@@ -39,10 +39,9 @@ export const { fetchIngredientsRequest, fetchIngredientsSuccess, fetchIngredient
 export const fetchIngredients = () => async (dispatch:AppDispatch) => {
   dispatch(fetchIngredientsRequest());
   const response = await request(`/ingredients`);
-  if (response.success) {
+    if (response.success) {
     dispatch(fetchIngredientsSuccess(response));
   } else {
-
     dispatch(fetchIngredientsFailure(`Ошибка ${response.status}`));
   }
 };

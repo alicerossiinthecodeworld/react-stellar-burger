@@ -1,4 +1,5 @@
 import { Ingredient } from "../burger-ingredients/burger-ingredients";
+import React from 'react';
 
 export type StylesType = {
   page: string;

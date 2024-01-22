@@ -1,5 +1,6 @@
 import orderStyles from './order-details.module.css'
 import { CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import React from 'react';
 
 const OrderDetails = ({ orderNumber, onClose }:{orderNumber:number, onClose:() => void;}) => {
   return (

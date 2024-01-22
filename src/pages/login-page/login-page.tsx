@@ -5,6 +5,7 @@ import styles from './login-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useForm from '../../hooks/use-form';
 import { RootState } from '../../services/store';
+import React from 'react';
 
 function LoginPage() {
   const { values, handleChange } = useForm({

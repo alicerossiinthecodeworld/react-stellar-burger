@@ -5,6 +5,7 @@ import styles from './reset-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { request } from '../../utils/api-config';
 import useForm from '../../hooks/use-form';
+import React from 'react';
 
 function ResetPasswordPage() {
   const location = useLocation();

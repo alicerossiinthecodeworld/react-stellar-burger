@@ -5,6 +5,7 @@ import { FeedWsClose } from '../../services/actions/feed-actions';
 import OrdersFeedZone, { OrderStatus, Order } from '../../components/orders-zone/orders-zone';
 import { connectWebSocket } from '../../utils/web-socket-utils';
 import { RootState } from '../../services/store';
+import React from 'react';
 
 function FeedPage() {
   const dispatch = useDispatch();

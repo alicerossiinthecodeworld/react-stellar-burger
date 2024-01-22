@@ -1,7 +1,7 @@
 import styles from './profile-page.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
-
+import React from 'react';
 import { updateUser } from '../../services/auth-slice';
 import useForm, { createSyntheticEvent } from '../../hooks/use-form';
 import ProfileColumn from '../../components/profile-column/profile-column';

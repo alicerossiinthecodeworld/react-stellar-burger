@@ -10,6 +10,7 @@ import { clearCurrentIngredient } from '../../services/ingredient-details-slice'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IngredientInfoPage } from '../ingredient-info-page/ingredient-info-page';
+import React from 'react';
 
 function MainPage() {
   const location = useLocation();
