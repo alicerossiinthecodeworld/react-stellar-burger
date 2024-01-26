@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import styles from './forgot-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { request } from '../../utils/api-config';
+import { request, TServerResponse } from '../../utils/api-config';
 import useForm from '../../hooks/use-form';
 import { useNavigate } from 'react-router-dom';
 import { FormEvent } from 'react';
 
+type TForgotPasswordResponse = TServerResponse<{
+  data: {success:boolean,
+         message?:string};
+}>;
 
 function ForgotPasswordPage() {
   const navigate = useNavigate()
@@ -19,7 +23,7 @@ function ForgotPasswordPage() {
 
   const handleForgotPassword = (event:FormEvent) => {
     event.preventDefault()
-    request('/password-reset', {
+    request<TForgotPasswordResponse>('/password-reset', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,10 +32,10 @@ function ForgotPasswordPage() {
     })
       .then((data) => {
         if (data.success) {
-          console.log('Письмо направлено успешно:', data);
+          console.log('Письмо направлено успешно:', data.data);
           navigate('/reset-password', { state: { fromForgotPassword: true }});          
         } else {
-          console.error('Ошибка восстановления пароля:', data.message);
+          console.error('Ошибка восстановления пароля:', data.data.message);
         }
       })
       .catch((error) => {

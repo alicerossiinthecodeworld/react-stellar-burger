@@ -25,8 +25,7 @@ export type Order = {
 }
 
 const OrdersFeedZone = ({ orders }: { orders: Order[] }) => {
-  const ingredients = useSelector((state: RootState) => state.ingredients?.data?.data);
-
+  const ingredients = useSelector((state: RootState) => state.ingredients?.data);
   const getOrderPrice = (order: Order) => {
     return order.ingredients.reduce((total: number, ingredientId: string) => {
       const ingredient = ingredients?.find((ing: Ingredient) => ing._id === ingredientId);

@@ -4,6 +4,8 @@ import styles from './register-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useForm from '../../hooks/use-form';
 import { registerUser } from '../../services/auth-slice';
+import { FormEvent } from 'react';
+import React from 'react';
 
 function RegisterPage() {
   const { values, handleChange } = useForm({
@@ -16,14 +18,14 @@ function RegisterPage() {
   const navigate = useNavigate()
 
 
-  const handleRegister = (e) => {
+  const handleRegister = (e:FormEvent) => {
     e.preventDefault()
     const userData = {
       email: values.email,
       password: values.password,
       name: values.name,
     };
-    console.log(dispatch(registerUser(userData)))
+    dispatch(registerUser(userData))
     navigate("/")
   };
 

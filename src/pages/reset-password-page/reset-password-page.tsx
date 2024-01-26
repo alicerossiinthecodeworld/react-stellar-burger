@@ -3,14 +3,19 @@ import {useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styles from './reset-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { request } from '../../utils/api-config';
+import { request, TServerResponse } from '../../utils/api-config';
 import useForm from '../../hooks/use-form';
+
+
+type TResetPasswordResponse = TServerResponse<{
+  data: {success:boolean,
+         message?:string};
+}>;
 
 function ResetPasswordPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const isFromForgotPassword= location.state?.fromForgotPassword;
-  console.log(`забыл парольку ${isFromForgotPassword}`)
 
 
   const { values, handleChange } = useForm({
@@ -24,7 +29,7 @@ function ResetPasswordPage() {
   };
 
   const handleResetPassword = () => {
-    request('/password-reset/reset', {
+    request<TResetPasswordResponse>('/password-reset/reset', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,10 +37,10 @@ function ResetPasswordPage() {
       body: JSON.stringify(newPasswordData),
     })
       .then((data) => {
-        if (data.success) {
-          console.log('Пароль успешно изменен:', data);
+        if (data.data.success) {
+          console.log('Пароль успешно изменен:', data.data);
         } else {
-          console.error('Ошибка изменения пароля:', data.message);
+          console.error('Ошибка изменения пароля:', data.data.message);
         }
       })
       .catch((error) => {

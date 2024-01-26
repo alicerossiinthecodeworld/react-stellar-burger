@@ -7,7 +7,7 @@ import { Ingredient } from '../../components/burger-ingredients/burger-ingredien
 
 export const IngredientInfoPage = () => {
   const { ingredientId } = useParams();
-  const ingredients = useSelector((state:RootState) => state.ingredients.data?.data);
+  const ingredients = useSelector((state:RootState) => state.ingredients.data);
 
   if (!ingredients) {
     return null;

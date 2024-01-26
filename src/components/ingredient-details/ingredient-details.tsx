@@ -8,7 +8,7 @@ import { StylesType } from '../ingredient-detail-display/ingredient-detail-displ
 
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
-  const ingredients = useSelector((state:RootState) => state.ingredients.data?.data)
+  const ingredients = useSelector((state:RootState) => state.ingredients.data)
   if (!ingredients || !ingredients) {
     return null
   }

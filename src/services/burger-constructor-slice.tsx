@@ -1,15 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuid4 } from 'uuid';
 import { Ingredient } from '../components/burger-ingredients/burger-ingredients';
 
-
-type burgerConstructorState = {
-  selectedIngredients:Ingredient[]|null;
+type BurgerConstructorState = {
+  selectedIngredients: Ingredient[];
   totalCost: number,
 };
 
-const initialState:burgerConstructorState= {
-  selectedIngredients: null as Ingredient[] | null, 
+const initialState: BurgerConstructorState = {
+  selectedIngredients: [], 
   totalCost: 0,
 };
 
@@ -17,33 +16,26 @@ const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   reducers: {
-    addIngredient: (state, action) => {
+    addIngredient: (state, action: PayloadAction<Ingredient>) => {
       const ingredientToAdd = {
         ...action.payload,
         uniqueId: uuid4(),
       };
-      if (!state.selectedIngredients){state.selectedIngredients=[]}
-      state.selectedIngredients?.push(ingredientToAdd);
+      state.selectedIngredients.push(ingredientToAdd);
     },
-    removeIngredient: (state, action) => {
-      const uniqueIdToRemove = action.payload.uniqueId;
-      if (state.selectedIngredients !== null) {
-        state.selectedIngredients = state.selectedIngredients.filter(
-          (ingredient) => ingredient.uniqueId !== uniqueIdToRemove
-        );
-      }
+    removeIngredient: (state, action: PayloadAction<{ uniqueId: string }>) => {
+      state.selectedIngredients = state.selectedIngredients.filter(
+        ingredient => ingredient.uniqueId !== action.payload.uniqueId
+      );
     },
     calculateTotalCost: (state) => {
-      if (state.selectedIngredients !== null) {
-        state.totalCost = state.selectedIngredients.reduce(
-          (acc, ingredient) => acc + ingredient.price,
-          0
-        );
-      }
+      state.totalCost = state.selectedIngredients.reduce(
+        (acc: number, ingredient: Ingredient) => acc + ingredient.price,
+        0
+      );
     },
-    
-    updateIngredientOrder: (state, action) => {
-      state.selectedIngredients = [...action.payload]; 
+    updateIngredientOrder: (state, action: PayloadAction<Ingredient[]>) => {
+      state.selectedIngredients = action.payload;
     },
   },
 });

@@ -1,8 +1,8 @@
-export function formatDate(dateString) {
+export function formatDate(dateString: string) {
   const date = new Date(dateString);
   const now = new Date();
 
-  const options = { hour: '2-digit', minute: '2-digit' };
+  const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
   const timeString = date.toLocaleTimeString('ru-RU', options);
 
   if (date.getDate() === now.getDate() &&
@@ -11,7 +11,7 @@ export function formatDate(dateString) {
     return `Сегодня, ${timeString}  i-GMT+3`;
   }
   else {
-    const dateOptions = { day: 'numeric', month: 'long' };
+    const dateOptions: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long' };
     const dateStringFormatted = date.toLocaleDateString('ru-RU', dateOptions);
     return `${dateStringFormatted}, ${timeString}  i-GMT+3`;
   }

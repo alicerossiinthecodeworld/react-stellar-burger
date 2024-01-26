@@ -1,11 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { request } from '../utils/api-config';
+import { request, TServerResponse } from '../utils/api-config';
 import { AppDispatch, CustomError } from './store';
 
-type UserType = {
-  email: string,
-  name: string,
-  password: string
+type TUserResponse = TServerResponse<{
+  user:UserType,
+  accessToken:string,
+  refreshToken:string,
+  success:boolean
+}>;
+
+interface UserType {
+  email: string;
+  name: string;
+  password?: string;
 }
 
 type AuthStateType = {
@@ -149,8 +156,7 @@ export const login = (userData: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(userData),
-    });
-
+    }) as TUserResponse;
     if (response.success && response.user) {
       dispatch(loginSuccess(response.user))
       dispatch(saveRefreshToken(response.refreshToken))
@@ -173,9 +179,8 @@ export const registerUser = (userData:UserType) => async (dispatch:AppDispatch) 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(userData),
-    });
-
-    if (response && response.user) {
+    }) as TUserResponse;
+    if (response && response) {
       dispatch(registrationSuccess(response.user));
       dispatch(saveRefreshToken(response.refreshToken));
       dispatch(saveAccessToken(response.accessToken))
@@ -189,17 +194,19 @@ export const registerUser = (userData:UserType) => async (dispatch:AppDispatch) 
 };
 export const updateUser = (userData:UserType) => async (dispatch:AppDispatch) => {
   const AccessToken = await refreshAccessToken()
-  console.log('access', AccessToken)
   try {
     dispatch(updateUserRequest());
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (AccessToken) {
+      headers['Authorization'] = AccessToken;
+    }
     const response = await request('/auth/user', {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': AccessToken
-      },
+      headers: headers,
       body: JSON.stringify(userData),
-    });
+    })as TUserResponse;
 
     if (response.success && response.user) {
       dispatch(updateUserSuccess(response.user));
@@ -252,11 +259,11 @@ export function getSavedUserData() {
 export async function refreshAccessToken() {
   const refreshToken = localStorage.getItem('refreshToken');
   try {
-    const response = await request('/auth/token', {
+    const response = await request('/auth/token',{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token: refreshToken }),
-    })
+    } ) as TUserResponse
     localStorage.setItem('refreshToken', response.refreshToken);
     localStorage.setItem('accessToken', response.accessToken)
     return response.accessToken;

@@ -25,7 +25,7 @@ export default function App(){
   }, [dispatch]);
   useEffect(() => {
     dispatch(fetchIngredients());
-  }, []);
+  });
   return (
     <Router>
       <AppHeader />

@@ -35,12 +35,12 @@ function BurgerConstructor() {
   const ItemType = 'INGREDIENT';
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const totalCost = useSelector((state:RootState) => state.burgerConstructor.totalCost);
+  const totalCost = useSelector((state: RootState) => state.burgerConstructor.totalCost);
   const selectedIngredients: Ingredient[] | null = useSelector(
     (state: RootState) => state.burgerConstructor.selectedIngredients
-  ); 
-  const orderNumber = useSelector((state:RootState) => state.orderDetails.order?.number);
-  const hasSelectedIngredients =  selectedIngredients && selectedIngredients.length > 0;
+  );
+  const orderNumber = useSelector((state: RootState) => state.orderDetails.order?.number);
+  const hasSelectedIngredients = selectedIngredients && selectedIngredients.length > 0;
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function BurgerConstructor() {
 
   const [, drop] = useDrop({
     accept: ItemType,
-    drop: (item:IngredientData) => {
+    drop: (item: IngredientData) => {
       if (item.ingredient.type === IngredientType.Bun && selectedBun) {
         handleRemoveIngredient(selectedBun)
         selectedBun = item.ingredient;
@@ -62,16 +62,21 @@ function BurgerConstructor() {
     },
   });
 
-  const selectedFilling = selectedIngredients?.filter((item:Ingredient) => item.type !== IngredientType.Bun);
-  let selectedBun = selectedIngredients?.find((item:Ingredient) => item.type === IngredientType.Bun);
-  const isAuthenticated = useSelector((state:RootState) => state.auth.isAuthenticated);
+  const selectedFilling = selectedIngredients?.filter((item: Ingredient) => item.type !== IngredientType.Bun);
+  let selectedBun = selectedIngredients?.find((item: Ingredient) => item.type === IngredientType.Bun);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
 
   const handleOrderClick = () => {
     if (isAuthenticated) {
-      const ingredientIds = selectedIngredients?.map((item: Ingredient) => Number(item._id)) || [];
-      dispatch(createOrder(ingredientIds));      
-      setShowModal(true);
+      const ingredientIds = selectedIngredients?.map((item: Ingredient) => (item._id));
+      if (ingredientIds) {
+        dispatch(createOrder(ingredientIds));
+        setShowModal(true)
+      }
+      else{
+        alert("заказ не создан")
+      }
     } else {
       navigate('/login');
     }
@@ -82,16 +87,15 @@ function BurgerConstructor() {
     setShowModal(false);
   };
 
-  const handleRemoveIngredient = (ingredient:Ingredient) => {
+  const handleRemoveIngredient = (ingredient: Ingredient) => {
     dispatch(removeIngredient(ingredient));
     dispatch(calculateTotalCost());
     if (selectedIngredients) {
       getIngredientCount(selectedIngredients, ingredient._id);
     }
-      };
+  };
 
-  const onDragEnd = (result:DropResult) => {
-    console.log(result)
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }
@@ -130,7 +134,7 @@ function BurgerConstructor() {
                   className={constructorStyles.ingredientsWrapper}
                 >
                   <div className={constructorStyles.scrollableContent}>
-                    {selectedFilling && selectedFilling.map((item:Ingredient, index:number) => (
+                    {selectedFilling && selectedFilling.map((item: Ingredient, index: number) => (
                       <Draggable
                         key={`${item.uniqueId}`}
                         draggableId={`${item.uniqueId}`}
@@ -144,20 +148,20 @@ function BurgerConstructor() {
                             onDrag={(e) => e.preventDefault()}
                             className={constructorStyles.ingredientWrapper}
                           >
-                            <div className = {constructorStyles.dragIcon}>
-                            <DragIcon type="primary"  />
+                            <div className={constructorStyles.dragIcon}>
+                              <DragIcon type="primary" />
                             </div>
                             <div className={constructorStyles.item}>
-                            <ConstructorElement
-                              text={item.name}
-                              price={item.price}
-                              thumbnail={item.image_large}
-                              type={item.type === 'bun' ? 'top' : undefined}
-                              isLocked={item.type === 'bun'}
-                              handleClose={() => {
-                                handleRemoveIngredient(item);
-                              }}
-                            />
+                              <ConstructorElement
+                                text={item.name}
+                                price={item.price}
+                                thumbnail={item.image_large}
+                                type={item.type === 'bun' ? 'top' : undefined}
+                                isLocked={item.type === 'bun'}
+                                handleClose={() => {
+                                  handleRemoveIngredient(item);
+                                }}
+                              />
                             </div>
                           </div>
                         )}
@@ -198,7 +202,7 @@ function BurgerConstructor() {
         <div className={constructorStyles.orderPrice}>
           {totalCost}
           <div className={constructorStyles.orderIcon}>
-          <CurrencyIcon type='primary'/>
+            <CurrencyIcon type='primary' />
           </div>
         </div>
         <Button
@@ -211,10 +215,9 @@ function BurgerConstructor() {
           Оформить заказ
         </Button>
       </div>
-
       {showModal && orderNumber && (
         <Modal isOpen={showModal} onClose={handleCloseModal}>
-          <OrderDetails orderNumber={orderNumber} onClose={handleCloseModal}/>
+          <OrderDetails orderNumber={orderNumber} onClose={handleCloseModal} />
         </Modal>
       )}
     </div>

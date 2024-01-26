@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import modalStyles from './modal-overlay.module.css';
+import React from 'react';
 
 const ModalOverlay = ({ children, ...props }:{children: ReactNode;}) => {
   return (

@@ -2,6 +2,7 @@ import { useDrag } from 'react-dnd';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import boxStyles from './ingredient-box-item.module.css';
 import { Ingredient } from '../burger-ingredients/burger-ingredients'
+import React from 'react';
 
 type Props = {
   imageSrc: string,

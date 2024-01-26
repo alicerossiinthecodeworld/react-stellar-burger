@@ -41,7 +41,7 @@ export const getIngredientCount = (selectedIngredients: Ingredient[], ingredient
 function BurgerIngredients() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const ingredients = useSelector((state: RootState) => state.ingredients.data?.data)||[];
+  const ingredients = useSelector((state: RootState) => state.ingredients.data)||[];
   const isLoading = useSelector((state: RootState) => state.ingredients.loading);
   const selectedIngredients = useSelector((state: RootState) => state.burgerConstructor.selectedIngredients)|| [];
   const ingredientBoxWrapperRef = useRef(null);
@@ -59,27 +59,29 @@ function BurgerIngredients() {
     root: ingredientBoxWrapperRef.current
   });
 
-  function getView() {
-    if (bunInView) {
-      return 'buns';
-    }
-    if (sauceInView) {
-      return 'sauces';
-    }
-    if (mainInView) {
-      return 'fillings';
-    }
-    return 'none';
-  }
 
   useEffect(() => {
+    function getView() {
+      if (bunInView) {
+        return 'buns';
+      }
+      if (sauceInView) {
+        return 'sauces';
+      }
+      if (mainInView) {
+        return 'fillings';
+      }
+      return 'none';
+    }
+  
     const newActiveTab = getView();
     dispatch(setActiveTab(newActiveTab));
-  }, [bunInView, sauceInView, mainInView]);
+  }, [bunInView, sauceInView, mainInView, dispatch]);
 
 
   const handleIngredientClick = (ingredientId: string) => {
-    navigate(`/ingredients/${ingredientId}`, { state: { fromIngredientClick: true } })
+    navigate(`/ingredients/${ingredientId}`, 
+    { state: { fromIngredientClick: true } })
   };
 
   if (isLoading) {

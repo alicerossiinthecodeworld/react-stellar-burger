@@ -4,7 +4,6 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { logoutUser } from '../../services/auth-slice';
 import { useDispatch } from 'react-redux';
 
-
 const ProfileColumn = (additionalText:{additionalText:string}) => {
   const refreshToken = localStorage.getItem('refreshToken');
   const dispatch = useDispatch();
