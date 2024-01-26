@@ -1,4 +1,4 @@
-import { AnyAction, configureStore, Dispatch, Middleware, Store} from '@reduxjs/toolkit';
+import {configureStore, Store} from '@reduxjs/toolkit';
 import burgerConstructorReducer from './burger-constructor-slice';
 import ingredientsReducer from './ingredient-slice';
 import ingredientDetailsReducer from './ingredient-details-slice';

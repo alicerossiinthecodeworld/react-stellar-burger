@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Ingredient } from '../components/burger-ingredients/burger-ingredients';
-import { request } from '../utils/api-config';
+import { request, TServerResponse } from '../utils/api-config';
 import { AppDispatch } from './store';
+
+type TIngredientsResponse = TServerResponse<{
+  data: Ingredient[];
+}>;
 
 type IngredientState = {
   data: {data:Ingredient[]} | null; 
@@ -38,11 +42,11 @@ export const { fetchIngredientsRequest, fetchIngredientsSuccess, fetchIngredient
 
 export const fetchIngredients = () => async (dispatch:AppDispatch) => {
   dispatch(fetchIngredientsRequest());
-  const response = await request(`/ingredients`);
+  const response = await request<TIngredientsResponse>('/ingredients');
     if (response.success) {
     dispatch(fetchIngredientsSuccess(response));
   } else {
-    dispatch(fetchIngredientsFailure(`Ошибка ${response.status}`));
+    dispatch(fetchIngredientsFailure(`Ошибка получения ингридиентов`));
   }
 };
 

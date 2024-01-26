@@ -7,7 +7,6 @@ import {
 import { useSelector } from 'react-redux';
 import { Ingredient } from '../burger-ingredients/burger-ingredients';
 import { RootState } from '../../services/store';
-import React from 'react';
 
 export enum OrderStatus {
     Done = 'done',
@@ -27,7 +26,6 @@ export type Order = {
 
 const OrdersFeedZone = ({ orders }: { orders: Order[] }) => {
   const ingredients = useSelector((state: RootState) => state.ingredients?.data);
-  console.log("ингридиенты", ingredients)
   const getOrderPrice = (order: Order) => {
     return order.ingredients.reduce((total: number, ingredientId: string) => {
       const ingredient = ingredients?.find((ing: Ingredient) => ing._id === ingredientId);

@@ -4,16 +4,16 @@ import { FeedWsClose, FeedWsOpen, FeedWsConnecting, FeedWsError, FeedWsMessage }
 import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '../../components/orders-zone/orders-zone';
 
-type feedStateType = {
+type FeedStateType = {
   status: WebsocketStatus,
-  orders: null|Order[],
+  orders: Order[],
   total: number,
   totalToday: number,
   connectingError: string
 }
 
 
-const feedinitialState: feedStateType = {
+const feedinitialState: FeedStateType = {
   status: WebsocketStatus.OFFLINE,
   orders: [],
   total: 0,

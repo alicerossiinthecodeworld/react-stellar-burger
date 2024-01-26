@@ -1,6 +1,6 @@
 import { refreshAccessToken } from "./auth-slice";
 import { FeedWsClose, FeedWsConnect, FeedWsConnecting, FeedWsDisconnect, FeedWsError, FeedWsMessage, FeedWsOpen, WebSocketConnection } from "./actions/feed-actions";
-import { ProfileFeedWsClose, ProfileFeedWsConnect, ProfileFeedWsConnecting, ProfileFeedWsDisconnect, ProfileFeedWsError, ProfileFeedWsMessage, ProfileFeedWsMessagePayload, ProfileFeedWsOpen } from "./actions/profile-feed-actions";
+import { ProfileFeedWsClose, ProfileFeedWsConnect, ProfileFeedWsConnecting, ProfileFeedWsDisconnect, ProfileFeedWsError, ProfileFeedWsMessage, ProfileFeedWsOpen } from "./actions/profile-feed-actions";
 import { AnyAction } from "redux";
 import { Dispatch, Middleware, MiddlewareAPI } from "@reduxjs/toolkit";
 import { RootState } from "./store";

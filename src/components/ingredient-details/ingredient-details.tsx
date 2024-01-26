@@ -5,11 +5,10 @@ import IngredientDetailDisplay from '../ingredient-detail-display/ingredient-det
 import { RootState } from '../../services/store';
 import { Ingredient } from '../burger-ingredients/burger-ingredients';
 import { StylesType } from '../ingredient-detail-display/ingredient-detail-display';
-import React from 'react';
 
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
-  const ingredients = useSelector((state:RootState) => state.ingredients.data?.data)
+  const ingredients = useSelector((state:RootState) => state.ingredients.data)
   if (!ingredients || !ingredients) {
     return null
   }

@@ -8,7 +8,6 @@ import ingredientsStyles from './burger-ingredients.module.css';
 import IngredientBoxItem from '../ingredient-box-item/ingredient-box-item';
 import { setActiveTab } from '../../services/active-tab-slice';
 import { RootState } from '../../services/store';
-import React from 'react';
 
 export enum IngredientType {
   Bun = "bun",
@@ -60,27 +59,29 @@ function BurgerIngredients() {
     root: ingredientBoxWrapperRef.current
   });
 
-  function getView() {
-    if (bunInView) {
-      return 'buns';
-    }
-    if (sauceInView) {
-      return 'sauces';
-    }
-    if (mainInView) {
-      return 'fillings';
-    }
-    return 'none';
-  }
 
   useEffect(() => {
+    function getView() {
+      if (bunInView) {
+        return 'buns';
+      }
+      if (sauceInView) {
+        return 'sauces';
+      }
+      if (mainInView) {
+        return 'fillings';
+      }
+      return 'none';
+    }
+  
     const newActiveTab = getView();
     dispatch(setActiveTab(newActiveTab));
-  }, [bunInView, sauceInView, mainInView]);
+  }, [bunInView, sauceInView, mainInView, dispatch]);
 
 
   const handleIngredientClick = (ingredientId: string) => {
-    navigate(`/ingredients/${ingredientId}`, { state: { fromIngredientClick: true } })
+    navigate(`/ingredients/${ingredientId}`, 
+    { state: { fromIngredientClick: true } })
   };
 
   if (isLoading) {

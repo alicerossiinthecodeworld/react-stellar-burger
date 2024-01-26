@@ -25,7 +25,7 @@ function RegisterPage() {
       password: values.password,
       name: values.name,
     };
-    console.log(dispatch(registerUser(userData)))
+    dispatch(registerUser(userData))
     navigate("/")
   };
 

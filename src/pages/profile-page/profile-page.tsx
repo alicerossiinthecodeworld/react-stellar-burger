@@ -28,7 +28,6 @@ function ProfilePage() {
     
     dispatch(updateUser(updatedUserData))
 
-    console.log('Профиль успешно обновлен');
     handleChange(createSyntheticEvent('email', updatedUserData.email));
     handleChange(createSyntheticEvent('name', updatedUserData.name));
     handleChange(createSyntheticEvent('password', updatedUserData.password)); 

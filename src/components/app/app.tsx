@@ -14,7 +14,6 @@ import { fetchIngredients } from '../../services/ingredient-slice';
 import OrderInfoPage from '../../pages/order-info-page/order-info-page';
 import FeedPage from '../../pages/feed-page/feed-page';
 import ProfileFeedPage from '../../pages/profile-feed-page/profile-feed-page';
-import React from 'react';
 
 export default function App(){
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ export default function App(){
   }, [dispatch]);
   useEffect(() => {
     dispatch(fetchIngredients());
-  }, []);
+  });
   return (
     <Router>
       <AppHeader />

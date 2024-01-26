@@ -1,21 +1,25 @@
 export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
-const checkResponse = (res:any) => {
+export type TServerResponse<T> = {
+  success: boolean;
+} & T;
+
+export const checkResponse = <T,>(res: Response): Promise<T> => {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(`Ошибка ${res.status}`);
+  return res.json().then((err: any) => Promise.reject(err));
 };
 
-const checkSuccess = (res:any) => {
+const checkSuccess = <T,>(res: TServerResponse<T>) => {
   if (res && res.success) {
     return res;
   }
-  return Promise.reject(`Ответ не success: ${res}`);
+  return Promise.reject(`Ответ не success: ${JSON.stringify(res)}`);
 };
 
-export const request = (endpoint:string, options?:any) => {
+export const request = async <T,>(endpoint: string, options?: RequestInit): Promise<T> => {
   return fetch(`${BASE_URL}${endpoint}`, options)
-    .then(checkResponse)
+    .then((res) => checkResponse<TServerResponse<T>>(res))
     .then(checkSuccess);
 };

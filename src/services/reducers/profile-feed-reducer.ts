@@ -4,12 +4,12 @@ import { createReducer } from '@reduxjs/toolkit';
 import { Order } from '../../components/orders-zone/orders-zone';
 
 
-type profileFeedStateType = {
+type ProfileFeedStateType = {
   status: WebsocketStatus,
   profileOrders: null|Order[],
   connectingError: string
 }
-const initialState: profileFeedStateType = {
+const initialState: ProfileFeedStateType = {
   status: WebsocketStatus.OFFLINE,
   profileOrders: [],
   connectingError: ''

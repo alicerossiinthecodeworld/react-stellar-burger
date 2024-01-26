@@ -7,20 +7,20 @@ import OrdersFeedZone from "../../components/orders-zone/orders-zone";
 import ProfileColumn from "../../components/profile-column/profile-column";
 import styles from './profile-feed-page.module.css';
 import { RootState } from '../../services/store';
-import React from 'react';
 
 const ProfileFeedPage = () => {
   const dispatch = useDispatch()
   const orders = useSelector((state:RootState) => state.profileOrders.profileOrders);
-  console.log(orders)
   useEffect(() => {
     const fetchData = async () => {
       const accessToken = await refreshAccessToken();
-      const socketUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken.replace('Bearer ', '')}`;
-      dispatch(connectWebSocket(socketUrl));
-      return () => {
-        dispatch(ProfileFeedWsClose);
-      };
+      if (accessToken){
+        const socketUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken.replace('Bearer ', '')}`;
+        dispatch(connectWebSocket(socketUrl));
+        return () => {
+          dispatch(ProfileFeedWsClose);
+        };
+      }
     }
     fetchData();
   }, [dispatch]);
